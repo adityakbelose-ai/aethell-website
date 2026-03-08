@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Aethell Mirrors</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+margin:0;
+font-family:'Inter', sans-serif;
+background:#fafafa;
+color:#111;
+}
+
+/* NAVBAR */
+
+nav{
+padding:20px;
+font-weight:600;
+letter-spacing:3px;
+}
+
+/* HERO */
+
+.hero{
+padding:60px 20px;
+text-align:center;
+}
+
+.hero p{
+color:#666;
+}
+
+/* SECTION */
+
+.section{
+padding:30px 20px;
+}
+
+/* PRODUCT CARD */
+
+.product{
+background:white;
+border-radius:12px;
+margin-bottom:30px;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+overflow:hidden;
+}
+
+/* IMAGE SWIPE GALLERY */
+
+.gallery{
+display:flex;
+overflow-x:auto;
+scroll-snap-type:x mandatory;
+}
+
+.gallery img{
+width:100%;
+flex-shrink:0;
+scroll-snap-align:start;
+}
+
+/* PRODUCT INFO */
+
+.product-info{
+padding:18px;
+}
+
+button{
+width:100%;
+padding:14px;
+background:black;
+color:white;
+border:none;
+border-radius:8px;
+font-size:15px;
+cursor:pointer;
+}
+
+/* CHECKOUT */
+
+.checkout{
+display:none;
+padding:25px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-bottom:10px;
+border:1px solid #ddd;
+border-radius:6px;
+}
+
+.warning{
+color:red;
+font-size:14px;
+display:none;
+}
+
+/* INSTAGRAM BUTTON */
+
+.insta{
+position:fixed;
+bottom:20px;
+right:20px;
+background:black;
+color:white;
+padding:14px;
+border-radius:50%;
+text-decoration:none;
+font-size:14px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<nav>AETHELL</nav>
+
+
+<section class="hero">
+
+<h2>Modern Mirrors</h2>
+
+<p>Minimal mirrors designed for Gen-Z interiors</p>
+
+</section>
+
+
+
+<section class="section">
+
+<h3>Shop Mirrors</h3>
+
+
+<!-- PRODUCT 1 -->
+
+<div class="product">
+
+<div class="gallery">
+
+<img src="mirror1.jpg">
+<img src="mirror2.jpg">
+
+</div>
+
+<div class="product-info">
+
+<b>CMIYGL Mirror</b>
+
+<p>₹5,999</p>
+
+<button onclick="buy('CMIYGL Mirror',5999)">Buy Now</button>
+
+</div>
+
+</div>
+
+
+
+<!-- PRODUCT 2 -->
+
+<div class="product">
+
+<div class="gallery">
+
+<img src="mirror3.jpg">
+<img src="mirror4.jpg">
+
+</div>
+
+<div class="product-info">
+
+<b>MS PAINT Mirror</b>
+
+<p>₹8,999</p>
+
+<button onclick="buy('MS PAINT Mirror',8999)">Buy Now</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<section class="checkout" id="checkout">
+
+<h3>Shipping Details</h3>
+
+<input id="name" placeholder="Full Name">
+
+<input id="phone" placeholder="Phone Number">
+
+<input id="flat" placeholder="Flat / House Number">
+
+<input id="building" placeholder="Building / Society">
+
+<input id="area" placeholder="Area / Street">
+
+<input id="pincode" placeholder="Mumbai Pincode">
+
+<p class="warning" id="pincodeWarning">
+Delivery currently available only in Mumbai
+</p>
+
+<button onclick="payUPI()">Pay with UPI</button>
+
+</section>
+
+
+
+<!-- FLOATING INSTAGRAM BUTTON -->
+
+<a href="https://instagram.com/aethell.in" class="insta">IG</a>
+
+
+
+<script>
+
+let productName=""
+let price=0
+
+function buy(name,amount){
+
+productName=name
+price=amount
+
+document.getElementById("checkout").style.display="block"
+
+window.scrollTo({
+top:document.getElementById("checkout").offsetTop,
+behavior:"smooth"
+})
+
+}
+
+
+/* MUMBAI PINCODES */
+
+const mumbaiPincodes=[
+400001,400002,400003,400004,400005,400006,400007,400008,
+400009,400010,400011,400012,400013,400014,400015,400016,
+400017,400018,400019,400020,400021,400022,400024,400025,
+400026,400027,400028,400029,400030,400031,400032,400033,
+400034,400035,400036,400037,400038,400039,400040,400041,
+400042,400043,400049,400050,400051,400052,400053,400054,
+400055,400056,400057,400058,400059,400060,400061,400062,
+400063,400064,400065,400066,400067,400068,400069,400070,
+400071,400072,400073,400074,400075,400076,400077,400078,
+400079,400080,400081,400082,400083,400084,400085,400086,
+400087,400088,400089,400090,400091,400092,400093,400094,
+400095,400096,400097,400098,400099
+]
+
+
+function payUPI(){
+
+let name=document.getElementById("name").value
+let phone=document.getElementById("phone").value
+let flat=document.getElementById("flat").value
+let building=document.getElementById("building").value
+let area=document.getElementById("area").value
+let pincode=document.getElementById("pincode").value
+
+if(!mumbaiPincodes.includes(Number(pincode))){
+
+document.getElementById("pincodeWarning").style.display="block"
+return
+
+}
+
+/* UPI PAYMENT */
+
+let upi="upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am="+price+"&cu=INR"
+
+
+/* WHATSAPP ORDER */
+
+let message=
+"New Aethell Order%0A"+
+"Product: "+productName+"%0A"+
+"Amount: ₹"+price+"%0A"+
+"Name: "+name+"%0A"+
+"Phone: "+phone+"%0A"+
+"Address: "+flat+", "+building+", "+area+" - "+pincode
+
+window.open(upi)
+
+setTimeout(()=>{
+
+window.open("https://wa.me/919987782822?text="+message)
+
+},2000)
+
+}
+
+</script>
+
+</body>
+
+</html>
