@@ -17,7 +17,7 @@ background:white;
 color:black;
 }
 
-/* loading screen */
+/* loader */
 
 #loader{
 position:fixed;
@@ -44,6 +44,48 @@ font-size:28px;
 letter-spacing:4px;
 }
 
+/* hamburger */
+
+.menu-btn{
+position:fixed;
+top:20px;
+left:20px;
+font-size:26px;
+cursor:pointer;
+z-index:1001;
+}
+
+/* sidebar */
+
+.sidebar{
+position:fixed;
+top:0;
+left:-260px;
+width:260px;
+height:100%;
+background:white;
+box-shadow:2px 0 10px rgba(0,0,0,0.1);
+transition:0.3s;
+padding-top:80px;
+z-index:1000;
+}
+
+.sidebar a{
+display:block;
+padding:15px 25px;
+text-decoration:none;
+color:black;
+font-size:16px;
+}
+
+.sidebar a:hover{
+background:#f5f5f5;
+}
+
+.sidebar.open{
+left:0;
+}
+
 /* cart */
 
 .cart{
@@ -68,46 +110,17 @@ margin-bottom:40px;
 cursor:pointer;
 }
 
-.product-image{
-position:relative;
-overflow:hidden;
-border-radius:10px;
-}
-
-.product-image img{
+.product img{
 width:100%;
-display:block;
-transition:0.4s;
+border-radius:10px;
+transition:.4s;
 }
 
 .product:hover img{
-transform:scale(1.03);
+transform:scale(1.02);
 }
 
-/* shine animation */
-
-.product-image::after{
-content:"";
-position:absolute;
-top:0;
-left:-100%;
-width:50%;
-height:100%;
-background:linear-gradient(
-120deg,
-transparent,
-rgba(255,255,255,0.6),
-transparent
-);
-animation:shine 3s infinite;
-}
-
-@keyframes shine{
-0%{left:-100%;}
-100%{left:120%;}
-}
-
-/* viewer popup */
+/* viewer */
 
 #viewer{
 position:fixed;
@@ -131,14 +144,11 @@ border-radius:10px;
 }
 
 .desc{
-margin-top:15px;
-font-size:15px;
-line-height:1.6;
-color:#444;
+margin-top:10px;
+color:#555;
 }
 
-.dimensions{
-margin-top:10px;
+.dim{
 font-size:14px;
 color:#777;
 }
@@ -163,15 +173,15 @@ display:none;
 padding:20px;
 }
 
-.checkout-product{
+.checkout-item{
 display:flex;
 align-items:center;
 margin-bottom:15px;
 }
 
-.checkout-product img{
+.checkout-item img{
 width:70px;
-border-radius:8px;
+border-radius:6px;
 margin-right:10px;
 }
 
@@ -189,6 +199,22 @@ margin:10px 0;
 
 <div id="loader">AETHELL</div>
 
+<div class="menu-btn" onclick="toggleMenu()">☰</div>
+
+<div class="sidebar" id="sidebar">
+
+<a href="#">Home</a>
+
+<a href="#about">About Us</a>
+
+<a href="https://forms.gle/YOURGOOGLEFORM" target="_blank">
+Custom Mirror
+</a>
+
+<a href="mailto:your@email.com">Contact</a>
+
+</div>
+
 <header>AETHELL</header>
 
 <div class="cart" onclick="openCheckout()">🛒 <span id="cartCount">0</span></div>
@@ -196,41 +222,31 @@ margin:10px 0;
 <section class="products">
 
 <div class="product" onclick="openProduct(0)">
-<div class="product-image">
 <img src="cmiygl1.jpg">
-</div>
 <h3>CMIYGL Mirror</h3>
 <p>₹5,999</p>
 </div>
 
 <div class="product" onclick="openProduct(1)">
-<div class="product-image">
 <img src="mspaint1.jpg">
-</div>
 <h3>MS PAINT Mirror</h3>
 <p>₹8,999</p>
 </div>
 
 <div class="product" onclick="openProduct(2)">
-<div class="product-image">
 <img src="captcha1.jpg">
-</div>
 <h3>reCAPTCHA Mirror</h3>
 <p>₹5,999</p>
 </div>
 
 <div class="product" onclick="openProduct(3)">
-<div class="product-image">
 <img src="queen1.jpg">
-</div>
 <h3>Queen of Hearts Mirror</h3>
 <p>₹5,499</p>
 </div>
 
 <div class="product" onclick="openProduct(4)">
-<div class="product-image">
 <img src="king1.jpg">
-</div>
 <h3>King of Hearts Mirror</h3>
 <p>₹5,499</p>
 </div>
@@ -247,7 +263,7 @@ margin:10px 0;
 
 <p id="viewerDesc" class="desc"></p>
 
-<p id="viewerDim" class="dimensions"></p>
+<p id="viewerDim" class="dim"></p>
 
 <button onclick="addToCart()">Add To Cart</button>
 
@@ -265,10 +281,10 @@ margin:10px 0;
 
 <div id="orderPreview"></div>
 
-<input id="building" placeholder="Building / Society">
-<input id="flat" placeholder="Flat Number">
-<input id="area" placeholder="Area / Street">
-<input id="pincode" placeholder="Pincode">
+<input placeholder="Building / Society">
+<input placeholder="Flat Number">
+<input placeholder="Area / Street">
+<input placeholder="Pincode">
 
 <label>
 <input type="radio" name="pay" value="upi" checked>
@@ -279,7 +295,7 @@ UPI / GPay
 
 <label>
 <input type="radio" name="pay" value="cod">
-Cash on Delivery
+Cash On Delivery
 </label>
 
 <button onclick="checkout()">Checkout</button>
@@ -292,13 +308,21 @@ setTimeout(()=>{
 document.getElementById("loader").style.display="none"
 },1500)
 
+/* sidebar */
+
+function toggleMenu(){
+document.getElementById("sidebar").classList.toggle("open")
+}
+
+/* products */
+
 let products=[
 
 {
 name:"CMIYGL Mirror",
 price:5999,
 img:"cmiygl1.jpg",
-desc:"A reflective reinterpretation of the iconic CMIYGL aesthetic.",
+desc:"Inspired by the iconic album aesthetic.",
 dim:'15" x 24"'
 },
 
@@ -306,7 +330,7 @@ dim:'15" x 24"'
 name:"MS PAINT Mirror",
 price:8999,
 img:"mspaint1.jpg",
-desc:"A retro-modern tribute to early digital creativity.",
+desc:"Retro digital nostalgia mirror.",
 dim:'47" x 31"'
 },
 
@@ -314,7 +338,7 @@ dim:'47" x 31"'
 name:"reCAPTCHA Mirror",
 price:5999,
 img:"captcha1.jpg",
-desc:"To become something greater one must verify themselves.",
+desc:"Concept piece inspired by identity verification.",
 dim:'42" x 31"'
 },
 
@@ -322,7 +346,7 @@ dim:'42" x 31"'
 name:"Queen of Hearts Mirror",
 price:5499,
 img:"queen1.jpg",
-desc:"Royal aesthetics crafted for spaces with elegance.",
+desc:"Royal aesthetic for elegant spaces.",
 dim:'48" x 31"'
 },
 
@@ -330,7 +354,7 @@ dim:'48" x 31"'
 name:"King of Hearts Mirror",
 price:5499,
 img:"king1.jpg",
-desc:"Bold and regal design for modern interiors.",
+desc:"Bold regal design for modern interiors.",
 dim:'48" x 31"'
 }
 
@@ -338,7 +362,6 @@ dim:'48" x 31"'
 
 let selected=null
 let cart=[]
-let quantities={}
 
 function openProduct(i){
 
@@ -359,15 +382,7 @@ document.getElementById("viewer").style.display="none"
 
 function addToCart(){
 
-let product=products[selected]
-
-cart.push(product)
-
-if(!quantities[product.name]){
-quantities[product.name]=1
-}else{
-quantities[product.name]++
-}
+cart.push(products[selected])
 
 document.getElementById("cartCount").innerText=cart.length
 
@@ -376,8 +391,6 @@ document.getElementById("cartCount").innerText=cart.length
 function buyNow(){
 
 cart=[products[selected]]
-quantities={}
-quantities[products[selected].name]=1
 
 openCheckout()
 
@@ -387,25 +400,20 @@ function openCheckout(){
 
 document.getElementById("checkout").style.display="block"
 
-let preview=""
+let html=""
 
 cart.forEach(p=>{
 
-let qty=quantities[p.name]||1
-
-preview+=`
-<div class="checkout-product">
+html+=`
+<div class="checkout-item">
 <img src="${p.img}">
-<div>
 <div>${p.name}</div>
-<div>Qty: ${qty}</div>
-</div>
 </div>
 `
 
 })
 
-document.getElementById("orderPreview").innerHTML=preview
+document.getElementById("orderPreview").innerHTML=html
 
 window.scrollTo(0,document.body.scrollHeight)
 
@@ -415,10 +423,7 @@ function checkout(){
 
 let total=0
 
-cart.forEach(p=>{
-let qty=quantities[p.name]||1
-total+=p.price*qty
-})
+cart.forEach(p=>total+=p.price)
 
 let payment=document.querySelector('input[name="pay"]:checked').value
 
@@ -429,15 +434,12 @@ window.location.href=
 
 }else{
 
-let order="New AETHELL Order%0A"
+let msg="New AETHELL Order%0A"
 
-cart.forEach(p=>{
-let qty=quantities[p.name]||1
-order+=p.name+" x"+qty+"%0A"
-})
+cart.forEach(p=>msg+=p.name+"%0A")
 
 window.location.href=
-"https://wa.me/919987782822?text="+order
+"https://wa.me/919987782822?text="+msg
 
 }
 
