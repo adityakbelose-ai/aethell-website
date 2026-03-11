@@ -1,31 +1,59 @@
+
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
+<header>
+
+<div class="menu" onclick="toggleMenu()">☰</div>
+
+<h1>AETHELL</h1>
+
+<div class="cart">🛒</div>
+
+</header>
+
+<div id="sidebar">
+
+<a href="index.html">Home</a>
+
+<a href="https://docs.google.com/forms/d/e/1FAIpQLSdE6cRXuMMelbPQpyuv9FouDaYFMsJxm6UblKyjkCCFOIllNg/viewform">Custom Mirror</a>
+
+<a href="about.html">About Us</a>
+
+<a onclick="contact()">Contact</a>
+
+</div>
+
+<div class="page">
+
 <h2>Checkout</h2>
 
 <input placeholder="Building / Society">
-
 <input placeholder="Flat Number">
-
 <input placeholder="Street / Area">
-
 <input placeholder="City">
-
 <input placeholder="Pincode">
 
-<h3>Payment</h3>
+<h3>Payment Method</h3>
 
 <button onclick="payUPI()">Pay with UPI</button>
 
 <button onclick="cod()">Cash on Delivery</button>
 
+</div>
+
 <script src="script.js"></script>
 
 </body>
+
 </html>
