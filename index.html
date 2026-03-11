@@ -1,315 +1,333 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Aethell Mirrors</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<title>AETHELL</title>
 
 <style>
 
 body{
 margin:0;
-font-family:'Inter', sans-serif;
-background:#fafafa;
-color:#111;
+font-family:Arial;
+background:#fff;
+color:#000;
 }
 
-/* NAVBAR */
+.loading{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:40px;
+z-index:9999;
+}
 
-nav{
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
 padding:20px;
-font-weight:600;
+}
+
+.logo{
+font-size:28px;
 letter-spacing:3px;
 }
 
-/* HERO */
-
-.hero{
-padding:60px 20px;
-text-align:center;
-}
-
-.hero p{
-color:#666;
-}
-
-/* SECTION */
-
-.section{
-padding:30px 20px;
-}
-
-/* PRODUCT CARD */
-
-.product{
-background:white;
-border-radius:12px;
-margin-bottom:30px;
-box-shadow:0 6px 18px rgba(0,0,0,0.08);
-overflow:hidden;
-}
-
-/* IMAGE SWIPE GALLERY */
-
-.gallery{
-display:flex;
-overflow-x:auto;
-scroll-snap-type:x mandatory;
-}
-
-.gallery img{
-width:100%;
-flex-shrink:0;
-scroll-snap-align:start;
-}
-
-/* PRODUCT INFO */
-
-.product-info{
-padding:18px;
-}
-
-button{
-width:100%;
-padding:14px;
-background:black;
-color:white;
-border:none;
-border-radius:8px;
-font-size:15px;
+.menu{
+font-size:25px;
 cursor:pointer;
 }
 
-/* CHECKOUT */
+.products{
+padding:20px;
+}
+
+.product{
+margin-bottom:40px;
+}
+
+.product img{
+width:100%;
+border-radius:10px;
+}
+
+button{
+padding:12px;
+border:none;
+background:black;
+color:white;
+margin-top:10px;
+width:100%;
+cursor:pointer;
+}
+
+.cart-icon{
+position:fixed;
+top:20px;
+right:20px;
+background:black;
+color:white;
+padding:10px 15px;
+border-radius:30px;
+cursor:pointer;
+}
+
+.slider{
+position:relative;
+}
+
+.slider img{
+width:100%;
+}
+
+.prev,.next{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+background:black;
+color:white;
+border:none;
+padding:10px;
+cursor:pointer;
+}
+
+.prev{left:10px;}
+.next{right:10px;}
 
 .checkout{
 display:none;
-padding:25px;
+padding:20px;
 }
 
 input{
 width:100%;
 padding:12px;
-margin-bottom:10px;
-border:1px solid #ddd;
-border-radius:6px;
+margin:10px 0;
 }
 
-.warning{
-color:red;
-font-size:14px;
-display:none;
-}
-
-/* INSTAGRAM BUTTON */
-
-.insta{
-position:fixed;
-bottom:20px;
-right:20px;
-background:black;
-color:white;
-padding:14px;
-border-radius:50%;
-text-decoration:none;
-font-size:14px;
+.payment{
+margin-top:20px;
 }
 
 </style>
-
 </head>
-
 
 <body>
 
-<nav>AETHELL</nav>
+<div class="loading" id="loading">
+AETHELL
+</div>
 
+<header>
+<div class="menu">☰</div>
+<div class="logo">AETHELL</div>
+</header>
 
-<section class="hero">
+<div class="cart-icon" onclick="openCart()">
+🛒 <span id="cartCount">0</span>
+</div>
 
-<h2>Modern Mirrors</h2>
-
-<p>Minimal mirrors designed for Gen-Z interiors</p>
-
-</section>
-
-
-
-<section class="section">
-
-<h3>Shop Mirrors</h3>
-
-
-<!-- PRODUCT 1 -->
+<section class="products">
 
 <div class="product">
 
-<div class="gallery">
+<h3>CMIYGL Mirror</h3>
 
-<img src="mirror1.jpg">
-<img src="mirror2.jpg">
+<div class="slider">
+
+<button class="prev" onclick="prevSlide('cmiygl')">❮</button>
+
+<img id="cmiyglImg" src="cmiygl1.jpg">
+
+<button class="next" onclick="nextSlide('cmiygl')">❯</button>
 
 </div>
-
-<div class="product-info">
-
-<b>CMIYGL Mirror</b>
 
 <p>₹5,999</p>
 
-<button onclick="buy('CMIYGL Mirror',5999)">Buy Now</button>
+<button onclick="addToCart('CMIYGL Mirror',5999)">Add To Cart</button>
+
+<button onclick="buyNow('CMIYGL Mirror',5999)">Buy Now</button>
 
 </div>
 
-</div>
-
-
-
-<!-- PRODUCT 2 -->
 
 <div class="product">
 
-<div class="gallery">
+<h3>MS PAINT Mirror</h3>
 
-<img src="mirror3.jpg">
-<img src="mirror4.jpg">
+<div class="slider">
+
+<button class="prev" onclick="prevSlide('mspaint')">❮</button>
+
+<img id="mspaintImg" src="mspaint1.jpg">
+
+<button class="next" onclick="nextSlide('mspaint')">❯</button>
 
 </div>
-
-<div class="product-info">
-
-<b>MS PAINT Mirror</b>
 
 <p>₹8,999</p>
 
-<button onclick="buy('MS PAINT Mirror',8999)">Buy Now</button>
+<button onclick="addToCart('MS PAINT Mirror',8999)">Add To Cart</button>
 
-</div>
+<button onclick="buyNow('MS PAINT Mirror',8999)">Buy Now</button>
 
 </div>
 
 </section>
-
 
 
 <section class="checkout" id="checkout">
 
-<h3>Shipping Details</h3>
-
-<input id="name" placeholder="Full Name">
-
-<input id="phone" placeholder="Phone Number">
-
-<input id="flat" placeholder="Flat / House Number">
+<h2>Checkout</h2>
 
 <input id="building" placeholder="Building / Society">
 
+<input id="flat" placeholder="Flat Number">
+
 <input id="area" placeholder="Area / Street">
 
-<input id="pincode" placeholder="Mumbai Pincode">
+<input id="pincode" placeholder="Pincode">
 
-<p class="warning" id="pincodeWarning">
-Delivery currently available only in Mumbai
-</p>
+<div class="payment">
 
-<button onclick="payUPI()">Pay with UPI</button>
+<label>
+<input type="radio" name="payment" value="upi" checked>
+UPI / GPay
+</label>
+
+<br>
+
+<label>
+<input type="radio" name="payment" value="cod">
+Cash on Delivery
+</label>
+
+</div>
+
+<button onclick="checkout()">Checkout</button>
 
 </section>
 
-
-
-<!-- FLOATING INSTAGRAM BUTTON -->
-
-<a href="https://instagram.com/aethell.in" class="insta">IG</a>
-
-
-
 <script>
 
-let productName=""
-let price=0
+setTimeout(()=>{
+document.getElementById("loading").style.display="none"
+},1500)
 
-function buy(name,amount){
+let cart=[]
+let cartTotal=0
 
-productName=name
-price=amount
+function addToCart(name,price){
+
+cart.push({name,price})
+
+cartTotal+=price
+
+document.getElementById("cartCount").innerText=cart.length
+
+alert("Added to cart")
+
+}
+
+function buyNow(name,price){
+
+cart=[{name,price}]
+cartTotal=price
+
+openCart()
+
+}
+
+function openCart(){
 
 document.getElementById("checkout").style.display="block"
 
-window.scrollTo({
-top:document.getElementById("checkout").offsetTop,
-behavior:"smooth"
+window.scrollTo(0,document.body.scrollHeight)
+
+}
+
+function checkout(){
+
+let payment=document.querySelector('input[name="payment"]:checked').value
+
+let building=document.getElementById("building").value
+let flat=document.getElementById("flat").value
+let area=document.getElementById("area").value
+let pin=document.getElementById("pincode").value
+
+let order="New Order%0A"
+
+cart.forEach(p=>{
+order+=p.name+"%0A"
 })
 
-}
+order+="Total: ₹"+cartTotal+"%0A"
 
+order+="Address: "+building+" "+flat+" "+area+"%0A"
 
-/* MUMBAI PINCODES */
+order+="Pincode: "+pin+"%0A"
 
-const mumbaiPincodes=[
-400001,400002,400003,400004,400005,400006,400007,400008,
-400009,400010,400011,400012,400013,400014,400015,400016,
-400017,400018,400019,400020,400021,400022,400024,400025,
-400026,400027,400028,400029,400030,400031,400032,400033,
-400034,400035,400036,400037,400038,400039,400040,400041,
-400042,400043,400049,400050,400051,400052,400053,400054,
-400055,400056,400057,400058,400059,400060,400061,400062,
-400063,400064,400065,400066,400067,400068,400069,400070,
-400071,400072,400073,400074,400075,400076,400077,400078,
-400079,400080,400081,400082,400083,400084,400085,400086,
-400087,400088,400089,400090,400091,400092,400093,400094,
-400095,400096,400097,400098,400099
-]
+order+="Payment: "+payment
 
+if(payment==="upi"){
 
-function payUPI(){
-
-let name=document.getElementById("name").value
-let phone=document.getElementById("phone").value
-let flat=document.getElementById("flat").value
-let building=document.getElementById("building").value
-let area=document.getElementById("area").value
-let pincode=document.getElementById("pincode").value
-
-if(!mumbaiPincodes.includes(Number(pincode))){
-
-document.getElementById("pincodeWarning").style.display="block"
-return
+window.location.href="upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am="+cartTotal+"&cu=INR"
 
 }
 
-/* UPI PAYMENT */
+else{
 
-let upi="upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am="+price+"&cu=INR"
+window.location.href="https://wa.me/919987782822?text="+order
 
+}
 
-/* WHATSAPP ORDER */
+}
 
-let message=
-"New Aethell Order%0A"+
-"Product: "+productName+"%0A"+
-"Amount: ₹"+price+"%0A"+
-"Name: "+name+"%0A"+
-"Phone: "+phone+"%0A"+
-"Address: "+flat+", "+building+", "+area+" - "+pincode
+let cmiyglImages=["cmiygl1.jpg","cmiygl2.jpg","cmiygl3.jpg"]
+let mspaintImages=["mspaint1.jpg","mspaint2.jpg","mspaint3.jpg"]
 
-window.open(upi)
+let c=0
+let m=0
 
-setTimeout(()=>{
+function nextSlide(p){
 
-window.open("https://wa.me/919987782822?text="+message)
+if(p==="cmiygl"){
+c=(c+1)%cmiyglImages.length
+document.getElementById("cmiyglImg").src=cmiyglImages[c]
+}
 
-},2000)
+if(p==="mspaint"){
+m=(m+1)%mspaintImages.length
+document.getElementById("mspaintImg").src=mspaintImages[m]
+}
+
+}
+
+function prevSlide(p){
+
+if(p==="cmiygl"){
+c=(c-1+cmiyglImages.length)%cmiyglImages.length
+document.getElementById("cmiyglImg").src=cmiyglImages[c]
+}
+
+if(p==="mspaint"){
+m=(m-1+mspaintImages.length)%mspaintImages.length
+document.getElementById("mspaintImg").src=mspaintImages[m]
+}
 
 }
 
 </script>
 
 </body>
-
 </html>
