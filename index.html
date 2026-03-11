@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -15,7 +17,7 @@ background:white;
 color:black;
 }
 
-/* Loading screen */
+/* loading screen */
 
 #loader{
 position:fixed;
@@ -42,7 +44,20 @@ font-size:28px;
 letter-spacing:4px;
 }
 
-/* product grid */
+/* cart */
+
+.cart{
+position:fixed;
+top:20px;
+right:20px;
+background:black;
+color:white;
+padding:8px 14px;
+border-radius:20px;
+cursor:pointer;
+}
+
+/* products */
 
 .products{
 padding:20px;
@@ -53,19 +68,25 @@ margin-bottom:40px;
 cursor:pointer;
 }
 
-.product img{
-width:100%;
+.product-image{
+position:relative;
+overflow:hidden;
 border-radius:10px;
+}
+
+.product-image img{
+width:100%;
+display:block;
 transition:0.4s;
 }
 
 .product:hover img{
-transform:scale(1.02);
+transform:scale(1.03);
 }
 
 /* shine animation */
 
-.product img::after{
+.product-image::after{
 content:"";
 position:absolute;
 top:0;
@@ -75,12 +96,18 @@ height:100%;
 background:linear-gradient(
 120deg,
 transparent,
-rgba(255,255,255,0.5),
+rgba(255,255,255,0.6),
 transparent
 );
+animation:shine 3s infinite;
 }
 
-/* popup */
+@keyframes shine{
+0%{left:-100%;}
+100%{left:120%;}
+}
+
+/* viewer popup */
 
 #viewer{
 position:fixed;
@@ -103,16 +130,12 @@ width:100%;
 border-radius:10px;
 }
 
-/* description */
-
 .desc{
 margin-top:15px;
 font-size:15px;
 line-height:1.6;
 color:#444;
 }
-
-/* dimensions */
 
 .dimensions{
 margin-top:10px;
@@ -133,24 +156,23 @@ font-size:15px;
 cursor:pointer;
 }
 
-/* cart */
-
-.cart{
-position:fixed;
-top:20px;
-right:20px;
-background:black;
-color:white;
-padding:8px 14px;
-border-radius:20px;
-cursor:pointer;
-}
-
 /* checkout */
 
 #checkout{
 display:none;
 padding:20px;
+}
+
+.checkout-product{
+display:flex;
+align-items:center;
+margin-bottom:15px;
+}
+
+.checkout-product img{
+width:70px;
+border-radius:8px;
+margin-right:10px;
 }
 
 input{
@@ -160,6 +182,7 @@ margin:10px 0;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -173,31 +196,41 @@ margin:10px 0;
 <section class="products">
 
 <div class="product" onclick="openProduct(0)">
+<div class="product-image">
 <img src="cmiygl1.jpg">
+</div>
 <h3>CMIYGL Mirror</h3>
 <p>₹5,999</p>
 </div>
 
 <div class="product" onclick="openProduct(1)">
+<div class="product-image">
 <img src="mspaint1.jpg">
+</div>
 <h3>MS PAINT Mirror</h3>
 <p>₹8,999</p>
 </div>
 
 <div class="product" onclick="openProduct(2)">
+<div class="product-image">
 <img src="captcha1.jpg">
+</div>
 <h3>reCAPTCHA Mirror</h3>
 <p>₹5,999</p>
 </div>
 
 <div class="product" onclick="openProduct(3)">
+<div class="product-image">
 <img src="queen1.jpg">
+</div>
 <h3>Queen of Hearts Mirror</h3>
 <p>₹5,499</p>
 </div>
 
 <div class="product" onclick="openProduct(4)">
+<div class="product-image">
 <img src="king1.jpg">
+</div>
 <h3>King of Hearts Mirror</h3>
 <p>₹5,499</p>
 </div>
@@ -205,6 +238,7 @@ margin:10px 0;
 </section>
 
 <div id="viewer">
+
 <div class="viewer-content">
 
 <img id="viewerImg">
@@ -222,11 +256,14 @@ margin:10px 0;
 <button onclick="closeViewer()">Close</button>
 
 </div>
+
 </div>
 
 <div id="checkout">
 
 <h2>Checkout</h2>
+
+<div id="orderPreview"></div>
 
 <input id="building" placeholder="Building / Society">
 <input id="flat" placeholder="Flat Number">
@@ -256,11 +293,12 @@ document.getElementById("loader").style.display="none"
 },1500)
 
 let products=[
+
 {
 name:"CMIYGL Mirror",
 price:5999,
 img:"cmiygl1.jpg",
-desc:"A reflective reinterpretation of the iconic CMIYGL aesthetic. Inspired by the bold energy of the album artwork, this mirror transforms music culture into a modern decor statement.",
+desc:"A reflective reinterpretation of the iconic CMIYGL aesthetic.",
 dim:'15" x 24"'
 },
 
@@ -268,7 +306,7 @@ dim:'15" x 24"'
 name:"MS PAINT Mirror",
 price:8999,
 img:"mspaint1.jpg",
-desc:"A retro-modern tribute to early digital creativity. Inspired by nostalgic software design, this mirror blends playful technology aesthetics with contemporary interiors.",
+desc:"A retro-modern tribute to early digital creativity.",
 dim:'47" x 31"'
 },
 
@@ -276,7 +314,7 @@ dim:'47" x 31"'
 name:"reCAPTCHA Mirror",
 price:5999,
 img:"captcha1.jpg",
-desc:"A conceptual piece inspired by the familiar act of verification. To become something greater, one must first confirm their identity.",
+desc:"To become something greater one must verify themselves.",
 dim:'42" x 31"'
 },
 
@@ -284,7 +322,7 @@ dim:'42" x 31"'
 name:"Queen of Hearts Mirror",
 price:5499,
 img:"queen1.jpg",
-desc:"Royal aesthetics crafted for spaces that carry confidence and elegance. Designed for those who rule their own space.",
+desc:"Royal aesthetics crafted for spaces with elegance.",
 dim:'48" x 31"'
 },
 
@@ -292,7 +330,7 @@ dim:'48" x 31"'
 name:"King of Hearts Mirror",
 price:5499,
 img:"king1.jpg",
-desc:"Bold, balanced and regal. A mirror designed to bring authority and presence into modern interiors.",
+desc:"Bold and regal design for modern interiors.",
 dim:'48" x 31"'
 }
 
@@ -300,6 +338,7 @@ dim:'48" x 31"'
 
 let selected=null
 let cart=[]
+let quantities={}
 
 function openProduct(i){
 
@@ -320,7 +359,15 @@ document.getElementById("viewer").style.display="none"
 
 function addToCart(){
 
-cart.push(products[selected])
+let product=products[selected]
+
+cart.push(product)
+
+if(!quantities[product.name]){
+quantities[product.name]=1
+}else{
+quantities[product.name]++
+}
 
 document.getElementById("cartCount").innerText=cart.length
 
@@ -329,6 +376,8 @@ document.getElementById("cartCount").innerText=cart.length
 function buyNow(){
 
 cart=[products[selected]]
+quantities={}
+quantities[products[selected].name]=1
 
 openCheckout()
 
@@ -338,6 +387,26 @@ function openCheckout(){
 
 document.getElementById("checkout").style.display="block"
 
+let preview=""
+
+cart.forEach(p=>{
+
+let qty=quantities[p.name]||1
+
+preview+=`
+<div class="checkout-product">
+<img src="${p.img}">
+<div>
+<div>${p.name}</div>
+<div>Qty: ${qty}</div>
+</div>
+</div>
+`
+
+})
+
+document.getElementById("orderPreview").innerHTML=preview
+
 window.scrollTo(0,document.body.scrollHeight)
 
 }
@@ -346,7 +415,10 @@ function checkout(){
 
 let total=0
 
-cart.forEach(p=>total+=p.price)
+cart.forEach(p=>{
+let qty=quantities[p.name]||1
+total+=p.price*qty
+})
 
 let payment=document.querySelector('input[name="pay"]:checked').value
 
@@ -357,10 +429,11 @@ window.location.href=
 
 }else{
 
-let order="New Order%0A"
+let order="New AETHELL Order%0A"
 
 cart.forEach(p=>{
-order+=p.name+"%0A"
+let qty=quantities[p.name]||1
+order+=p.name+" x"+qty+"%0A"
 })
 
 window.location.href=
