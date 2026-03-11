@@ -29,7 +29,7 @@ display:flex;
 justify-content:center;
 align-items:center;
 font-size:36px;
-letter-spacing:5px;
+letter-spacing:6px;
 z-index:2000;
 }
 
@@ -37,10 +37,20 @@ z-index:2000;
 
 header{
 display:flex;
+align-items:center;
 justify-content:center;
-padding:20px;
-font-size:28px;
-letter-spacing:4px;
+margin:30px 0;
+font-size:30px;
+letter-spacing:5px;
+}
+
+header:before,
+header:after{
+content:"";
+flex:1;
+height:1px;
+background:black;
+margin:0 15px;
 }
 
 /* hamburger */
@@ -49,7 +59,7 @@ letter-spacing:4px;
 position:fixed;
 left:20px;
 top:20px;
-font-size:26px;
+font-size:28px;
 cursor:pointer;
 }
 
@@ -57,14 +67,14 @@ cursor:pointer;
 
 .sidebar{
 position:fixed;
-left:-260px;
+left:-270px;
 top:0;
-width:260px;
+width:270px;
 height:100%;
 background:white;
-box-shadow:2px 0 10px rgba(0,0,0,0.1);
+box-shadow:2px 0 10px rgba(0,0,0,0.15);
 transition:.3s;
-padding-top:80px;
+padding-top:60px;
 z-index:1000;
 }
 
@@ -72,11 +82,20 @@ z-index:1000;
 left:0;
 }
 
+.closeSidebar{
+position:absolute;
+top:15px;
+right:20px;
+font-size:22px;
+cursor:pointer;
+}
+
 .sidebar a{
 display:block;
 padding:15px 25px;
 text-decoration:none;
 color:black;
+font-size:16px;
 }
 
 /* cart */
@@ -92,28 +111,45 @@ border-radius:20px;
 cursor:pointer;
 }
 
-/* products */
+/* products grid */
 
 .products{
 padding:20px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
 }
 
 .product{
-margin-bottom:40px;
 cursor:pointer;
 }
 
 .product img{
 width:100%;
 border-radius:10px;
-transition:.4s;
 }
 
-.product:hover img{
-transform:scale(1.03);
+.product h3{
+margin:10px 0 5px 0;
+font-size:16px;
 }
 
-/* viewer popup */
+.product p{
+margin:0;
+font-size:14px;
+}
+
+.product button{
+width:100%;
+padding:10px;
+margin-top:6px;
+border:none;
+background:black;
+color:white;
+cursor:pointer;
+}
+
+/* viewer */
 
 #viewer{
 position:fixed;
@@ -123,8 +159,8 @@ width:100%;
 height:100%;
 background:white;
 display:none;
-overflow:auto;
 z-index:1000;
+overflow:auto;
 }
 
 .viewer-content{
@@ -157,39 +193,25 @@ padding:25px;
 width:90%;
 max-width:420px;
 border-radius:10px;
-max-height:80%;
-overflow:auto;
 }
 
-/* checkout items */
+/* checkout */
 
 .checkout-item{
 display:flex;
 align-items:center;
-margin-bottom:12px;
+margin-bottom:10px;
 }
 
 .checkout-item img{
 width:60px;
-border-radius:6px;
 margin-right:10px;
+border-radius:6px;
 }
 
 .remove{
 margin-left:auto;
-cursor:pointer;
 color:red;
-}
-
-/* buttons */
-
-button{
-width:100%;
-padding:14px;
-margin-top:10px;
-border:none;
-background:black;
-color:white;
 cursor:pointer;
 }
 
@@ -199,6 +221,16 @@ input{
 width:100%;
 padding:12px;
 margin:8px 0;
+}
+
+button{
+padding:12px;
+border:none;
+background:black;
+color:white;
+cursor:pointer;
+width:100%;
+margin-top:6px;
 }
 
 /* floating IG */
@@ -215,7 +247,6 @@ border-radius:50%;
 display:flex;
 align-items:center;
 justify-content:center;
-font-weight:bold;
 cursor:pointer;
 }
 
@@ -229,50 +260,64 @@ cursor:pointer;
 
 <div class="menu" onclick="toggleMenu()">☰</div>
 
+<div class="cart" onclick="openCart()">🛒 <span id="count">0</span></div>
+
 <div class="sidebar" id="sidebar">
+
+<div class="closeSidebar" onclick="toggleMenu()">✕</div>
 
 <a href="#">Home</a>
 
 <a onclick="openAbout()">About Us</a>
 
-<a href="https://forms.gle/YOURFORM" target="_blank">Custom Mirror</a>
+<a href="https://docs.google.com/forms/d/e/1FAIpQLSdE6cRXuMMelbPQpyuv9FouDaYFMsJxm6UblKyjkCCFOIllNg/viewform?usp=header" target="_blank">Custom Mirror</a>
+
+<a href="https://wa.me/919987782822">Contact Us</a>
 
 </div>
 
 <header>AETHELL</header>
 
-<div class="cart" onclick="openCart()">🛒 <span id="count">0</span></div>
-
 <section class="products">
 
-<div class="product" onclick="openProduct(0)">
-<img src="cmiygl1.jpg">
+<div class="product">
+<img src="cmiygl1.jpg" onclick="openProduct(0)">
 <h3>CMIYGL Mirror</h3>
 <p>₹5,999</p>
+<button onclick="addCartDirect(0)">Add to Cart</button>
+<button onclick="buyDirect(0)">Buy Now</button>
 </div>
 
-<div class="product" onclick="openProduct(1)">
-<img src="mspaint1.jpg">
+<div class="product">
+<img src="mspaint1.jpg" onclick="openProduct(1)">
 <h3>MS PAINT Mirror</h3>
 <p>₹8,999</p>
+<button onclick="addCartDirect(1)">Add to Cart</button>
+<button onclick="buyDirect(1)">Buy Now</button>
 </div>
 
-<div class="product" onclick="openProduct(2)">
-<img src="captcha1.jpg">
+<div class="product">
+<img src="captcha1.jpg" onclick="openProduct(2)">
 <h3>reCAPTCHA Mirror</h3>
 <p>₹5,999</p>
+<button onclick="addCartDirect(2)">Add to Cart</button>
+<button onclick="buyDirect(2)">Buy Now</button>
 </div>
 
-<div class="product" onclick="openProduct(3)">
+<div class="product">
 <img src="queen1.jpg">
-<h3>Queen of Hearts Mirror</h3>
+<h3>Queen of Hearts</h3>
 <p>₹5,499</p>
+<button onclick="addCartDirect(3)">Add to Cart</button>
+<button onclick="buyDirect(3)">Buy Now</button>
 </div>
 
-<div class="product" onclick="openProduct(4)">
+<div class="product">
 <img src="king1.jpg">
-<h3>King of Hearts Mirror</h3>
+<h3>King of Hearts</h3>
 <p>₹5,499</p>
+<button onclick="addCartDirect(4)">Add to Cart</button>
+<button onclick="buyDirect(4)">Buy Now</button>
 </div>
 
 </section>
@@ -280,6 +325,7 @@ cursor:pointer;
 <!-- viewer -->
 
 <div id="viewer">
+
 <div class="viewer-content">
 
 <img id="vImg">
@@ -295,9 +341,10 @@ cursor:pointer;
 <button onclick="closeViewer()">Close</button>
 
 </div>
+
 </div>
 
-<!-- checkout popup -->
+<!-- checkout -->
 
 <div class="popup" id="checkout">
 
@@ -308,11 +355,14 @@ cursor:pointer;
 <div id="cartItems"></div>
 
 <input placeholder="Building / Society">
+
 <input placeholder="Flat Number">
+
 <input placeholder="Area / Street">
+
 <input placeholder="Pincode">
 
-<button onclick="checkout()">Checkout</button>
+<button onclick="checkout()">Pay With UPI</button>
 
 <button onclick="closePopup()">Close</button>
 
@@ -320,7 +370,7 @@ cursor:pointer;
 
 </div>
 
-<!-- about popup -->
+<!-- about -->
 
 <div class="popup" id="about">
 
@@ -329,17 +379,23 @@ cursor:pointer;
 <h2>About AETHELL</h2>
 
 <p>
-AETHELL started as an experiment in reflection.  
-Not just mirrors, but objects that bounce culture, humour and personality back into a room.
+
+AETHELL began from a simple frustration.  
+Finding mirrors that actually matched a room’s personality felt impossible.
+
 </p>
 
 <p>
-Every piece mixes internet nostalgia, art references and playful design.  
-A mirror that isn’t just for checking your hair but for starting conversations.
+
+So the idea became simple:  
+create mirrors that feel like **art pieces instead of furniture**.
+
 </p>
 
 <p>
-Because walls deserve personality too.
+
+Each design blends internet culture, nostalgia and playful design.
+
 </p>
 
 <button onclick="closePopup()">Close</button>
@@ -348,17 +404,15 @@ Because walls deserve personality too.
 
 </div>
 
-<!-- IG -->
-
-<div class="ig" onclick="window.open('https://instagram.com/aethell.in')">
-IG
-</div>
+<div class="ig" onclick="window.open('https://instagram.com/aethell.in')">IG</div>
 
 <script>
 
+/* loader */
+
 setTimeout(()=>{
 document.getElementById("loader").style.display="none"
-},1500)
+},1200)
 
 /* sidebar */
 
@@ -369,75 +423,25 @@ document.getElementById("sidebar").classList.toggle("open")
 /* products */
 
 let products=[
-
-{
-name:"CMIYGL Mirror",
-price:5999,
-img:"cmiygl1.jpg",
-desc:"A mirror with the swagger of a rap album cover. Loud energy, bold colours and the kind of reflection that makes every selfie feel like a music video."
-},
-
-{
-name:"MS PAINT Mirror",
-price:8999,
-img:"mspaint1.jpg",
-desc:"A tribute to childhood creativity. The chaotic charm of MS Paint turned into wall decor. Pixel nostalgia meets modern design."
-},
-
-{
-name:"reCAPTCHA Mirror",
-price:5999,
-img:"captcha1.jpg",
-desc:"Before you become something greater… confirm you are human. A mirror inspired by the strange poetry of the internet."
-},
-
-{
-name:"Queen of Hearts Mirror",
-price:5499,
-img:"queen1.jpg",
-desc:"Dramatic, elegant and slightly dangerous. The Queen of Hearts brings royal chaos energy to your wall."
-},
-
-{
-name:"King of Hearts Mirror",
-price:5499,
-img:"king1.jpg",
-desc:"Balanced power and quiet authority. The King of Hearts doesn’t shout… it simply rules the room."
-}
-
+{name:"CMIYGL Mirror",price:5999,img:"cmiygl1.jpg"},
+{name:"MS PAINT Mirror",price:8999,img:"mspaint1.jpg"},
+{name:"reCAPTCHA Mirror",price:5999,img:"captcha1.jpg"},
+{name:"Queen of Hearts",price:5499,img:"queen1.jpg"},
+{name:"King of Hearts",price:5499,img:"king1.jpg"}
 ]
 
-let selected=null
 let cart=[]
 
-function openProduct(i){
+function addCartDirect(i){
 
-selected=i
-
-document.getElementById("vImg").src=products[i].img
-document.getElementById("vTitle").innerText=products[i].name
-document.getElementById("vDesc").innerText=products[i].desc
-
-document.getElementById("viewer").style.display="block"
-
-}
-
-function closeViewer(){
-document.getElementById("viewer").style.display="none"
-}
-
-/* cart */
-
-function addCart(){
-
-cart.push(products[selected])
+cart.push(products[i])
 updateCart()
 
 }
 
-function buyNow(){
+function buyDirect(i){
 
-cart=[products[selected]]
+cart=[products[i]]
 updateCart()
 openCart()
 
@@ -448,8 +452,6 @@ function updateCart(){
 document.getElementById("count").innerText=cart.length
 
 }
-
-/* open cart */
 
 function openCart(){
 
@@ -480,9 +482,7 @@ document.getElementById("checkout").style.display="flex"
 function removeItem(i){
 
 cart.splice(i,1)
-
 updateCart()
-
 openCart()
 
 }
@@ -500,8 +500,6 @@ function openAbout(){
 document.getElementById("about").style.display="flex"
 
 }
-
-/* payment */
 
 function checkout(){
 
