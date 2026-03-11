@@ -1,333 +1,97 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="style.css">
 <title>AETHELL</title>
-
-<style>
-
-body{
-margin:0;
-font-family:Arial;
-background:#fff;
-color:#000;
-}
-
-.loading{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:black;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:40px;
-z-index:9999;
-}
-
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:20px;
-}
-
-.logo{
-font-size:28px;
-letter-spacing:3px;
-}
-
-.menu{
-font-size:25px;
-cursor:pointer;
-}
-
-.products{
-padding:20px;
-}
-
-.product{
-margin-bottom:40px;
-}
-
-.product img{
-width:100%;
-border-radius:10px;
-}
-
-button{
-padding:12px;
-border:none;
-background:black;
-color:white;
-margin-top:10px;
-width:100%;
-cursor:pointer;
-}
-
-.cart-icon{
-position:fixed;
-top:20px;
-right:20px;
-background:black;
-color:white;
-padding:10px 15px;
-border-radius:30px;
-cursor:pointer;
-}
-
-.slider{
-position:relative;
-}
-
-.slider img{
-width:100%;
-}
-
-.prev,.next{
-position:absolute;
-top:50%;
-transform:translateY(-50%);
-background:black;
-color:white;
-border:none;
-padding:10px;
-cursor:pointer;
-}
-
-.prev{left:10px;}
-.next{right:10px;}
-
-.checkout{
-display:none;
-padding:20px;
-}
-
-input{
-width:100%;
-padding:12px;
-margin:10px 0;
-}
-
-.payment{
-margin-top:20px;
-}
-
-</style>
 </head>
 
 <body>
 
-<div class="loading" id="loading">
-AETHELL
-</div>
+<div id="loader">AETHELL</div>
 
 <header>
-<div class="menu">☰</div>
-<div class="logo">AETHELL</div>
+
+<div class="menu" onclick="toggleMenu()">☰</div>
+
+<h1>AETHELL</h1>
+
+<div class="cart" onclick="goCart()">🛒</div>
+
 </header>
 
-<div class="cart-icon" onclick="openCart()">
-🛒 <span id="cartCount">0</span>
+
+<div id="sidebar">
+
+<a href="index.html">Home</a>
+
+<a href="https://docs.google.com/forms/d/e/1FAIpQLSdE6cRXuMMelbPQpyuv9FouDaYFMsJxm6UblKyjkCCFOIllNg/viewform">Custom Mirror</a>
+
+<a href="#about">About Us</a>
+
+<a href="#" onclick="contact()">Contact</a>
+
 </div>
+
 
 <section class="products">
 
-<div class="product">
-
+<div class="product" onclick="viewProduct(0)">
+<img src="cmiygl1.jpg">
 <h3>CMIYGL Mirror</h3>
-
-<div class="slider">
-
-<button class="prev" onclick="prevSlide('cmiygl')">❮</button>
-
-<img id="cmiyglImg" src="cmiygl1.jpg">
-
-<button class="next" onclick="nextSlide('cmiygl')">❯</button>
-
-</div>
-
 <p>₹5,999</p>
-
-<button onclick="addToCart('CMIYGL Mirror',5999)">Add To Cart</button>
-
-<button onclick="buyNow('CMIYGL Mirror',5999)">Buy Now</button>
-
 </div>
 
-
-<div class="product">
-
+<div class="product" onclick="viewProduct(1)">
+<img src="mspaint1.jpg">
 <h3>MS PAINT Mirror</h3>
-
-<div class="slider">
-
-<button class="prev" onclick="prevSlide('mspaint')">❮</button>
-
-<img id="mspaintImg" src="mspaint1.jpg">
-
-<button class="next" onclick="nextSlide('mspaint')">❯</button>
-
-</div>
-
 <p>₹8,999</p>
+</div>
 
-<button onclick="addToCart('MS PAINT Mirror',8999)">Add To Cart</button>
+<div class="product" onclick="viewProduct(2)">
+<img src="recaptcha.jpg">
+<h3>reCAPTCHA Mirror</h3>
+<p>₹5,999</p>
+</div>
 
-<button onclick="buyNow('MS PAINT Mirror',8999)">Buy Now</button>
+<div class="product" onclick="viewProduct(3)">
+<img src="queen.jpg">
+<h3>Queen of Hearts</h3>
+<p>₹5,499</p>
+</div>
 
+<div class="product" onclick="viewProduct(4)">
+<img src="king.jpg">
+<h3>King of Hearts</h3>
+<p>₹5,499</p>
 </div>
 
 </section>
 
 
-<section class="checkout" id="checkout">
+<section id="about">
 
-<h2>Checkout</h2>
+<h2>About AETHELL</h2>
 
-<input id="building" placeholder="Building / Society">
+<p>
+Aethell was created to bring a new perspective to modern home decor. 
+The brand focuses on mirrors that do more than reflect a room — they shape the aesthetic of the space itself.
+</p>
 
-<input id="flat" placeholder="Flat Number">
+<p>
+Inspired by music culture, internet design and modern interiors, each mirror blends artistic influence with premium craftsmanship.
+</p>
 
-<input id="area" placeholder="Area / Street">
-
-<input id="pincode" placeholder="Pincode">
-
-<div class="payment">
-
-<label>
-<input type="radio" name="payment" value="upi" checked>
-UPI / GPay
-</label>
-
-<br>
-
-<label>
-<input type="radio" name="payment" value="cod">
-Cash on Delivery
-</label>
-
-</div>
-
-<button onclick="checkout()">Checkout</button>
+<p>
+The idea began from a simple goal: finding a mirror that matched a personal aesthetic without compromising on quality. 
+Aethell exists to create pieces that feel expressive, modern and luxurious at the same time.
+</p>
 
 </section>
 
-<script>
 
-setTimeout(()=>{
-document.getElementById("loading").style.display="none"
-},1500)
-
-let cart=[]
-let cartTotal=0
-
-function addToCart(name,price){
-
-cart.push({name,price})
-
-cartTotal+=price
-
-document.getElementById("cartCount").innerText=cart.length
-
-alert("Added to cart")
-
-}
-
-function buyNow(name,price){
-
-cart=[{name,price}]
-cartTotal=price
-
-openCart()
-
-}
-
-function openCart(){
-
-document.getElementById("checkout").style.display="block"
-
-window.scrollTo(0,document.body.scrollHeight)
-
-}
-
-function checkout(){
-
-let payment=document.querySelector('input[name="payment"]:checked').value
-
-let building=document.getElementById("building").value
-let flat=document.getElementById("flat").value
-let area=document.getElementById("area").value
-let pin=document.getElementById("pincode").value
-
-let order="New Order%0A"
-
-cart.forEach(p=>{
-order+=p.name+"%0A"
-})
-
-order+="Total: ₹"+cartTotal+"%0A"
-
-order+="Address: "+building+" "+flat+" "+area+"%0A"
-
-order+="Pincode: "+pin+"%0A"
-
-order+="Payment: "+payment
-
-if(payment==="upi"){
-
-window.location.href="upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am="+cartTotal+"&cu=INR"
-
-}
-
-else{
-
-window.location.href="https://wa.me/919987782822?text="+order
-
-}
-
-}
-
-let cmiyglImages=["cmiygl1.jpg","cmiygl2.jpg","cmiygl3.jpg"]
-let mspaintImages=["mspaint1.jpg","mspaint2.jpg","mspaint3.jpg"]
-
-let c=0
-let m=0
-
-function nextSlide(p){
-
-if(p==="cmiygl"){
-c=(c+1)%cmiyglImages.length
-document.getElementById("cmiyglImg").src=cmiyglImages[c]
-}
-
-if(p==="mspaint"){
-m=(m+1)%mspaintImages.length
-document.getElementById("mspaintImg").src=mspaintImages[m]
-}
-
-}
-
-function prevSlide(p){
-
-if(p==="cmiygl"){
-c=(c-1+cmiyglImages.length)%cmiyglImages.length
-document.getElementById("cmiyglImg").src=cmiyglImages[c]
-}
-
-if(p==="mspaint"){
-m=(m-1+mspaintImages.length)%mspaintImages.length
-document.getElementById("mspaintImg").src=mspaintImages[m]
-}
-
-}
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
