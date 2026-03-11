@@ -1,59 +1,86 @@
-
 <!DOCTYPE html>
 <html>
-
 <head>
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<title>Checkout</title>
 <link rel="stylesheet" href="style.css">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 </head>
 
 <body>
 
-<header>
+<h2>Checkout</h2>
 
-<div class="menu" onclick="toggleMenu()">☰</div>
+<div class="checkout-product">
 
-<h1>AETHELL</h1>
+<img id="pimg">
 
-<div class="cart">🛒</div>
+<div>
 
-</header>
+<h3 id="pname"></h3>
 
-<div id="sidebar">
+<p>Quantity: <span id="pqty"></span></p>
 
-<a href="index.html">Home</a>
-
-<a href="https://docs.google.com/forms/d/e/1FAIpQLSdE6cRXuMMelbPQpyuv9FouDaYFMsJxm6UblKyjkCCFOIllNg/viewform">Custom Mirror</a>
-
-<a href="about.html">About Us</a>
-
-<a onclick="contact()">Contact</a>
+<p>Total: ₹<span id="ptotal"></span></p>
 
 </div>
 
-<div class="page">
+</div>
 
-<h2>Checkout</h2>
+
+<h3>Address</h3>
 
 <input placeholder="Building / Society">
 <input placeholder="Flat Number">
-<input placeholder="Street / Area">
+<input placeholder="Street">
 <input placeholder="City">
 <input placeholder="Pincode">
 
-<h3>Payment Method</h3>
+
+<h3>Payment</h3>
 
 <button onclick="payUPI()">Pay with UPI</button>
 
 <button onclick="cod()">Cash on Delivery</button>
 
-</div>
 
-<script src="script.js"></script>
+<script>
+
+let order = JSON.parse(localStorage.getItem("order"))
+
+document.getElementById("pimg").src = order.img
+document.getElementById("pname").innerText = order.name
+document.getElementById("pqty").innerText = order.qty
+
+let total = order.price * order.qty
+
+document.getElementById("ptotal").innerText = total
+
+
+function payUPI(){
+
+window.location =
+"upi://pay?pa=aditya.kbelose@oksbi&pn=AETHELL&am="+total
+
+}
+
+
+function cod(){
+
+let msg =
+"New AETHELL Order:%0A"+
+order.name+
+"%0AQty:"+order.qty+
+"%0ATotal:"+total
+
+window.location =
+"https://wa.me/919987782822?text="+msg
+
+}
+
+</script>
 
 </body>
-
 </html>
