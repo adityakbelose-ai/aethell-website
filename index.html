@@ -1,124 +1,372 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>AETHELL</title>
-<link rel="stylesheet" href="style.css">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:white;
+color:black;
+}
+
+/* Loading screen */
+
+#loader{
+position:fixed;
+width:100%;
+height:100%;
+background:black;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:36px;
+letter-spacing:5px;
+z-index:1000;
+}
+
+/* header */
+
+header{
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+font-size:28px;
+letter-spacing:4px;
+}
+
+/* product grid */
+
+.products{
+padding:20px;
+}
+
+.product{
+margin-bottom:40px;
+cursor:pointer;
+}
+
+.product img{
+width:100%;
+border-radius:10px;
+transition:0.4s;
+}
+
+.product:hover img{
+transform:scale(1.02);
+}
+
+/* shine animation */
+
+.product img::after{
+content:"";
+position:absolute;
+top:0;
+left:-100%;
+width:50%;
+height:100%;
+background:linear-gradient(
+120deg,
+transparent,
+rgba(255,255,255,0.5),
+transparent
+);
+}
+
+/* popup */
+
+#viewer{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:white;
+display:none;
+overflow:auto;
+z-index:999;
+}
+
+.viewer-content{
+padding:20px;
+}
+
+.viewer-content img{
+width:100%;
+border-radius:10px;
+}
+
+/* description */
+
+.desc{
+margin-top:15px;
+font-size:15px;
+line-height:1.6;
+color:#444;
+}
+
+/* dimensions */
+
+.dimensions{
+margin-top:10px;
+font-size:14px;
+color:#777;
+}
+
+/* buttons */
+
+button{
+width:100%;
+padding:14px;
+margin-top:10px;
+border:none;
+background:black;
+color:white;
+font-size:15px;
+cursor:pointer;
+}
+
+/* cart */
+
+.cart{
+position:fixed;
+top:20px;
+right:20px;
+background:black;
+color:white;
+padding:8px 14px;
+border-radius:20px;
+cursor:pointer;
+}
+
+/* checkout */
+
+#checkout{
+display:none;
+padding:20px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+}
+
+</style>
 </head>
 
 <body>
 
-<header>
-<h1>AETHELL</h1>
-</header>
+<div id="loader">AETHELL</div>
+
+<header>AETHELL</header>
+
+<div class="cart" onclick="openCheckout()">🛒 <span id="cartCount">0</span></div>
 
 <section class="products">
 
-<div class="product">
-<img src="cmiygl.jpg">
+<div class="product" onclick="openProduct(0)">
+<img src="cmiygl1.jpg">
 <h3>CMIYGL Mirror</h3>
-<p>₹5999</p>
-
-<div class="qty">
-<button onclick="changeQty(this,-1)">-</button>
-<span>1</span>
-<button onclick="changeQty(this,1)">+</button>
+<p>₹5,999</p>
 </div>
 
-<button onclick="buyNow('CMIYGL Mirror','cmiygl.jpg',5999,this)">Buy Now</button>
-</div>
-
-
-<div class="product">
-<img src="mspaint.jpg">
+<div class="product" onclick="openProduct(1)">
+<img src="mspaint1.jpg">
 <h3>MS PAINT Mirror</h3>
-<p>₹8999</p>
-
-<div class="qty">
-<button onclick="changeQty(this,-1)">-</button>
-<span>1</span>
-<button onclick="changeQty(this,1)">+</button>
+<p>₹8,999</p>
 </div>
 
-<button onclick="buyNow('MS PAINT Mirror','mspaint.jpg',8999,this)">Buy Now</button>
-</div>
-
-
-<div class="product">
-<img src="recaptcha.jpg">
+<div class="product" onclick="openProduct(2)">
+<img src="captcha1.jpg">
 <h3>reCAPTCHA Mirror</h3>
-<p>₹5999</p>
-
-<div class="qty">
-<button onclick="changeQty(this,-1)">-</button>
-<span>1</span>
-<button onclick="changeQty(this,1)">+</button>
+<p>₹5,999</p>
 </div>
 
-<button onclick="buyNow('reCAPTCHA Mirror','recaptcha.jpg',5999,this)">Buy Now</button>
+<div class="product" onclick="openProduct(3)">
+<img src="queen1.jpg">
+<h3>Queen of Hearts Mirror</h3>
+<p>₹5,499</p>
 </div>
 
-
-<div class="product">
-<img src="queen.jpg">
-<h3>Queen of Hearts</h3>
-<p>₹5499</p>
-
-<div class="qty">
-<button onclick="changeQty(this,-1)">-</button>
-<span>1</span>
-<button onclick="changeQty(this,1)">+</button>
-</div>
-
-<button onclick="buyNow('Queen of Hearts','queen.jpg',5499,this)">Buy Now</button>
-</div>
-
-
-<div class="product">
-<img src="king.jpg">
-<h3>King of Hearts</h3>
-<p>₹5499</p>
-
-<div class="qty">
-<button onclick="changeQty(this,-1)">-</button>
-<span>1</span>
-<button onclick="changeQty(this,1)">+</button>
-</div>
-
-<button onclick="buyNow('King of Hearts','king.jpg',5499,this)">Buy Now</button>
+<div class="product" onclick="openProduct(4)">
+<img src="king1.jpg">
+<h3>King of Hearts Mirror</h3>
+<p>₹5,499</p>
 </div>
 
 </section>
 
+<div id="viewer">
+<div class="viewer-content">
+
+<img id="viewerImg">
+
+<h2 id="viewerTitle"></h2>
+
+<p id="viewerDesc" class="desc"></p>
+
+<p id="viewerDim" class="dimensions"></p>
+
+<button onclick="addToCart()">Add To Cart</button>
+
+<button onclick="buyNow()">Buy Now</button>
+
+<button onclick="closeViewer()">Close</button>
+
+</div>
+</div>
+
+<div id="checkout">
+
+<h2>Checkout</h2>
+
+<input id="building" placeholder="Building / Society">
+<input id="flat" placeholder="Flat Number">
+<input id="area" placeholder="Area / Street">
+<input id="pincode" placeholder="Pincode">
+
+<label>
+<input type="radio" name="pay" value="upi" checked>
+UPI / GPay
+</label>
+
+<br>
+
+<label>
+<input type="radio" name="pay" value="cod">
+Cash on Delivery
+</label>
+
+<button onclick="checkout()">Checkout</button>
+
+</div>
 
 <script>
 
-function changeQty(btn,val){
+setTimeout(()=>{
+document.getElementById("loader").style.display="none"
+},1500)
 
-let span = btn.parentElement.querySelector("span")
-let qty = parseInt(span.innerText)
+let products=[
+{
+name:"CMIYGL Mirror",
+price:5999,
+img:"cmiygl1.jpg",
+desc:"A reflective reinterpretation of the iconic CMIYGL aesthetic. Inspired by the bold energy of the album artwork, this mirror transforms music culture into a modern decor statement.",
+dim:'15" x 24"'
+},
 
-qty += val
-if(qty<1) qty=1
+{
+name:"MS PAINT Mirror",
+price:8999,
+img:"mspaint1.jpg",
+desc:"A retro-modern tribute to early digital creativity. Inspired by nostalgic software design, this mirror blends playful technology aesthetics with contemporary interiors.",
+dim:'47" x 31"'
+},
 
-span.innerText = qty
+{
+name:"reCAPTCHA Mirror",
+price:5999,
+img:"captcha1.jpg",
+desc:"A conceptual piece inspired by the familiar act of verification. To become something greater, one must first confirm their identity.",
+dim:'42" x 31"'
+},
+
+{
+name:"Queen of Hearts Mirror",
+price:5499,
+img:"queen1.jpg",
+desc:"Royal aesthetics crafted for spaces that carry confidence and elegance. Designed for those who rule their own space.",
+dim:'48" x 31"'
+},
+
+{
+name:"King of Hearts Mirror",
+price:5499,
+img:"king1.jpg",
+desc:"Bold, balanced and regal. A mirror designed to bring authority and presence into modern interiors.",
+dim:'48" x 31"'
+}
+
+]
+
+let selected=null
+let cart=[]
+
+function openProduct(i){
+
+selected=i
+
+document.getElementById("viewerImg").src=products[i].img
+document.getElementById("viewerTitle").innerText=products[i].name
+document.getElementById("viewerDesc").innerText=products[i].desc
+document.getElementById("viewerDim").innerText="Dimensions: "+products[i].dim
+
+document.getElementById("viewer").style.display="block"
 
 }
 
-function buyNow(name,img,price,btn){
-
-let qty = btn.parentElement.querySelector("span").innerText
-
-let product = {
-name:name,
-img:img,
-price:price,
-qty:qty
+function closeViewer(){
+document.getElementById("viewer").style.display="none"
 }
 
-localStorage.setItem("order",JSON.stringify(product))
+function addToCart(){
 
-window.location.href="checkout.html"
+cart.push(products[selected])
+
+document.getElementById("cartCount").innerText=cart.length
+
+}
+
+function buyNow(){
+
+cart=[products[selected]]
+
+openCheckout()
+
+}
+
+function openCheckout(){
+
+document.getElementById("checkout").style.display="block"
+
+window.scrollTo(0,document.body.scrollHeight)
+
+}
+
+function checkout(){
+
+let total=0
+
+cart.forEach(p=>total+=p.price)
+
+let payment=document.querySelector('input[name="pay"]:checked').value
+
+if(payment==="upi"){
+
+window.location.href=
+"upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am="+total+"&cu=INR"
+
+}else{
+
+let order="New Order%0A"
+
+cart.forEach(p=>{
+order+=p.name+"%0A"
+})
+
+window.location.href=
+"https://wa.me/919987782822?text="+order
+
+}
 
 }
 
