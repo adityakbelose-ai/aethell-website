@@ -2,256 +2,38 @@
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>AETHELL</title>
-
 <style>
-
-body{
-margin:0;
-font-family:Arial;
-background:white;
-color:black;
-}
-
-/* loader */
-
-#loader{
-position:fixed;
-width:100%;
-height:100%;
-background:black;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:36px;
-letter-spacing:6px;
-z-index:2000;
-}
-
-/* header */
-
-header{
-display:flex;
-align-items:center;
-justify-content:center;
-margin:30px 0;
-font-size:30px;
-letter-spacing:5px;
-}
-
-header:before,
-header:after{
-content:"";
-flex:1;
-height:1px;
-background:black;
-margin:0 15px;
-}
-
-/* hamburger */
-
-.menu{
-position:fixed;
-left:20px;
-top:20px;
-font-size:28px;
-cursor:pointer;
-}
-
-/* sidebar */
-
-.sidebar{
-position:fixed;
-left:-270px;
-top:0;
-width:270px;
-height:100%;
-background:white;
-box-shadow:2px 0 10px rgba(0,0,0,0.15);
-transition:.3s;
-padding-top:60px;
-z-index:1000;
-}
-
-.sidebar.open{
-left:0;
-}
-
-.closeSidebar{
-position:absolute;
-top:15px;
-right:20px;
-font-size:22px;
-cursor:pointer;
-}
-
-.sidebar a{
-display:block;
-padding:15px 25px;
-text-decoration:none;
-color:black;
-font-size:16px;
-}
-
-/* cart */
-
-.cart{
-position:fixed;
-right:20px;
-top:20px;
-background:black;
-color:white;
-padding:8px 14px;
-border-radius:20px;
-cursor:pointer;
-}
-
-/* products grid */
-
-.products{
-padding:20px;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
-}
-
-.product{
-cursor:pointer;
-}
-
-.product img{
-width:100%;
-border-radius:10px;
-}
-
-.product h3{
-margin:10px 0 5px 0;
-font-size:16px;
-}
-
-.product p{
-margin:0;
-font-size:14px;
-}
-
-.product button{
-width:100%;
-padding:10px;
-margin-top:6px;
-border:none;
-background:black;
-color:white;
-cursor:pointer;
-}
-
-/* viewer */
-
-#viewer{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:white;
-display:none;
-z-index:1000;
-overflow:auto;
-}
-
-.viewer-content{
-padding:20px;
-}
-
-.viewer-content img{
-width:100%;
-border-radius:10px;
-}
-
-/* popups */
-
-.popup{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.5);
-display:none;
-justify-content:center;
-align-items:center;
-z-index:1500;
-}
-
-.popup-content{
-background:white;
-padding:25px;
-width:90%;
-max-width:420px;
-border-radius:10px;
-}
-
-/* checkout */
-
-.checkout-item{
-display:flex;
-align-items:center;
-margin-bottom:10px;
-}
-
-.checkout-item img{
-width:60px;
-margin-right:10px;
-border-radius:6px;
-}
-
-.remove{
-margin-left:auto;
-color:red;
-cursor:pointer;
-}
-
-/* inputs */
-
-input{
-width:100%;
-padding:12px;
-margin:8px 0;
-}
-
-button{
-padding:12px;
-border:none;
-background:black;
-color:white;
-cursor:pointer;
-width:100%;
-margin-top:6px;
-}
-
-/* floating IG */
-
-.ig{
-position:fixed;
-bottom:20px;
-right:20px;
-width:50px;
-height:50px;
-background:black;
-color:white;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-}
-
+body{margin:0;font-family:Arial;background:white;color:black;}
+#loader{position:fixed;width:100%;height:100%;background:black;color:white;display:flex;justify-content:center;align-items:center;font-size:36px;letter-spacing:6px;z-index:2000;}
+header{display:flex;align-items:center;justify-content:center;margin:30px 0;font-size:30px;letter-spacing:5px;}
+header:before,header:after{content:"";flex:1;height:1px;background:black;margin:0 15px;}
+.menu{position:fixed;left:20px;top:20px;font-size:28px;cursor:pointer;z-index:1001;}
+.sidebar{position:fixed;left:-270px;top:0;width:270px;height:100%;background:white;box-shadow:2px 0 10px rgba(0,0,0,0.15);transition:.3s;padding-top:60px;z-index:1000;}
+.sidebar.open{left:0;}
+.closeSidebar{position:absolute;top:15px;right:20px;font-size:22px;cursor:pointer;}
+.sidebar a{display:block;padding:15px 25px;text-decoration:none;color:black;font-size:16px;}
+.cart{position:fixed;right:20px;top:20px;background:black;color:white;padding:8px 14px;border-radius:20px;cursor:pointer;z-index:1001;}
+.products{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.product{cursor:pointer;}
+.product img{width:100%;border-radius:10px;}
+.product h3{margin:10px 0 5px 0;font-size:16px;}
+.product p{margin:0;font-size:14px;}
+.product button{width:100%;padding:10px;margin-top:6px;border:none;background:black;color:white;cursor:pointer;}
+#productPage{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:white;overflow:auto;z-index:1200;}
+#productPage img{width:100%;border-radius:10px;}
+#productPage button{padding:12px;width:100%;margin-top:10px;border:none;background:black;color:white;cursor:pointer;}
+.popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:none;justify-content:center;align-items:center;z-index:1500;}
+.popup-content{background:white;padding:25px;width:90%;max-width:420px;border-radius:10px;}
+.checkout-item{display:flex;align-items:center;margin-bottom:10px;}
+.checkout-item img{width:60px;margin-right:10px;border-radius:6px;}
+.remove{margin-left:auto;color:red;cursor:pointer;}
+input{width:100%;padding:12px;margin:8px 0;}
+.ig{position:fixed;bottom:20px;right:20px;width:50px;height:50px;background:black;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+#cartToast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:black;color:white;padding:10px 20px;border-radius:6px;display:none;z-index:2000;}
 </style>
-
 </head>
 
 <body>
@@ -259,27 +41,19 @@ cursor:pointer;
 <div id="loader">AETHELL</div>
 
 <div class="menu" onclick="toggleMenu()">☰</div>
-
 <div class="cart" onclick="openCart()">🛒 <span id="count">0</span></div>
 
 <div class="sidebar" id="sidebar">
-
 <div class="closeSidebar" onclick="toggleMenu()">✕</div>
-
 <a href="#">Home</a>
-
 <a onclick="openAbout()">About Us</a>
-
 <a href="https://docs.google.com/forms/d/e/1FAIpQLSdE6cRXuMMelbPQpyuv9FouDaYFMsJxm6UblKyjkCCFOIllNg/viewform?usp=header" target="_blank">Custom Mirror</a>
-
 <a href="https://wa.me/919987782822">Contact Us</a>
-
 </div>
 
 <header>AETHELL</header>
 
 <section class="products">
-
 <div class="product">
 <img src="cmiygl1.jpg" onclick="openProduct(0)">
 <h3>CMIYGL Mirror</h3>
@@ -305,7 +79,7 @@ cursor:pointer;
 </div>
 
 <div class="product">
-<img src="queen1.jpg">
+<img src="queen1.jpg" onclick="openProduct(3)">
 <h3>Queen of Hearts</h3>
 <p>₹5,499</p>
 <button onclick="addCartDirect(3)">Add to Cart</button>
@@ -313,205 +87,117 @@ cursor:pointer;
 </div>
 
 <div class="product">
-<img src="king1.jpg">
+<img src="king1.jpg" onclick="openProduct(4)">
 <h3>King of Hearts</h3>
 <p>₹5,499</p>
 <button onclick="addCartDirect(4)">Add to Cart</button>
 <button onclick="buyDirect(4)">Buy Now</button>
 </div>
-
 </section>
 
-<!-- viewer -->
-
-<div id="viewer">
-
-<div class="viewer-content">
-
-<img id="vImg">
-
-<h2 id="vTitle"></h2>
-
-<p id="vDesc"></p>
-
-<button onclick="addCart()">Add To Cart</button>
-
-<button onclick="buyNow()">Buy Now</button>
-
-<button onclick="closeViewer()">Close</button>
-
+<!-- Product Page -->
+<div id="productPage">
+<div style="padding:20px">
+<button onclick="closeProduct()" style="margin-bottom:10px">← Back</button>
+<img id="slideImg">
+<h2 id="productTitle"></h2>
+<h3 id="productPrice"></h3>
+<p id="productDesc"></p>
+<button onclick="addCartFromPage()">Add To Cart</button>
+<button onclick="buyFromPage()">Buy Now</button>
+</div>
 </div>
 
-</div>
+<!-- Cart Toast -->
+<div id="cartToast">Added to Cart</div>
 
-<!-- checkout -->
-
+<!-- Checkout -->
 <div class="popup" id="checkout">
-
 <div class="popup-content">
-
 <h2>Your Cart</h2>
-
 <div id="cartItems"></div>
-
 <input placeholder="Building / Society">
-
 <input placeholder="Flat Number">
-
 <input placeholder="Area / Street">
-
 <input placeholder="Pincode">
-
 <button onclick="checkout()">Pay With UPI</button>
-
 <button onclick="closePopup()">Close</button>
-
+</div>
 </div>
 
-</div>
-
-<!-- about -->
-
+<!-- About -->
 <div class="popup" id="about">
-
 <div class="popup-content">
-
 <h2>About AETHELL</h2>
-
-<p>
-
-AETHELL began from a simple frustration.  
-Finding mirrors that actually matched a room’s personality felt impossible.
-
-</p>
-
-<p>
-
-So the idea became simple:  
-create mirrors that feel like **art pieces instead of furniture**.
-
-</p>
-
-<p>
-
-Each design blends internet culture, nostalgia and playful design.
-
-</p>
-
+<p>AETHELL began from a simple frustration. Finding mirrors that matched your room’s personality felt impossible.</p>
+<p>The idea became: create mirrors that feel like <b>art pieces instead of furniture</b>.</p>
+<p>Each design blends internet culture, nostalgia and playful design.</p>
 <button onclick="closePopup()">Close</button>
-
 </div>
-
 </div>
 
 <div class="ig" onclick="window.open('https://instagram.com/aethell.in')">IG</div>
 
 <script>
+setTimeout(()=>{document.getElementById("loader").style.display="none"},1200)
 
-/* loader */
+/* Sidebar */
+function toggleMenu(){document.getElementById("sidebar").classList.toggle("open")}
 
-setTimeout(()=>{
-document.getElementById("loader").style.display="none"
-},1200)
-
-/* sidebar */
-
-function toggleMenu(){
-document.getElementById("sidebar").classList.toggle("open")
-}
-
-/* products */
-
+/* Products */
+let currentProduct=0
 let products=[
-{name:"CMIYGL Mirror",price:5999,img:"cmiygl1.jpg"},
-{name:"MS PAINT Mirror",price:8999,img:"mspaint1.jpg"},
-{name:"reCAPTCHA Mirror",price:5999,img:"captcha1.jpg"},
-{name:"Queen of Hearts",price:5499,img:"queen1.jpg"},
-{name:"King of Hearts",price:5499,img:"king1.jpg"}
+{name:"CMIYGL Mirror",price:5999,slides:["cmiygl1.jpg","cmiygl2.jpg","cmiygl3.jpg"],desc:"A mirror inspired by album cover bravado. Loud, bold and unapologetic. Every reflection feels like the cover of your own mixtape."},
+{name:"MS PAINT Mirror",price:8999,slides:["mspaint1.jpg","mspaint2.jpg","mspaint3.jpg"],desc:"A love letter to early digital creativity. The chaotic charm of childhood MS Paint sessions reborn as modern wall art."},
+{name:"reCAPTCHA Mirror",price:5999,slides:["captcha1.jpg"],desc:"Before entering the next stage of existence… please verify you are human. A playful tribute to the strange poetry of the internet."},
+{name:"Queen of Hearts",price:5499,slides:["queen1.jpg"],desc:"Drama. Royalty. Slight chaos. The Queen of Hearts mirror rules the room with theatrical elegance."},
+{name:"King of Hearts",price:5499,slides:["king1.jpg"],desc:"Commanding but calm. The King of Hearts mirror brings royal presence without saying a word."}
 ]
-
 let cart=[]
 
-function addCartDirect(i){
+function openProduct(i){
+currentProduct=i
+document.getElementById("productPage").style.display="block"
+currentSlide=0
+updateSlide()
+document.getElementById("productTitle").innerText=products[i].name
+document.getElementById("productPrice").innerText="₹"+products[i].price
+document.getElementById("productDesc").innerText=products[i].desc
+}
+function closeProduct(){document.getElementById("productPage").style.display="none"}
+let currentSlide=0
+function updateSlide(){document.getElementById("slideImg").src=products[currentProduct].slides[currentSlide]}
+function nextSlide(){if(currentSlide<products[currentProduct].slides.length-1){currentSlide++}updateSlide()}
+function prevSlide(){if(currentSlide>0){currentSlide--}updateSlide()}
 
-cart.push(products[i])
+/* Add to cart / Buy Now */
+function addCartFromPage(){
+cart.push(products[currentProduct])
 updateCart()
-
+let toast=document.getElementById("cartToast")
+toast.style.display="block"
+setTimeout(()=>{toast.style.display="none"},1500)
 }
+function buyFromPage(){cart=[products[currentProduct]];updateCart();openCart()}
+function addCartDirect(i){cart.push(products[i]);updateCart()}
+function buyDirect(i){cart=[products[i]];updateCart();openCart()}
 
-function buyDirect(i){
-
-cart=[products[i]]
-updateCart()
-openCart()
-
-}
-
-function updateCart(){
-
-document.getElementById("count").innerText=cart.length
-
-}
-
+/* Cart & Checkout */
+function updateCart(){document.getElementById("count").innerText=cart.length}
 function openCart(){
-
 let html=""
-
-cart.forEach((p,i)=>{
-
-html+=`
-<div class="checkout-item">
-
-<img src="${p.img}">
-
-<div>${p.name}</div>
-
-<div class="remove" onclick="removeItem(${i})">✕</div>
-
-</div>
-`
-
-})
-
+cart.forEach((p,i)=>{html+=`<div class="checkout-item"><img src="${p.slides[0]}"><div>${p.name}</div><div class="remove" onclick="removeItem(${i})">✕</div></div>`})
 document.getElementById("cartItems").innerHTML=html
-
 document.getElementById("checkout").style.display="flex"
-
 }
-
-function removeItem(i){
-
-cart.splice(i,1)
-updateCart()
-openCart()
-
-}
-
-function closePopup(){
-
-document.querySelectorAll(".popup").forEach(p=>{
-p.style.display="none"
-})
-
-}
-
-function openAbout(){
-
-document.getElementById("about").style.display="flex"
-
-}
-
+function removeItem(i){cart.splice(i,1);updateCart();openCart()}
+function closePopup(){document.querySelectorAll(".popup").forEach(p=>{p.style.display="none"})}
+function openAbout(){document.getElementById("about").style.display="flex"}
 function checkout(){
-
 let total=0
-
 cart.forEach(p=>total+=p.price)
-
-window.location.href=
-"upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am="+total+"&cu=INR"
-
+window.location.href="upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am="+total+"&cu=INR"
 }
-
 </script>
 
 </body>
