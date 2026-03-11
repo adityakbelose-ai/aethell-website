@@ -1,77 +1,128 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>AETHELL</title>
-
 <link rel="stylesheet" href="style.css">
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 
 <body>
 
-<div id="loader">AETHELL</div>
-
 <header>
-
-<div class="menu" onclick="toggleMenu()">☰</div>
-
 <h1>AETHELL</h1>
-
-<div class="cart" onclick="goCart()">🛒</div>
-
 </header>
-
-<div id="sidebar">
-
-<a href="index.html">Home</a>
-
-<a href="https://docs.google.com/forms/d/e/1FAIpQLSdE6cRXuMMelbPQpyuv9FouDaYFMsJxm6UblKyjkCCFOIllNg/viewform">Custom Mirror</a>
-
-<a href="about.html">About Us</a>
-
-<a onclick="contact()">Contact</a>
-
-</div>
 
 <section class="products">
 
-<div class="product" onclick="viewProduct(0)">
-<img src="cmiygl1.jpg">
+<div class="product">
+<img src="cmiygl.jpg">
 <h3>CMIYGL Mirror</h3>
-<p>₹5,999</p>
+<p>₹5999</p>
+
+<div class="qty">
+<button onclick="changeQty(this,-1)">-</button>
+<span>1</span>
+<button onclick="changeQty(this,1)">+</button>
 </div>
 
-<div class="product" onclick="viewProduct(1)">
-<img src="mspaint1.jpg">
+<button onclick="buyNow('CMIYGL Mirror','cmiygl.jpg',5999,this)">Buy Now</button>
+</div>
+
+
+<div class="product">
+<img src="mspaint.jpg">
 <h3>MS PAINT Mirror</h3>
-<p>₹8,999</p>
+<p>₹8999</p>
+
+<div class="qty">
+<button onclick="changeQty(this,-1)">-</button>
+<span>1</span>
+<button onclick="changeQty(this,1)">+</button>
 </div>
 
-<div class="product" onclick="viewProduct(2)">
+<button onclick="buyNow('MS PAINT Mirror','mspaint.jpg',8999,this)">Buy Now</button>
+</div>
+
+
+<div class="product">
 <img src="recaptcha.jpg">
 <h3>reCAPTCHA Mirror</h3>
-<p>₹5,999</p>
+<p>₹5999</p>
+
+<div class="qty">
+<button onclick="changeQty(this,-1)">-</button>
+<span>1</span>
+<button onclick="changeQty(this,1)">+</button>
 </div>
 
-<div class="product" onclick="viewProduct(3)">
+<button onclick="buyNow('reCAPTCHA Mirror','recaptcha.jpg',5999,this)">Buy Now</button>
+</div>
+
+
+<div class="product">
 <img src="queen.jpg">
 <h3>Queen of Hearts</h3>
-<p>₹5,499</p>
+<p>₹5499</p>
+
+<div class="qty">
+<button onclick="changeQty(this,-1)">-</button>
+<span>1</span>
+<button onclick="changeQty(this,1)">+</button>
 </div>
 
-<div class="product" onclick="viewProduct(4)">
+<button onclick="buyNow('Queen of Hearts','queen.jpg',5499,this)">Buy Now</button>
+</div>
+
+
+<div class="product">
 <img src="king.jpg">
 <h3>King of Hearts</h3>
-<p>₹5,499</p>
+<p>₹5499</p>
+
+<div class="qty">
+<button onclick="changeQty(this,-1)">-</button>
+<span>1</span>
+<button onclick="changeQty(this,1)">+</button>
+</div>
+
+<button onclick="buyNow('King of Hearts','king.jpg',5499,this)">Buy Now</button>
 </div>
 
 </section>
 
-<script src="script.js"></script>
+
+<script>
+
+function changeQty(btn,val){
+
+let span = btn.parentElement.querySelector("span")
+let qty = parseInt(span.innerText)
+
+qty += val
+if(qty<1) qty=1
+
+span.innerText = qty
+
+}
+
+function buyNow(name,img,price,btn){
+
+let qty = btn.parentElement.querySelector("span").innerText
+
+let product = {
+name:name,
+img:img,
+price:price,
+qty:qty
+}
+
+localStorage.setItem("order",JSON.stringify(product))
+
+window.location.href="checkout.html"
+
+}
+
+</script>
 
 </body>
 </html>
