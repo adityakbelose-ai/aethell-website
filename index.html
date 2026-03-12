@@ -12,7 +12,7 @@ header:before,header:after{content:"";flex:1;height:1px;background:black;margin:
 .menu{position:fixed;left:20px;top:20px;font-size:28px;cursor:pointer;z-index:1001;}
 .sidebar{position:fixed;left:-270px;top:0;width:270px;height:100%;background:white;box-shadow:2px 0 10px rgba(0,0,0,0.15);transition:.3s;padding-top:60px;z-index:1000;}
 .sidebar.open{left:0;}
-.closeSidebar{position:absolute;top:15px;right:20px;font-size:22px;cursor:pointer;}
+.closeSidebar{position:absolute;top:15px;right:20px;font-size:20px;cursor:pointer;}
 .sidebar a{display:block;padding:15px 25px;text-decoration:none;color:black;font-size:16px;}
 .cart{position:fixed;right:20px;top:20px;background:black;color:white;padding:8px 14px;border-radius:20px;cursor:pointer;z-index:1001;}
 .products{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:20px;}
@@ -38,27 +38,35 @@ header:before,header:after{content:"";flex:1;height:1px;background:black;margin:
 .product:hover::before, .product.active::before{
   opacity:1;
 }
-
 @keyframes glow{
   0%{background-position:0% 50%;}
   50%{background-position:100% 50%;}
   100%{background-position:0% 50%;}
 }
 
-/* Product Page */
-#productPage{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:white;overflow:auto;z-index:1200;}
-#productPage img{width:100%;border-radius:10px;touch-action: pan-y;}
-#productPage button{padding:12px;width:100%;margin-top:10px;border:none;background:black;color:white;cursor:pointer;}
-#dots{margin-top:10px;text-align:center;}
-#dots span{height:10px;width:10px;margin:0 5px;display:inline-block;border-radius:50%;background:#ccc;}
+/* Popup Viewer */
+#viewer{position:fixed;top:0;left:0;width:100%;height:100%;background:white;display:none;overflow:auto;z-index:999;}
+.viewer-content{padding:20px;max-width:500px;margin:auto;}
+.viewer-content img{width:100%;border-radius:10px;}
+.desc{margin-top:15px;font-size:15px;line-height:1.6;color:#444;}
+.dimensions{margin-top:10px;font-size:14px;color:#777;}
+button{width:100%;padding:14px;margin-top:10px;border:none;background:black;color:white;font-size:15px;cursor:pointer;}
+
+/* Cart popup */
 .popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:none;justify-content:center;align-items:center;z-index:1500;}
-.popup-content{background:white;padding:25px;width:90%;max-width:420px;border-radius:10px;}
+.popup-content{background:white;padding:25px;width:90%;max-width:420px;border-radius:10px;position:relative;}
+.closePopup{position:absolute;top:10px;right:15px;font-size:18px;cursor:pointer;}
 .checkout-item{display:flex;align-items:center;margin-bottom:10px;}
 .checkout-item img{width:60px;margin-right:10px;border-radius:6px;}
 .remove{margin-left:auto;color:red;cursor:pointer;}
 input{width:100%;padding:12px;margin:8px 0;}
+
+/* Instagram button */
 .ig{position:fixed;bottom:20px;right:20px;width:50px;height:50px;background:black;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;}
 #cartToast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:black;color:white;padding:10px 20px;border-radius:6px;display:none;z-index:2000;}
+
+/* About us */
+#about h2{margin-top:0;}
 </style>
 </head>
 <body>
@@ -80,67 +88,63 @@ input{width:100%;padding:12px;margin:8px 0;}
 
 <section class="products">
 <div class="product" id="product0">
-<img src="cmiygl1.jpg" onclick="openProduct(0)">
+<img src="cmiygl1.jpg" onclick="openViewer(0)">
 <h3>CMIYGL Mirror</h3>
 <p>₹5,999</p>
-<button onclick="addCartDirect(0)">Add to Cart</button>
-<button onclick="buyDirect(0)">Buy Now</button>
+<button onclick="openViewer(0)">Add to Cart</button>
+<button onclick="openViewer(0)">Buy Now</button>
 </div>
 
 <div class="product" id="product1">
-<img src="mspaint1.jpg" onclick="openProduct(1)">
+<img src="mspaint1.jpg" onclick="openViewer(1)">
 <h3>MS PAINT Mirror</h3>
 <p>₹8,999</p>
-<button onclick="addCartDirect(1)">Add to Cart</button>
-<button onclick="buyDirect(1)">Buy Now</button>
+<button onclick="openViewer(1)">Add to Cart</button>
+<button onclick="openViewer(1)">Buy Now</button>
 </div>
 
 <div class="product" id="product2">
-<img src="captcha1.jpg" onclick="openProduct(2)">
+<img src="captcha1.jpg" onclick="openViewer(2)">
 <h3>reCAPTCHA Mirror</h3>
 <p>₹5,999</p>
-<button onclick="addCartDirect(2)">Add to Cart</button>
-<button onclick="buyDirect(2)">Buy Now</button>
+<button onclick="openViewer(2)">Add to Cart</button>
+<button onclick="openViewer(2)">Buy Now</button>
 </div>
 
 <div class="product" id="product3">
-<img src="queen1.jpg" onclick="openProduct(3)">
-<h3>Queen of Hearts</h3>
+<img src="queen1.jpg" onclick="openViewer(3)">
+<h3>Queen of Hearts Mirror</h3>
 <p>₹5,499</p>
-<button onclick="addCartDirect(3)">Add to Cart</button>
-<button onclick="buyDirect(3)">Buy Now</button>
+<button onclick="openViewer(3)">Add to Cart</button>
+<button onclick="openViewer(3)">Buy Now</button>
 </div>
 
 <div class="product" id="product4">
-<img src="king1.jpg" onclick="openProduct(4)">
-<h3>King of Hearts</h3>
+<img src="king1.jpg" onclick="openViewer(4)">
+<h3>King of Hearts Mirror</h3>
 <p>₹5,499</p>
-<button onclick="addCartDirect(4)">Add to Cart</button>
-<button onclick="buyDirect(4)">Buy Now</button>
+<button onclick="openViewer(4)">Add to Cart</button>
+<button onclick="openViewer(4)">Buy Now</button>
 </div>
 </section>
 
-<!-- Product Page -->
-<div id="productPage">
-<div style="padding:20px">
-<button onclick="closeProduct()" style="margin-bottom:10px">← Back</button>
-<div id="slider" style="position:relative; overflow:hidden; border-radius:10px;">
-  <img id="slideImg" style="width:100%; border-radius:10px; touch-action: pan-y;">
-  <div id="dots"></div>
-</div>
-<h2 id="productTitle"></h2>
-<h3 id="productPrice"></h3>
-<p id="productDesc"></p>
-<button onclick="addCartFromPage()">Add To Cart</button>
-<button onclick="buyFromPage()">Buy Now</button>
+<!-- Viewer Popup -->
+<div id="viewer">
+<div class="viewer-content">
+<img id="viewerImg">
+<h2 id="viewerTitle"></h2>
+<p id="viewerDesc" class="desc"></p>
+<p id="viewerDim" class="dimensions"></p>
+<button onclick="addToCart()">Add To Cart</button>
+<button onclick="buyNow()">Buy Now</button>
+<button onclick="closeViewer()">Close</button>
 </div>
 </div>
 
-<div id="cartToast">Added to Cart</div>
-
-<!-- Checkout -->
+<!-- Cart / Checkout Popup -->
 <div class="popup" id="checkout">
 <div class="popup-content">
+<div class="closePopup" onclick="closePopup()">✕</div>
 <h2>Your Cart</h2>
 <div id="cartItems"></div>
 <input placeholder="Building / Society">
@@ -148,22 +152,20 @@ input{width:100%;padding:12px;margin:8px 0;}
 <input placeholder="Area / Street">
 <input placeholder="Pincode">
 <button onclick="checkout()">Pay With UPI</button>
-<button onclick="closePopup()">Close</button>
 </div>
 </div>
 
-<!-- About -->
+<!-- About Us Popup -->
 <div class="popup" id="about">
 <div class="popup-content">
+<div class="closePopup" onclick="closePopup()">✕</div>
 <h2>About AETHELL</h2>
-<p>AETHELL began from a simple frustration. Finding mirrors that matched your room’s personality felt impossible.</p>
-<p>The idea became: create mirrors that feel like <b>art pieces instead of furniture</b>.</p>
-<p>Each design blends internet culture, nostalgia and playful design.</p>
-<button onclick="closePopup()">Close</button>
+<p>It started from a simple problem. I wanted something for my room that looked cool, minimal and premium but most mirrors available felt basic or outdated. So Aethell was born. A brand focused on modern, Gen-Z inspired mirror designs that elevate your space while reflecting your personality. Each mirror is designed to feel like more than just decor. It becomes a statement piece in your room. We also offer custom mirror designs so you can create something that perfectly fits your aesthetic and vision. Aethell isn't just about mirrors - it's about creating a space that feels uniquely yours.</p>
 </div>
 </div>
 
 <div class="ig" onclick="window.open('https://instagram.com/aethell.in')">IG</div>
+<div id="cartToast">Added to Cart</div>
 
 <script>
 setTimeout(()=>{document.getElementById("loader").style.display="none"},1200)
@@ -171,80 +173,49 @@ setTimeout(()=>{document.getElementById("loader").style.display="none"},1200)
 /* Sidebar */
 function toggleMenu(){document.getElementById("sidebar").classList.toggle("open")}
 
-/* Products */
+/* Products & Cart */
 let products=[
-{name:"CMIYGL Mirror",price:5999,slides:["cmiygl1.jpg","cmiygl2.jpg","cmiygl3.jpg"],desc:"A mirror inspired by album cover bravado. Loud, bold and unapologetic. Every reflection feels like the cover of your own mixtape."},
-{name:"MS PAINT Mirror",price:8999,slides:["mspaint1.jpg","mspaint2.jpg","mspaint3.jpg"],desc:"A love letter to early digital creativity. The chaotic charm of childhood MS Paint sessions reborn as modern wall art."},
-{name:"reCAPTCHA Mirror",price:5999,slides:["captcha1.jpg"],desc:"Before entering the next stage of existence… please verify you are human. A playful tribute to the strange poetry of the internet."},
-{name:"Queen of Hearts",price:5499,slides:["queen1.jpg"],desc:"Drama. Royalty. Slight chaos. The Queen of Hearts mirror rules the room with theatrical elegance."},
-{name:"King of Hearts",price:5499,slides:["king1.jpg"],desc:"Commanding but calm. The King of Hearts mirror brings royal presence without saying a word."}
+{name:"CMIYGL Mirror",price:5999,img:"cmiygl1.jpg",desc:"A reflective reinterpretation of the iconic CMIYGL aesthetic. This piece captures the bold visual energy of the album cover and translates it into a modern decor object that blends art, music culture, and minimal luxury.",dim:'15" x 24"'},
+{name:"MS PAINT Mirror",price:8999,img:"mspaint1.jpg",desc:"A retro-modern tribute to the early days of digital creativity. Inspired by the playful imperfections of classic software design, this mirror transforms nostalgic technology into a sleek contemporary statement.",dim:'47" x 31"'},
+{name:"reCAPTCHA Mirror",price:5999,img:"captcha1.jpg",desc:"Identity is something we constantly prove to the world. Inspired by the familiar verification symbol, this piece represents the moment of confirmation — a reflection that reminds us that to become something greater, we must first verify who we are.",dim:'42" x 31"'},
+{name:"Queen of Hearts Mirror",price:5499,img:"queen1.jpg",desc:"Royal aesthetics designed for spaces that carry confidence and character. A mirror that reflects elegance and bold personality — made for those who rule their space.",dim:'48" x 31"'},
+{name:"King of Hearts Mirror",price:5499,img:"king1.jpg",desc:"Powerful, balanced, and unmistakably regal. A mirror crafted to bring authority and presence into modern interiors.",dim:'48" x 31"'}
 ];
 
-let currentProduct=0,currentSlide=0,cart=[];
+let selected=null,cart=[];
 
-function openProduct(i){
-  currentProduct=i;
-  currentSlide=0;
-  document.getElementById("productPage").style.display="block";
-  document.querySelectorAll('.product').forEach(p=>p.classList.remove('active'));
-  document.getElementById("product"+i).classList.add('active');
-  updateSlide();
-  document.getElementById("productTitle").innerText = products[i].name;
-  document.getElementById("productPrice").innerText = "₹"+products[i].price;
-  document.getElementById("productDesc").innerText = products[i].desc;
-}
-function closeProduct(){
-  document.getElementById("productPage").style.display="none";
-  document.querySelectorAll('.product').forEach(p=>p.classList.remove('active'));
+function openViewer(i){
+selected=i;
+document.getElementById("viewerImg").src=products[i].img;
+document.getElementById("viewerTitle").innerText=products[i].name;
+document.getElementById("viewerDesc").innerText=products[i].desc;
+document.getElementById("viewerDim").innerText="Dimensions: "+products[i].dim;
+document.getElementById("viewer").style.display="block";
+document.querySelectorAll('.product').forEach(p=>p.classList.remove('active'));
+document.getElementById("product"+i).classList.add('active');
 }
 
-function updateSlide(){
-  document.getElementById("slideImg").src = products[currentProduct].slides[currentSlide];
-  let dotsContainer = document.getElementById("dots");
-  dotsContainer.innerHTML = "";
-  for(let i=0;i<products[currentProduct].slides.length;i++){
-    let dot = document.createElement("span");
-    dot.style.background = (i===currentSlide)?"black":"#ccc";
-    dotsContainer.appendChild(dot);
-  }
-}
+function closeViewer(){document.getElementById("viewer").style.display="none";document.querySelectorAll('.product').forEach(p=>p.classList.remove('active'));}
 
-// Swipe
-let startX=0,endX=0;
-let slideImg = document.getElementById("slideImg");
-slideImg.addEventListener('touchstart',e=>{startX=e.touches[0].clientX},{passive:true});
-slideImg.addEventListener('touchmove',e=>{endX=e.touches[0].clientX},{passive:true});
-slideImg.addEventListener('touchend',()=>{
-  let diff=startX-endX;
-  if(diff>30) nextSlide(); else if(diff<-30) prevSlide();
-});
-function nextSlide(){if(currentSlide<products[currentProduct].slides.length-1) currentSlide++;updateSlide();}
-function prevSlide(){if(currentSlide>0) currentSlide--;updateSlide();}
+function addToCart(){cart.push(products[selected]);document.getElementById("count").innerText=cart.length;showToast();}
 
-/* Cart / Buy Now */
-function addCartFromPage(){cart.push(products[currentProduct]);updateCart();showToast();}
-function buyFromPage(){cart=[products[currentProduct]];updateCart();openCart();}
-function addCartDirect(i){cart.push(products[i]);updateCart();showToast();}
-function buyDirect(i){cart=[products[i]];updateCart();openCart();}
+function buyNow(){cart=[products[selected]];document.getElementById("count").innerText=cart.length;openCart();}
+
 function showToast(){let toast=document.getElementById("cartToast");toast.style.display="block";setTimeout(()=>{toast.style.display="none"},1500);}
 
-/* Cart & Checkout */
-function updateCart(){document.getElementById("count").innerText=cart.length;}
+/* Cart / Checkout */
 function openCart(){
-  let html="";
-  cart.forEach((p,i)=>{
-    html+=`<div class="checkout-item"><img src="${p.slides[0]}"><div>${p.name}</div><div class="remove" onclick="removeItem(${i})">✕</div></div>`;
-  });
-  document.getElementById("cartItems").innerHTML=html;
-  document.getElementById("checkout").style.display="flex";
+let html="";
+cart.forEach((p,i)=>{html+=`<div class="checkout-item"><img src="${p.img}"><div>${p.name}</div><div class="remove" onclick="removeItem(${i})">✕</div></div>`;});
+document.getElementById("cartItems").innerHTML=html;
+document.getElementById("checkout").style.display="flex";
 }
-function removeItem(i){cart.splice(i,1);updateCart();openCart();}
+function removeItem(i){cart.splice(i,1);document.getElementById("count").innerText=cart.length;openCart();}
 function closePopup(){document.querySelectorAll(".popup").forEach(p=>p.style.display="none");}
 function openAbout(){document.getElementById("about").style.display="flex";}
 function checkout(){
-  let total=0;
-  cart.forEach(p=>total+=p.price);
-  window.location.href="upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am="+total+"&cu=INR";
+let total=0;cart.forEach(p=>total+=p.price);
+window.location.href="upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am="+total+"&cu=INR";
 }
 </script>
 </body>
