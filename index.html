@@ -66,9 +66,7 @@ padding-top:60px;
 z-index:1000;
 }
 
-.sidebar.open{
-left:0;
-}
+.sidebar.open{left:0;}
 
 .closeSidebar{
 position:absolute;
@@ -108,33 +106,13 @@ animation:fadeUp 1s forwards;
 }
 
 @keyframes fadeUp{
-to{
-opacity:1;
-transform:translateY(0);
-}
+to{opacity:1;transform:translateY(0);}
 }
 
-.product{
-cursor:pointer;
-}
-
-.imageWrap{
-position:relative;
-border-radius:10px;
-}
-
-.imageWrap img{
+.product img{
 width:100%;
 border-radius:10px;
-}
-
-.product h3{
-margin:10px 0 5px;
-font-size:16px;
-}
-
-.product p{
-margin:0;
+cursor:pointer;
 }
 
 .product button{
@@ -152,6 +130,11 @@ transition:.15s;
 transform:scale(.95);
 }
 
+.product h3{margin:10px 0 5px;}
+.product p{margin:0;}
+
+/* PRODUCT PAGE */
+
 #productPage{
 display:none;
 position:fixed;
@@ -160,31 +143,51 @@ left:0;
 width:100%;
 height:100%;
 background:white;
-overflow:auto;
 z-index:1200;
-}
-
-#productPage img{
-width:100%;
-border-radius:10px;
+overflow:auto;
+padding:20px;
 }
 
 .closePage{
 position:absolute;
 right:20px;
 top:20px;
-font-size:22px;
+font-size:24px;
 cursor:pointer;
 }
 
-#productPage button{
-padding:12px;
+.slider img{
 width:100%;
-margin-top:10px;
-border:none;
-background:black;
-color:white;
+border-radius:10px;
 }
+
+.dots{
+text-align:center;
+margin-top:8px;
+}
+
+.dot{
+height:8px;
+width:8px;
+background:#ccc;
+display:inline-block;
+border-radius:50%;
+margin:3px;
+}
+
+.dot.active{background:black;}
+
+.desc{
+margin-top:15px;
+line-height:1.5;
+}
+
+.dim{
+margin-top:10px;
+font-weight:bold;
+}
+
+/* POPUPS */
 
 .popup{
 position:fixed;
@@ -194,8 +197,8 @@ width:100%;
 height:100%;
 background:rgba(0,0,0,0.5);
 display:none;
-justify-content:center;
 align-items:center;
+justify-content:center;
 z-index:1500;
 }
 
@@ -235,12 +238,6 @@ color:red;
 font-weight:bold;
 }
 
-input{
-width:100%;
-padding:12px;
-margin:8px 0;
-}
-
 .cartButton{
 width:100%;
 padding:12px;
@@ -249,6 +246,24 @@ color:white;
 border:none;
 margin-top:10px;
 cursor:pointer;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:8px 0;
+}
+
+#toast{
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+background:black;
+color:white;
+padding:10px 20px;
+border-radius:6px;
+display:none;
 }
 
 .ig{
@@ -264,18 +279,6 @@ display:flex;
 align-items:center;
 justify-content:center;
 cursor:pointer;
-}
-
-#toast{
-position:fixed;
-top:20px;
-left:50%;
-transform:translateX(-50%);
-background:black;
-color:white;
-padding:10px 20px;
-border-radius:6px;
-display:none;
 }
 
 </style>
@@ -303,6 +306,31 @@ display:none;
 
 <div id="toast">Added to Cart</div>
 
+<!-- PRODUCT PAGE -->
+
+<div id="productPage">
+
+<div class="closePage" onclick="closeProduct()">✕</div>
+
+<div class="slider">
+<img id="slideImg">
+</div>
+
+<div class="dots" id="dots"></div>
+
+<h2 id="title"></h2>
+<h3 id="price"></h3>
+
+<div class="desc" id="desc"></div>
+<div class="dim" id="dim"></div>
+
+<button class="cartButton" onclick="addCart(current)">Add To Cart</button>
+<button class="cartButton" onclick="buyNow(current)">Buy Now</button>
+
+</div>
+
+<!-- CART -->
+
 <div class="popup" id="cartPopup">
 <div class="popup-content">
 <div class="closePopup" onclick="closeCart()">✕</div>
@@ -312,16 +340,33 @@ display:none;
 </div>
 </div>
 
+<!-- CHECKOUT -->
+
 <div class="popup" id="checkoutPopup">
 <div class="popup-content">
 <div class="closePopup" onclick="closeCheckout()">✕</div>
 <h2>Checkout</h2>
+
 <input id="name" placeholder="Name">
 <input id="building" placeholder="Building / Society">
 <input id="flat" placeholder="Flat Number">
 <input id="area" placeholder="Area / Street">
 <input id="pincode" placeholder="Pincode">
+
 <button class="cartButton" onclick="checkout()">Pay With UPI</button>
+
+</div>
+</div>
+
+<!-- ABOUT -->
+
+<div class="popup" id="aboutPopup">
+<div class="popup-content">
+<div class="closePopup" onclick="closeAbout()">✕</div>
+<h2>About AETHELL</h2>
+<p>AETHELL began from a simple frustration. Mirrors rarely felt expressive enough for modern spaces.</p>
+<p>The idea was simple: create mirrors that feel like art objects instead of plain furniture.</p>
+<p>Each design blends internet culture, nostalgia, and minimal luxury aesthetics.</p>
 </div>
 </div>
 
@@ -335,30 +380,112 @@ function toggleMenu(){
 sidebar.classList.toggle("open")
 }
 
+/* PRODUCTS */
+
 let products=[
-{name:"CMIYGL Mirror",price:5999,img:"cmiygl1.jpg"},
-{name:"MS PAINT Mirror",price:8999,img:"mspaint1.jpg"},
-{name:"reCAPTCHA Mirror",price:5999,img:"captcha1.jpg"},
-{name:"Queen of Hearts",price:5499,img:"queen1.jpg"},
-{name:"King of Hearts",price:5499,img:"king1.jpg"}
+
+{
+name:"CMIYGL Mirror",
+price:5999,
+img:["cmiygl1.jpg","cmiygl2.jpg","cmiygl3.jpg"],
+desc:"A reflective reinterpretation of the iconic CMIYGL aesthetic. This piece transforms bold music culture into a modern decor object.",
+dim:"15 x 24 inches"
+},
+
+{
+name:"MS PAINT Mirror",
+price:8999,
+img:["mspaint1.jpg","mspaint2.jpg","mspaint3.jpg"],
+desc:"A retro-modern tribute to early digital creativity inspired by nostalgic software design.",
+dim:"47 x 31 inches"
+},
+
+{
+name:"reCAPTCHA Mirror",
+price:5999,
+img:["captcha1.jpg"],
+desc:"A mirror inspired by identity and verification. A reminder that before becoming something greater, we first prove who we are.",
+dim:"42 x 31 inches"
+},
+
+{
+name:"Queen of Hearts",
+price:5499,
+img:["queen1.jpg"],
+desc:"Royal aesthetics designed for spaces that carry confidence and character.",
+dim:"48 x 31 inches"
+},
+
+{
+name:"King of Hearts",
+price:5499,
+img:["king1.jpg"],
+desc:"Powerful, balanced and unmistakably regal. Designed to bring authority into modern interiors.",
+dim:"48 x 31 inches"
+}
+
 ]
 
 let cart=[]
+let current=0
+let slide=0
 
 products.forEach((p,i)=>{
 productsHTML=`
 <div class="product">
-<div class="imageWrap">
-<img src="${p.img}" onclick="viewProduct(${i})">
-</div>
+<img src="${p.img[0]}" onclick="viewProduct(${i})">
 <h3>${p.name}</h3>
 <p>₹${p.price}</p>
 <button onclick="addCart(${i})">Add to Cart</button>
 <button onclick="buyNow(${i})">Buy Now</button>
 </div>
 `
-document.getElementById("products").innerHTML+=productsHTML
+products.innerHTML+=productsHTML
 })
+
+function viewProduct(i){
+
+current=i
+slide=0
+
+productPage.style.display="block"
+
+title.innerText=products[i].name
+price.innerText="₹"+products[i].price
+desc.innerText=products[i].desc
+dim.innerText="Dimensions: "+products[i].dim
+
+renderSlider()
+
+}
+
+function closeProduct(){
+productPage.style.display="none"
+}
+
+function renderSlider(){
+
+slideImg.src=products[current].img[slide]
+
+dots.innerHTML=""
+
+products[current].img.forEach((x,i)=>{
+dots.innerHTML+=`<span class="dot ${i==slide?'active':''}"></span>`
+})
+
+}
+
+slideImg.onclick=function(){
+
+slide++
+
+if(slide>=products[current].img.length) slide=0
+
+renderSlider()
+
+}
+
+/* CART */
 
 function addCart(i){
 cart.push(products[i])
@@ -384,7 +511,7 @@ let html=""
 cart.forEach((p,i)=>{
 html+=`
 <div class="checkout-item">
-<img src="${p.img}">
+<img src="${p.img[0]}">
 ${p.name}
 <div class="remove" onclick="removeItem(${i})">✕</div>
 </div>
@@ -397,15 +524,15 @@ cartPopup.style.display="flex"
 
 }
 
-function closeCart(){
-cartPopup.style.display="none"
-}
+function closeCart(){cartPopup.style.display="none"}
 
 function removeItem(i){
 cart.splice(i,1)
 updateCart()
 openCart()
 }
+
+/* CHECKOUT */
 
 function openCheckout(){
 cartPopup.style.display="none"
@@ -438,6 +565,16 @@ window.open(`https://wa.me/919987782822?text=${message}`)
 
 window.location.href=`upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am=${total}&cu=INR`
 
+}
+
+/* ABOUT */
+
+function openAbout(){
+aboutPopup.style.display="flex"
+}
+
+function closeAbout(){
+aboutPopup.style.display="none"
 }
 
 </script>
