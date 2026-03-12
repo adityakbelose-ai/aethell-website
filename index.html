@@ -144,15 +144,21 @@ height:100%;
 background:white;
 z-index:1200;
 overflow:auto;
-padding:20px;
+padding:40px 20px;
+text-align:center;
 }
 
 .closePage{
 position:absolute;
-right:20px;
+right:25px;
 top:20px;
-font-size:24px;
+font-size:26px;
 cursor:pointer;
+}
+
+.slider{
+max-width:420px;
+margin:auto;
 }
 
 .slider img{
@@ -172,6 +178,7 @@ background:#ccc;
 display:inline-block;
 border-radius:50%;
 margin:3px;
+cursor:pointer;
 }
 
 .dot.active{background:black;}
@@ -293,7 +300,6 @@ cursor:pointer;
 <div class="closeSidebar" onclick="toggleMenu()">✕</div>
 <a href="#">Home</a>
 <a onclick="openAbout()">About Us</a>
-<a href="https://docs.google.com/forms/d/e/1FAIpQLSdE6cRXuMMelbPQpyuv9FouDaYFMsJxm6UblKyjkCCFOIllNg/viewform?usp=header">Custom Mirror</a>
 <a href="https://wa.me/919987782822">Contact</a>
 </div>
 
@@ -432,11 +438,16 @@ document.getElementById("slideImg").src=products[current].img[slide]
 let dots=""
 
 products[current].img.forEach((x,i)=>{
-dots+=`<span class="dot ${i==slide?'active':''}"></span>`
+dots+=`<span class="dot ${i==slide?'active':''}" onclick="goSlide(${i})"></span>`
 })
 
 document.getElementById("dots").innerHTML=dots
 
+}
+
+function goSlide(i){
+slide=i
+renderSlider()
 }
 
 document.getElementById("slideImg").onclick=function(){
@@ -500,33 +511,22 @@ document.getElementById("cartPopup").style.display="flex"
 }
 
 function closeCart(){
-
 document.getElementById("cartPopup").style.display="none"
-
 }
 
 function removeItem(i){
-
 cart.splice(i,1)
-
 updateCart()
-
 openCart()
-
 }
 
 function openCheckout(){
-
 document.getElementById("cartPopup").style.display="none"
-
 document.getElementById("checkoutPopup").style.display="flex"
-
 }
 
 function closeCheckout(){
-
 document.getElementById("checkoutPopup").style.display="none"
-
 }
 
 function checkout(){
@@ -554,15 +554,11 @@ window.location.href=`upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am=${total}&c
 }
 
 function openAbout(){
-
 document.getElementById("aboutPopup").style.display="flex"
-
 }
 
 function closeAbout(){
-
 document.getElementById("aboutPopup").style.display="none"
-
 }
 
 </script>
