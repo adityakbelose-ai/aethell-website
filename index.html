@@ -52,6 +52,14 @@ header:before,header:after{content:"";flex:1;height:1px;background:black;margin:
 .dimensions{margin-top:10px;font-size:14px;color:#777;}
 button{width:100%;padding:14px;margin-top:10px;border:none;background:black;color:white;font-size:15px;cursor:pointer;}
 
+/* Slide navigation */
+.slide-container{position:relative;}
+.slide-img{width:100%;display:none;border-radius:10px;}
+.slide-img.active{display:block;}
+.slide-dots{text-align:center;margin-top:10px;}
+.dot{height:10px;width:10px;margin:0 3px;background:#bbb;border-radius:50%;display:inline-block;cursor:pointer;}
+.dot.active{background:black;}
+
 /* Cart popup */
 .popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:none;justify-content:center;align-items:center;z-index:1500;}
 .popup-content{background:white;padding:25px;width:90%;max-width:420px;border-radius:10px;position:relative;}
@@ -128,10 +136,11 @@ input{width:100%;padding:12px;margin:8px 0;}
 </div>
 </section>
 
-<!-- Viewer Popup -->
+<!-- Viewer Popup with Slides -->
 <div id="viewer">
 <div class="viewer-content">
-<img id="viewerImg">
+<div class="slide-container" id="slideContainer"></div>
+<div class="slide-dots" id="dots"></div>
 <h2 id="viewerTitle"></h2>
 <p id="viewerDesc" class="desc"></p>
 <p id="viewerDim" class="dimensions"></p>
@@ -141,7 +150,7 @@ input{width:100%;padding:12px;margin:8px 0;}
 </div>
 </div>
 
-<!-- Cart / Checkout Popup -->
+<!-- Cart Popup -->
 <div class="popup" id="checkout">
 <div class="popup-content">
 <div class="closePopup" onclick="closePopup()">✕</div>
@@ -169,54 +178,61 @@ input{width:100%;padding:12px;margin:8px 0;}
 
 <script>
 setTimeout(()=>{document.getElementById("loader").style.display="none"},1200)
-
-/* Sidebar */
 function toggleMenu(){document.getElementById("sidebar").classList.toggle("open")}
 
-/* Products & Cart */
+/* Product Data with multiple slides */
 let products=[
-{name:"CMIYGL Mirror",price:5999,img:"cmiygl1.jpg",desc:"A reflective reinterpretation of the iconic CMIYGL aesthetic. This piece captures the bold visual energy of the album cover and translates it into a modern decor object that blends art, music culture, and minimal luxury.",dim:'15" x 24"'},
-{name:"MS PAINT Mirror",price:8999,img:"mspaint1.jpg",desc:"A retro-modern tribute to the early days of digital creativity. Inspired by the playful imperfections of classic software design, this mirror transforms nostalgic technology into a sleek contemporary statement.",dim:'47" x 31"'},
-{name:"reCAPTCHA Mirror",price:5999,img:"captcha1.jpg",desc:"Identity is something we constantly prove to the world. Inspired by the familiar verification symbol, this piece represents the moment of confirmation — a reflection that reminds us that to become something greater, we must first verify who we are.",dim:'42" x 31"'},
-{name:"Queen of Hearts Mirror",price:5499,img:"queen1.jpg",desc:"Royal aesthetics designed for spaces that carry confidence and character. A mirror that reflects elegance and bold personality — made for those who rule their space.",dim:'48" x 31"'},
-{name:"King of Hearts Mirror",price:5499,img:"king1.jpg",desc:"Powerful, balanced, and unmistakably regal. A mirror crafted to bring authority and presence into modern interiors.",dim:'48" x 31"'}
+{name:"CMIYGL Mirror",price:5999,imgs:["cmiygl1.jpg","cmiygl2.jpg","cmiygl3.jpg"],desc:"A reflective reinterpretation of the iconic CMIYGL aesthetic. This piece captures the bold visual energy of the album cover and translates it into a modern decor object that blends art, music culture, and minimal luxury.",dim:'15" x 24"'},
+{name:"MS PAINT Mirror",price:8999,imgs:["mspaint1.jpg","mspaint2.jpg","mspaint3.jpg"],desc:"A retro-modern tribute to the early days of digital creativity. Inspired by the playful imperfections of classic software design, this mirror transforms nostalgic technology into a sleek contemporary statement.",dim:'47" x 31"'},
+{name:"reCAPTCHA Mirror",price:5999,imgs:["captcha1.jpg"],desc:"Identity is something we constantly prove to the world. Inspired by the familiar verification symbol, this piece represents the moment of confirmation — a reflection that reminds us that to become something greater, we must first verify who we are.",dim:'42" x 31"'},
+{name:"Queen of Hearts Mirror",price:5499,imgs:["queen1.jpg"],desc:"Royal aesthetics designed for spaces that carry confidence and character. A mirror that reflects elegance and bold personality — made for those who rule their space.",dim:'48" x 31"'},
+{name:"King of Hearts Mirror",price:5499,imgs:["king1.jpg"],desc:"Powerful, balanced, and unmistakably regal. A mirror crafted to bring authority and presence into modern interiors.",dim:'48" x 31"'}
 ];
 
 let selected=null,cart=[];
+let currentSlide=0;
 
 function openViewer(i){
-selected=i;
-document.getElementById("viewerImg").src=products[i].img;
+selected=i;currentSlide=0;
 document.getElementById("viewerTitle").innerText=products[i].name;
 document.getElementById("viewerDesc").innerText=products[i].desc;
 document.getElementById("viewerDim").innerText="Dimensions: "+products[i].dim;
 document.getElementById("viewer").style.display="block";
 document.querySelectorAll('.product').forEach(p=>p.classList.remove('active'));
 document.getElementById("product"+i).classList.add('active');
+loadSlides();
+}
+
+function loadSlides(){
+let container=document.getElementById("slideContainer");
+let dotsDiv=document.getElementById("dots");
+container.innerHTML="";dotsDiv.innerHTML="";
+products[selected].imgs.forEach((img,j)=>{
+let im=document.createElement("img");im.src=img;im.className="slide-img";if(j===0)im.classList.add("active");
+im.onclick=()=>{currentSlide=j;updateSlides();};
+container.appendChild(im);
+let dot=document.createElement("span");dot.className="dot";if(j===0)dot.classList.add("active");dot.onclick=()=>{currentSlide=j;updateSlides();};
+dotsDiv.appendChild(dot);
+});
+}
+
+function updateSlides(){
+let slides=document.querySelectorAll(".slide-img");
+let dots=document.querySelectorAll(".dot");
+slides.forEach((s,i)=>s.classList.toggle("active",i===currentSlide));
+dots.forEach((d,i)=>d.classList.toggle("active",i===currentSlide));
 }
 
 function closeViewer(){document.getElementById("viewer").style.display="none";document.querySelectorAll('.product').forEach(p=>p.classList.remove('active'));}
 
 function addToCart(){cart.push(products[selected]);document.getElementById("count").innerText=cart.length;showToast();}
-
 function buyNow(){cart=[products[selected]];document.getElementById("count").innerText=cart.length;openCart();}
-
-function showToast(){let toast=document.getElementById("cartToast");toast.style.display="block";setTimeout(()=>{toast.style.display="none"},1500);}
-
-/* Cart / Checkout */
-function openCart(){
-let html="";
-cart.forEach((p,i)=>{html+=`<div class="checkout-item"><img src="${p.img}"><div>${p.name}</div><div class="remove" onclick="removeItem(${i})">✕</div></div>`;});
-document.getElementById("cartItems").innerHTML=html;
-document.getElementById("checkout").style.display="flex";
-}
+function showToast(){let t=document.getElementById("cartToast");t.style.display="block";setTimeout(()=>{t.style.display="none"},1500);}
+function openCart(){let html="";cart.forEach((p,i)=>{html+=`<div class="checkout-item"><img src="${p.imgs[0]}"><div>${p.name}</div><div class="remove" onclick="removeItem(${i})">✕</div></div>`;});document.getElementById("cartItems").innerHTML=html;document.getElementById("checkout").style.display="flex";}
 function removeItem(i){cart.splice(i,1);document.getElementById("count").innerText=cart.length;openCart();}
 function closePopup(){document.querySelectorAll(".popup").forEach(p=>p.style.display="none");}
 function openAbout(){document.getElementById("about").style.display="flex";}
-function checkout(){
-let total=0;cart.forEach(p=>total+=p.price);
-window.location.href="upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am="+total+"&cu=INR";
-}
+function checkout(){let total=0;cart.forEach(p=>total+=p.price);window.location.href="upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am="+total+"&cu=INR";}
 </script>
 </body>
 </html>
