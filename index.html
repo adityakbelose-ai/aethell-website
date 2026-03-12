@@ -27,8 +27,6 @@ letter-spacing:6px;
 z-index:2000;
 }
 
-/* HEADER */
-
 header{
 display:flex;
 align-items:center;
@@ -45,8 +43,6 @@ height:1px;
 background:black;
 margin:0 15px;
 }
-
-/* MENU */
 
 .menu{
 position:fixed;
@@ -89,8 +85,6 @@ text-decoration:none;
 color:black;
 }
 
-/* CART ICON */
-
 .cart{
 position:fixed;
 right:20px;
@@ -102,8 +96,6 @@ border-radius:20px;
 cursor:pointer;
 z-index:1001;
 }
-
-/* PRODUCTS */
 
 .products{
 padding:20px;
@@ -126,8 +118,6 @@ transform:translateY(0);
 cursor:pointer;
 }
 
-/* IMAGE WRAP */
-
 .imageWrap{
 position:relative;
 border-radius:10px;
@@ -138,34 +128,6 @@ width:100%;
 border-radius:10px;
 }
 
-/* GLOW */
-
-.imageWrap::before{
-content:"";
-position:absolute;
-top:-5px;
-left:-5px;
-right:-5px;
-bottom:-5px;
-border-radius:12px;
-background:linear-gradient(45deg,#ff00ff,#00ffff,#ff00ff,#00ffff);
-background-size:400% 400%;
-opacity:0;
-animation:glow 6s linear infinite;
-transition:.3s;
-pointer-events:none;
-}
-
-.imageWrap:hover::before{
-opacity:1;
-}
-
-@keyframes glow{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-}
-
 .product h3{
 margin:10px 0 5px;
 font-size:16px;
@@ -174,8 +136,6 @@ font-size:16px;
 .product p{
 margin:0;
 }
-
-/* BUTTONS */
 
 .product button{
 width:100%;
@@ -191,8 +151,6 @@ transition:.15s;
 .product button:active{
 transform:scale(.95);
 }
-
-/* PRODUCT PAGE */
 
 #productPage{
 display:none;
@@ -227,8 +185,6 @@ border:none;
 background:black;
 color:white;
 }
-
-/* POPUPS */
 
 .popup{
 position:fixed;
@@ -347,39 +303,25 @@ display:none;
 
 <div id="toast">Added to Cart</div>
 
-<!-- CART POPUP -->
-
 <div class="popup" id="cartPopup">
 <div class="popup-content">
-
 <div class="closePopup" onclick="closeCart()">✕</div>
-
 <h2>Your Cart</h2>
-
 <div id="cartItems"></div>
-
 <button class="cartButton" onclick="openCheckout()">Proceed to Checkout</button>
-
 </div>
 </div>
-
-<!-- CHECKOUT -->
 
 <div class="popup" id="checkoutPopup">
 <div class="popup-content">
-
 <div class="closePopup" onclick="closeCheckout()">✕</div>
-
 <h2>Checkout</h2>
-
 <input id="name" placeholder="Name">
 <input id="building" placeholder="Building / Society">
 <input id="flat" placeholder="Flat Number">
 <input id="area" placeholder="Area / Street">
 <input id="pincode" placeholder="Pincode">
-
 <button class="cartButton" onclick="checkout()">Pay With UPI</button>
-
 </div>
 </div>
 
