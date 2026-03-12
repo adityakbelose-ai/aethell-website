@@ -5,182 +5,116 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AETHELL</title>
 <style>
-body{margin:0;font-family:Arial;background:white;color:black;}
-#loader{position:fixed;width:100%;height:100%;background:black;color:white;display:flex;justify-content:center;align-items:center;font-size:36px;letter-spacing:6px;z-index:2000;}
-header{display:flex;align-items:center;justify-content:center;margin:30px 0;font-size:30px;letter-spacing:5px;}
-header:before,header:after{content:"";flex:1;height:1px;background:black;margin:0 15px;}
-.menu{position:fixed;left:20px;top:20px;font-size:28px;cursor:pointer;z-index:1001;}
-.sidebar{position:fixed;left:-270px;top:0;width:270px;height:100%;background:white;box-shadow:2px 0 10px rgba(0,0,0,0.15);transition:.3s;padding-top:60px;z-index:1000;}
-.sidebar.open{left:0;}
-.closeSidebar{position:absolute;top:15px;right:20px;font-size:20px;cursor:pointer;}
-.sidebar a{display:block;padding:15px 25px;text-decoration:none;color:black;font-size:16px;}
-.cart{position:fixed;right:20px;top:20px;background:black;color:white;padding:8px 14px;border-radius:20px;cursor:pointer;z-index:1001;}
-.products{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-.product{cursor:pointer;position:relative;transition:0.3s;}
-.product img{width:100%;border-radius:10px;display:block;position:relative;z-index:1;}
-.product h3{margin:10px 0 5px 0;font-size:16px;}
-.product p{margin:0;font-size:14px;}
-.product button{width:100%;padding:10px;margin-top:6px;border:none;background:black;color:white;cursor:pointer;transition:0.3s;}
-
-/* Glowing effect */
-.product::before{
-  content:"";
-  position:absolute;
-  top:-5px; left:-5px; right:-5px; bottom:-5px;
-  border-radius:12px;
-  background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #00ffff);
-  background-size: 400% 400%;
-  z-index:0;
-  opacity:0;
-  transition:0.3s;
-  animation: glow 5s linear infinite;
-}
-.product:hover::before, .product.active::before{
-  opacity:1;
-}
-@keyframes glow{
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
-}
-
-/* Popup Viewer */
-#viewer{position:fixed;top:0;left:0;width:100%;height:100%;background:white;display:none;overflow:auto;z-index:999;}
-.viewer-content{padding:20px;max-width:500px;margin:auto;}
-.viewer-content img{width:100%;border-radius:10px;}
-.desc{margin-top:15px;font-size:15px;line-height:1.6;color:#444;}
-.dimensions{margin-top:10px;font-size:14px;color:#777;}
-button{width:100%;padding:14px;margin-top:10px;border:none;background:black;color:white;font-size:15px;cursor:pointer;}
-
-/* Slide navigation */
-.slide-container{position:relative;}
-.slide-img{width:100%;display:none;border-radius:10px;}
+body{margin:0;font-family:Arial;background:white;color:black;overflow-x:hidden;}
+/* Loading screen */
+#loader{position:fixed;width:100%;height:100%;background:black;color:white;display:flex;justify-content:center;align-items:center;font-size:36px;letter-spacing:5px;z-index:1000;}
+/* header */
+header{display:flex;justify-content:center;align-items:center;padding:20px;font-size:28px;letter-spacing:4px;position:relative;}
+header::before, header::after{content:"";position:absolute;top:50%;width:50px;height:1px;background:black;}
+header::before{left:0;} header::after{right:0;}
+/* sidebar */
+#menuBtn{position:absolute;left:20px;top:20px;font-size:28px;cursor:pointer;z-index:999;}
+#sidebar{position:fixed;top:0;left:-300px;width:250px;height:100%;background:white;box-shadow:2px 0 10px rgba(0,0,0,0.2);padding:20px;transition:0.3s;z-index:1000;}
+#sidebar.open{left:0;}
+#sidebar h3{margin:10px 0;cursor:pointer;}
+#sidebar .closeSidebar{position:absolute;top:10px;right:10px;cursor:pointer;font-size:24px;}
+/* product grid */
+.products{display:flex;flex-wrap:wrap;padding:20px;gap:20px;justify-content:center;}
+.product{width:45%;margin-bottom:20px;cursor:pointer;position:relative;transition:0.3s; border-radius:10px;}
+.product:hover{box-shadow:0 0 15px rgba(0,0,0,0.2);}
+.product img{width:100%;border-radius:10px;display:block;transition:0.4s;}
+.product h3,p{text-align:center;margin:5px 0;}
+/* viewer */
+#viewer{position:fixed;top:0;left:0;width:100%;height:100%;background:white;display:none;overflow:hidden;z-index:1000;flex-direction:column;}
+.viewer-content{padding:20px;display:flex;flex-direction:column;align-items:center;position:relative;}
+#slideContainer{width:100%;overflow:hidden;position:relative;}
+.slide-img{display:none;width:100%;border-radius:10px;}
 .slide-img.active{display:block;}
-.slide-dots{text-align:center;margin-top:10px;}
+#dots{margin:10px 0;text-align:center;}
 .dot{height:10px;width:10px;margin:0 3px;background:#bbb;border-radius:50%;display:inline-block;cursor:pointer;}
 .dot.active{background:black;}
-
-/* Cart popup */
-.popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:none;justify-content:center;align-items:center;z-index:1500;}
-.popup-content{background:white;padding:25px;width:90%;max-width:420px;border-radius:10px;position:relative;}
-.closePopup{position:absolute;top:10px;right:15px;font-size:18px;cursor:pointer;}
-.checkout-item{display:flex;align-items:center;margin-bottom:10px;}
-.checkout-item img{width:60px;margin-right:10px;border-radius:6px;}
-.remove{margin-left:auto;color:red;cursor:pointer;}
-input{width:100%;padding:12px;margin:8px 0;}
-
-/* Instagram button */
-.ig{position:fixed;bottom:20px;right:20px;width:50px;height:50px;background:black;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-#cartToast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:black;color:white;padding:10px 20px;border-radius:6px;display:none;z-index:2000;}
-
-/* About us */
-#about h2{margin-top:0;}
+#viewerTitle{font-size:24px;margin:10px 0;text-align:center;}
+#viewerDesc{margin:10px 0;font-size:16px;color:#444;text-align:center;}
+#viewerDim{font-size:14px;color:#777;margin-bottom:10px;}
+button{width:90%;padding:12px;margin:5px 0;border:none;background:black;color:white;font-size:15px;cursor:pointer;border-radius:5px;}
+/* cart */
+#cartBtn{position:fixed;top:20px;right:20px;background:black;color:white;padding:8px 14px;border-radius:20px;cursor:pointer;z-index:999;}
+#count{font-weight:bold;margin-left:5px;}
+#cartToast{position:fixed;top:80px;right:20px;background:black;color:white;padding:10px 15px;border-radius:5px;display:none;z-index:1000;}
+/* checkout popup */
+#checkout,#about{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.95);justify-content:center;align-items:center;z-index:1000;flex-direction:column;padding:20px;overflow:auto;}
+.checkout-item{display:flex;align-items:center;margin:10px 0;}
+.checkout-item img{width:60px;height:60px;margin-right:10px;border-radius:5px;}
+.checkout-item .remove{margin-left:auto;color:red;cursor:pointer;font-size:18px;}
+input{width:90%;padding:10px;margin:8px 0;}
+#about .closeBtn{position:absolute;top:10px;right:10px;font-size:24px;cursor:pointer;}
+/* floating instagram */
+#instaBtn{position:fixed;bottom:20px;right:20px;width:50px;height:50px;border-radius:50%;background:black;color:white;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:18px;cursor:pointer;z-index:999;}
 </style>
 </head>
 <body>
-
 <div id="loader">AETHELL</div>
-
-<div class="menu" onclick="toggleMenu()">☰</div>
-<div class="cart" onclick="openCart()">🛒 <span id="count">0</span></div>
-
-<div class="sidebar" id="sidebar">
+<header><div id="menuBtn" onclick="toggleMenu()">☰</div>AETHELL</header>
+<div id="sidebar">
 <div class="closeSidebar" onclick="toggleMenu()">✕</div>
-<a href="#">Home</a>
-<a onclick="openAbout()">About Us</a>
-<a href="https://docs.google.com/forms/d/e/1FAIpQLSdE6cRXuMMelbPQpyuv9FouDaYFMsJxm6UblKyjkCCFOIllNg/viewform?usp=header" target="_blank">Custom Mirror</a>
-<a href="https://wa.me/919987782822">Contact Us</a>
+<h3 onclick="toggleMenu();">Home</h3>
+<h3 onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSdE6cRXuMMelbPQpyuv9FouDaYFMsJxm6UblKyjkCCFOIllNg/viewform?usp=header','_blank')">Custom Mirror</h3>
+<h3 onclick="openAbout()">About Us</h3>
+<h3 onclick="window.open('https://wa.me/919987782822','_blank')">Contact Us</h3>
 </div>
 
-<header>AETHELL</header>
+<div id="cartBtn" onclick="openCart()">🛒 <span id="count">0</span></div>
+<div id="cartToast">Added to cart</div>
+<div id="instaBtn" onclick="window.open('https://instagram.com/aethell.in','_blank')">IG</div>
 
 <section class="products">
-<div class="product" id="product0">
-<img src="cmiygl1.jpg" onclick="openViewer(0)">
-<h3>CMIYGL Mirror</h3>
-<p>₹5,999</p>
-<button onclick="openViewer(0)">Add to Cart</button>
-<button onclick="openViewer(0)">Buy Now</button>
-</div>
-
-<div class="product" id="product1">
-<img src="mspaint1.jpg" onclick="openViewer(1)">
-<h3>MS PAINT Mirror</h3>
-<p>₹8,999</p>
-<button onclick="openViewer(1)">Add to Cart</button>
-<button onclick="openViewer(1)">Buy Now</button>
-</div>
-
-<div class="product" id="product2">
-<img src="captcha1.jpg" onclick="openViewer(2)">
-<h3>reCAPTCHA Mirror</h3>
-<p>₹5,999</p>
-<button onclick="openViewer(2)">Add to Cart</button>
-<button onclick="openViewer(2)">Buy Now</button>
-</div>
-
-<div class="product" id="product3">
-<img src="queen1.jpg" onclick="openViewer(3)">
-<h3>Queen of Hearts Mirror</h3>
-<p>₹5,499</p>
-<button onclick="openViewer(3)">Add to Cart</button>
-<button onclick="openViewer(3)">Buy Now</button>
-</div>
-
-<div class="product" id="product4">
-<img src="king1.jpg" onclick="openViewer(4)">
-<h3>King of Hearts Mirror</h3>
-<p>₹5,499</p>
-<button onclick="openViewer(4)">Add to Cart</button>
-<button onclick="openViewer(4)">Buy Now</button>
-</div>
+<div class="product" id="product0" onclick="openViewer(0)"><img src="cmiygl1.jpg"><h3>CMIYGL Mirror</h3><p>₹5,999</p></div>
+<div class="product" id="product1" onclick="openViewer(1)"><img src="mspaint1.jpg"><h3>MS PAINT Mirror</h3><p>₹8,999</p></div>
+<div class="product" id="product2" onclick="openViewer(2)"><img src="captcha1.jpg"><h3>reCAPTCHA Mirror</h3><p>₹5,999</p></div>
+<div class="product" id="product3" onclick="openViewer(3)"><img src="queen1.jpg"><h3>Queen of Hearts Mirror</h3><p>₹5,499</p></div>
+<div class="product" id="product4" onclick="openViewer(4)"><img src="king1.jpg"><h3>King of Hearts Mirror</h3><p>₹5,499</p></div>
 </section>
 
-<!-- Viewer Popup with Slides -->
+<!-- Product viewer -->
 <div id="viewer">
 <div class="viewer-content">
-<div class="slide-container" id="slideContainer"></div>
-<div class="slide-dots" id="dots"></div>
+<div id="slideContainer"></div>
+<div id="dots"></div>
 <h2 id="viewerTitle"></h2>
-<p id="viewerDesc" class="desc"></p>
-<p id="viewerDim" class="dimensions"></p>
-<button onclick="addToCart()">Add To Cart</button>
+<p id="viewerDesc"></p>
+<p id="viewerDim"></p>
+<button onclick="addToCart()">Add to Cart</button>
 <button onclick="buyNow()">Buy Now</button>
 <button onclick="closeViewer()">Close</button>
 </div>
 </div>
 
-<!-- Cart Popup -->
-<div class="popup" id="checkout">
-<div class="popup-content">
-<div class="closePopup" onclick="closePopup()">✕</div>
-<h2>Your Cart</h2>
+<!-- Checkout popup -->
+<div id="checkout">
+<h2>Checkout</h2>
 <div id="cartItems"></div>
-<input placeholder="Building / Society">
-<input placeholder="Flat Number">
-<input placeholder="Area / Street">
-<input placeholder="Pincode">
-<button onclick="checkout()">Pay With UPI</button>
-</div>
+<input id="building" placeholder="Building / Society">
+<input id="flat" placeholder="Flat Number">
+<input id="area" placeholder="Area / Street">
+<input id="pincode" placeholder="Pincode">
+<label><input type="radio" name="pay" value="upi" checked>UPI / GPay</label><br>
+<label><input type="radio" name="pay" value="cod">Cash on Delivery</label><br>
+<button onclick="checkout()">Checkout</button>
+<button onclick="closePopup()">Close</button>
 </div>
 
-<!-- About Us Popup -->
-<div class="popup" id="about">
-<div class="popup-content">
-<div class="closePopup" onclick="closePopup()">✕</div>
-<h2>About AETHELL</h2>
+<!-- About popup -->
+<div id="about">
+<div class="closeBtn" onclick="closePopup()">✕</div>
+<h2>About Aethell</h2>
 <p>It started from a simple problem. I wanted something for my room that looked cool, minimal and premium but most mirrors available felt basic or outdated. So Aethell was born. A brand focused on modern, Gen-Z inspired mirror designs that elevate your space while reflecting your personality. Each mirror is designed to feel like more than just decor. It becomes a statement piece in your room. We also offer custom mirror designs so you can create something that perfectly fits your aesthetic and vision. Aethell isn't just about mirrors - it's about creating a space that feels uniquely yours.</p>
 </div>
-</div>
-
-<div class="ig" onclick="window.open('https://instagram.com/aethell.in')">IG</div>
-<div id="cartToast">Added to Cart</div>
 
 <script>
 setTimeout(()=>{document.getElementById("loader").style.display="none"},1200)
 function toggleMenu(){document.getElementById("sidebar").classList.toggle("open")}
 
-/* Product Data with multiple slides */
+/* Product Data */
 let products=[
 {name:"CMIYGL Mirror",price:5999,imgs:["cmiygl1.jpg","cmiygl2.jpg","cmiygl3.jpg"],desc:"A reflective reinterpretation of the iconic CMIYGL aesthetic. This piece captures the bold visual energy of the album cover and translates it into a modern decor object that blends art, music culture, and minimal luxury.",dim:'15" x 24"'},
 {name:"MS PAINT Mirror",price:8999,imgs:["mspaint1.jpg","mspaint2.jpg","mspaint3.jpg"],desc:"A retro-modern tribute to the early days of digital creativity. Inspired by the playful imperfections of classic software design, this mirror transforms nostalgic technology into a sleek contemporary statement.",dim:'47" x 31"'},
@@ -189,31 +123,40 @@ let products=[
 {name:"King of Hearts Mirror",price:5499,imgs:["king1.jpg"],desc:"Powerful, balanced, and unmistakably regal. A mirror crafted to bring authority and presence into modern interiors.",dim:'48" x 31"'}
 ];
 
-let selected=null,cart=[];
-let currentSlide=0;
+let selected=null, cart=[], currentSlide=0;
+let touchStartX=0, touchEndX=0;
 
 function openViewer(i){
-selected=i;currentSlide=0;
+selected=i; currentSlide=0;
 document.getElementById("viewerTitle").innerText=products[i].name;
 document.getElementById("viewerDesc").innerText=products[i].desc;
 document.getElementById("viewerDim").innerText="Dimensions: "+products[i].dim;
-document.getElementById("viewer").style.display="block";
-document.querySelectorAll('.product').forEach(p=>p.classList.remove('active'));
-document.getElementById("product"+i).classList.add('active');
+document.getElementById("viewer").style.display="flex";
 loadSlides();
 }
 
 function loadSlides(){
 let container=document.getElementById("slideContainer");
 let dotsDiv=document.getElementById("dots");
-container.innerHTML="";dotsDiv.innerHTML="";
+container.innerHTML=""; dotsDiv.innerHTML="";
 products[selected].imgs.forEach((img,j)=>{
-let im=document.createElement("img");im.src=img;im.className="slide-img";if(j===0)im.classList.add("active");
-im.onclick=()=>{currentSlide=j;updateSlides();};
+let im=document.createElement("img");
+im.src=img; im.className="slide-img"; if(j===0) im.classList.add("active");
 container.appendChild(im);
-let dot=document.createElement("span");dot.className="dot";if(j===0)dot.classList.add("active");dot.onclick=()=>{currentSlide=j;updateSlides();};
+
+let dot=document.createElement("span"); dot.className="dot"; if(j===0) dot.classList.add("active");
+dot.onclick=()=>{currentSlide=j; updateSlides();};
 dotsDiv.appendChild(dot);
 });
+
+// swipe support
+container.ontouchstart = function(e){ touchStartX=e.changedTouches[0].screenX; }
+container.ontouchend = function(e){ touchEndX=e.changedTouches[0].screenX; handleSwipe(); }
+}
+
+function handleSwipe(){
+if(touchEndX < touchStartX - 50){ currentSlide=(currentSlide+1)%products[selected].imgs.length; updateSlides(); }
+if(touchEndX > touchStartX + 50){ currentSlide=(currentSlide-1+products[selected].imgs.length)%products[selected].imgs.length; updateSlides(); }
 }
 
 function updateSlides(){
@@ -223,16 +166,14 @@ slides.forEach((s,i)=>s.classList.toggle("active",i===currentSlide));
 dots.forEach((d,i)=>d.classList.toggle("active",i===currentSlide));
 }
 
-function closeViewer(){document.getElementById("viewer").style.display="none";document.querySelectorAll('.product').forEach(p=>p.classList.remove('active'));}
-
-function addToCart(){cart.push(products[selected]);document.getElementById("count").innerText=cart.length;showToast();}
-function buyNow(){cart=[products[selected]];document.getElementById("count").innerText=cart.length;openCart();}
-function showToast(){let t=document.getElementById("cartToast");t.style.display="block";setTimeout(()=>{t.style.display="none"},1500);}
-function openCart(){let html="";cart.forEach((p,i)=>{html+=`<div class="checkout-item"><img src="${p.imgs[0]}"><div>${p.name}</div><div class="remove" onclick="removeItem(${i})">✕</div></div>`;});document.getElementById("cartItems").innerHTML=html;document.getElementById("checkout").style.display="flex";}
-function removeItem(i){cart.splice(i,1);document.getElementById("count").innerText=cart.length;openCart();}
-function closePopup(){document.querySelectorAll(".popup").forEach(p=>p.style.display="none");}
+function closeViewer(){document.getElementById("viewer").style.display="none";}
+function addToCart(){cart.push(products[selected]); document.getElementById("count").innerText=cart.length; document.getElementById("cartToast").style.display="block"; setTimeout(()=>{document.getElementById("cartToast").style.display="none"},1500);}
+function buyNow(){cart=[products[selected]]; document.getElementById("count").innerText=cart.length; openCart();}
+function openCart(){let html=""; cart.forEach((p,i)=>{html+=`<div class="checkout-item"><img src="${p.imgs[0]}"><div>${p.name}</div><div class="remove" onclick="removeItem(${i})">✕</div></div>`;}); document.getElementById("cartItems").innerHTML=html; document.getElementById("checkout").style.display="flex";}
+function removeItem(i){cart.splice(i,1); document.getElementById("count").innerText=cart.length; openCart();}
+function closePopup(){document.querySelectorAll(".popup, #checkout, #about").forEach(p=>p.style.display="none");}
 function openAbout(){document.getElementById("about").style.display="flex";}
-function checkout(){let total=0;cart.forEach(p=>total+=p.price);window.location.href="upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am="+total+"&cu=INR";}
+function checkout(){let total=0; cart.forEach(p=>total+=p.price); let payment=document.querySelector('input[name="pay"]:checked').value; if(payment==="upi"){window.location.href="upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am="+total+"&cu=INR";} else {let order="New Order%0A"; cart.forEach(p=>{order+=p.name+"%0A";}); window.location.href="https://wa.me/919987782822?text="+order;}}
 </script>
 </body>
 </html>
