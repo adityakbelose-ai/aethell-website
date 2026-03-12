@@ -144,7 +144,7 @@ height:100%;
 background:white;
 z-index:1200;
 overflow:auto;
-padding:40px 20px;
+padding:30px 20px;
 text-align:center;
 }
 
@@ -157,12 +157,14 @@ cursor:pointer;
 }
 
 .slider{
-max-width:420px;
+max-width:320px;
 margin:auto;
 }
 
 .slider img{
 width:100%;
+max-height:60vh;
+object-fit:contain;
 border-radius:10px;
 }
 
@@ -450,15 +452,32 @@ slide=i
 renderSlider()
 }
 
-document.getElementById("slideImg").onclick=function(){
+let startX=0
 
+const slider=document.getElementById("slideImg")
+
+slider.addEventListener("touchstart",e=>{
+startX=e.touches[0].clientX
+})
+
+slider.addEventListener("touchend",e=>{
+
+let endX=e.changedTouches[0].clientX
+
+if(startX-endX>50){
 slide++
+}
+
+if(endX-startX>50){
+slide--
+}
 
 if(slide>=products[current].img.length) slide=0
+if(slide<0) slide=products[current].img.length-1
 
 renderSlider()
 
-}
+})
 
 function addCart(i){
 
@@ -483,9 +502,7 @@ openCheckout()
 }
 
 function updateCart(){
-
 document.getElementById("count").innerText=cart.length
-
 }
 
 function openCart(){
