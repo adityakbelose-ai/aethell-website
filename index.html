@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -133,8 +134,6 @@ transform:scale(.95);
 .product h3{margin:10px 0 5px;}
 .product p{margin:0;}
 
-/* PRODUCT PAGE */
-
 #productPage{
 display:none;
 position:fixed;
@@ -186,8 +185,6 @@ line-height:1.5;
 margin-top:10px;
 font-weight:bold;
 }
-
-/* POPUPS */
 
 .popup{
 position:fixed;
@@ -302,11 +299,9 @@ cursor:pointer;
 
 <header>AETHELL</header>
 
-<section class="products" id="products"></section>
+<section class="products" id="productContainer"></section>
 
 <div id="toast">Added to Cart</div>
-
-<!-- PRODUCT PAGE -->
 
 <div id="productPage">
 
@@ -329,8 +324,6 @@ cursor:pointer;
 
 </div>
 
-<!-- CART -->
-
 <div class="popup" id="cartPopup">
 <div class="popup-content">
 <div class="closePopup" onclick="closeCart()">✕</div>
@@ -339,8 +332,6 @@ cursor:pointer;
 <button class="cartButton" onclick="openCheckout()">Proceed to Checkout</button>
 </div>
 </div>
-
-<!-- CHECKOUT -->
 
 <div class="popup" id="checkoutPopup">
 <div class="popup-content">
@@ -358,8 +349,6 @@ cursor:pointer;
 </div>
 </div>
 
-<!-- ABOUT -->
-
 <div class="popup" id="aboutPopup">
 <div class="popup-content">
 <div class="closePopup" onclick="closeAbout()">✕</div>
@@ -374,55 +363,25 @@ cursor:pointer;
 
 <script>
 
-setTimeout(()=>loader.style.display="none",1000)
+setTimeout(()=>document.getElementById("loader").style.display="none",1000)
 
 function toggleMenu(){
-sidebar.classList.toggle("open")
+document.getElementById("sidebar").classList.toggle("open")
 }
 
-/* PRODUCTS */
+const productContainer=document.getElementById("productContainer")
 
 let products=[
 
-{
-name:"CMIYGL Mirror",
-price:5999,
-img:["cmiygl1.jpg","cmiygl2.jpg","cmiygl3.jpg"],
-desc:"A reflective reinterpretation of the iconic CMIYGL aesthetic. This piece transforms bold music culture into a modern decor object.",
-dim:"15 x 24 inches"
-},
+{name:"CMIYGL Mirror",price:5999,img:["cmiygl1.jpg","cmiygl2.jpg","cmiygl3.jpg"],desc:"A reflective reinterpretation of the iconic CMIYGL aesthetic.",dim:"15 x 24 inches"},
 
-{
-name:"MS PAINT Mirror",
-price:8999,
-img:["mspaint1.jpg","mspaint2.jpg","mspaint3.jpg"],
-desc:"A retro-modern tribute to early digital creativity inspired by nostalgic software design.",
-dim:"47 x 31 inches"
-},
+{name:"MS PAINT Mirror",price:8999,img:["mspaint1.jpg","mspaint2.jpg","mspaint3.jpg"],desc:"A retro-modern tribute to early digital creativity.",dim:"47 x 31 inches"},
 
-{
-name:"reCAPTCHA Mirror",
-price:5999,
-img:["captcha1.jpg"],
-desc:"A mirror inspired by identity and verification. A reminder that before becoming something greater, we first prove who we are.",
-dim:"42 x 31 inches"
-},
+{name:"reCAPTCHA Mirror",price:5999,img:["captcha1.jpg"],desc:"A mirror inspired by identity and verification.",dim:"42 x 31 inches"},
 
-{
-name:"Queen of Hearts",
-price:5499,
-img:["queen1.jpg"],
-desc:"Royal aesthetics designed for spaces that carry confidence and character.",
-dim:"48 x 31 inches"
-},
+{name:"Queen of Hearts",price:5499,img:["queen1.jpg"],desc:"Royal aesthetics designed for confident spaces.",dim:"48 x 31 inches"},
 
-{
-name:"King of Hearts",
-price:5499,
-img:["king1.jpg"],
-desc:"Powerful, balanced and unmistakably regal. Designed to bring authority into modern interiors.",
-dim:"48 x 31 inches"
-}
+{name:"King of Hearts",price:5499,img:["king1.jpg"],desc:"Powerful, balanced and unmistakably regal.",dim:"48 x 31 inches"}
 
 ]
 
@@ -431,7 +390,8 @@ let current=0
 let slide=0
 
 products.forEach((p,i)=>{
-productsHTML=`
+
+let html=`
 <div class="product">
 <img src="${p.img[0]}" onclick="viewProduct(${i})">
 <h3>${p.name}</h3>
@@ -440,7 +400,9 @@ productsHTML=`
 <button onclick="buyNow(${i})">Buy Now</button>
 </div>
 `
-products.innerHTML+=productsHTML
+
+productContainer.innerHTML+=html
+
 })
 
 function viewProduct(i){
@@ -448,34 +410,36 @@ function viewProduct(i){
 current=i
 slide=0
 
-productPage.style.display="block"
+document.getElementById("productPage").style.display="block"
 
-title.innerText=products[i].name
-price.innerText="₹"+products[i].price
-desc.innerText=products[i].desc
-dim.innerText="Dimensions: "+products[i].dim
+document.getElementById("title").innerText=products[i].name
+document.getElementById("price").innerText="₹"+products[i].price
+document.getElementById("desc").innerText=products[i].desc
+document.getElementById("dim").innerText="Dimensions: "+products[i].dim
 
 renderSlider()
 
 }
 
 function closeProduct(){
-productPage.style.display="none"
+document.getElementById("productPage").style.display="none"
 }
 
 function renderSlider(){
 
-slideImg.src=products[current].img[slide]
+document.getElementById("slideImg").src=products[current].img[slide]
 
-dots.innerHTML=""
+let dots=""
 
 products[current].img.forEach((x,i)=>{
-dots.innerHTML+=`<span class="dot ${i==slide?'active':''}"></span>`
+dots+=`<span class="dot ${i==slide?'active':''}"></span>`
 })
+
+document.getElementById("dots").innerHTML=dots
 
 }
 
-slideImg.onclick=function(){
+document.getElementById("slideImg").onclick=function(){
 
 slide++
 
@@ -485,23 +449,32 @@ renderSlider()
 
 }
 
-/* CART */
-
 function addCart(i){
+
 cart.push(products[i])
+
 updateCart()
-toast.style.display="block"
-setTimeout(()=>toast.style.display="none",1500)
+
+document.getElementById("toast").style.display="block"
+
+setTimeout(()=>document.getElementById("toast").style.display="none",1500)
+
 }
 
 function buyNow(i){
+
 cart=[products[i]]
+
 updateCart()
+
 openCheckout()
+
 }
 
 function updateCart(){
-count.innerText=cart.length
+
+document.getElementById("count").innerText=cart.length
+
 }
 
 function openCart(){
@@ -509,6 +482,7 @@ function openCart(){
 let html=""
 
 cart.forEach((p,i)=>{
+
 html+=`
 <div class="checkout-item">
 <img src="${p.img[0]}">
@@ -516,31 +490,43 @@ ${p.name}
 <div class="remove" onclick="removeItem(${i})">✕</div>
 </div>
 `
+
 })
 
-cartItems.innerHTML=html
+document.getElementById("cartItems").innerHTML=html
 
-cartPopup.style.display="flex"
+document.getElementById("cartPopup").style.display="flex"
 
 }
 
-function closeCart(){cartPopup.style.display="none"}
+function closeCart(){
+
+document.getElementById("cartPopup").style.display="none"
+
+}
 
 function removeItem(i){
+
 cart.splice(i,1)
+
 updateCart()
+
 openCart()
+
 }
 
-/* CHECKOUT */
-
 function openCheckout(){
-cartPopup.style.display="none"
-checkoutPopup.style.display="flex"
+
+document.getElementById("cartPopup").style.display="none"
+
+document.getElementById("checkoutPopup").style.display="flex"
+
 }
 
 function closeCheckout(){
-checkoutPopup.style.display="none"
+
+document.getElementById("checkoutPopup").style.display="none"
+
 }
 
 function checkout(){
@@ -567,17 +553,20 @@ window.location.href=`upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am=${total}&c
 
 }
 
-/* ABOUT */
-
 function openAbout(){
-aboutPopup.style.display="flex"
+
+document.getElementById("aboutPopup").style.display="flex"
+
 }
 
 function closeAbout(){
-aboutPopup.style.display="none"
+
+document.getElementById("aboutPopup").style.display="none"
+
 }
 
 </script>
 
 </body>
 </html>
+```
