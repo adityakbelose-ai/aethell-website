@@ -10,10 +10,13 @@
         header { text-align: center; margin: 40px 0 20px 0; font-size: 34px; letter-spacing: 6px; font-weight: bold; }
         .caption { font-size: 13px; letter-spacing: 4px; margin-top: 8px; opacity: .6; text-transform: uppercase; }
         .menu { position: fixed; left: 20px; top: 25px; font-size: 28px; cursor: pointer; z-index: 1001; }
+        
         .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: white; box-shadow: 5px 0 15px rgba(0,0,0,0.1); transition: .4s cubic-bezier(0.4, 0, 0.2, 1); padding-top: 80px; z-index: 1000; }
         .sidebar.open { left: 0; }
         .closeSidebar { position: absolute; top: 20px; right: 25px; font-size: 26px; cursor: pointer; }
-        .sidebar a { display: block; padding: 18px 30px; text-decoration: none; color: black; font-size: 18px; letter-spacing: 1px; cursor: pointer; }
+        .sidebar a { display: block; padding: 18px 30px; text-decoration: none; color: black; font-size: 17px; letter-spacing: 1px; cursor: pointer; }
+        .sidebar-bottom { position: absolute; bottom: 30px; width: 100%; border-top: 1px solid #eee; padding-top: 10px; }
+        
         .cart { position: fixed; right: 20px; top: 25px; background: black; color: white; padding: 8px 16px; border-radius: 30px; cursor: pointer; z-index: 1001; font-weight: bold; }
         .products { padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .product img { width: 100%; border-radius: 12px; cursor: pointer; aspect-ratio: 1/1; object-fit: cover; background: #f9f9f9; }
@@ -23,7 +26,7 @@
         .emi-tag { font-size: 11px; color: #666; margin-top: 4px; }
         .product button { width: 100%; padding: 12px; margin-top: 10px; border: none; background: black; color: white; cursor: pointer; font-weight: bold; border-radius: 6px; font-size: 13px; }
         
-        /* SWIPEABLE VIEWER */
+        /* VIEWER */
         #productPage { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1200; overflow-y: auto; }
         .viewer { max-width: 480px; margin: 40px auto; padding: 0 20px; text-align: center; position: relative; box-sizing: border-box; }
         .closePage { position: absolute; right: 15px; top: -15px; font-size: 32px; cursor: pointer; z-index: 100; }
@@ -44,9 +47,10 @@
         .remove { margin-left: auto; cursor: pointer; color: #e74c3c; font-weight: bold; }
         input, select { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #e0e0e0; border-radius: 8px; box-sizing: border-box; font-size: 15px; background: #fafafa; }
         #toast { position: fixed; top: 30px; left: 50%; transform: translateX(-50%); background: black; color: white; padding: 12px 28px; border-radius: 50px; display: none; z-index: 3000; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .ig { position: fixed; bottom: 25px; right: 25px; width: 55px; height: 55px; background: black; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1001; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-weight: bold; }
         
-        /* ABOUT STORY */
+        .checkout-alert { background: #f0f0f0; color: #000; padding: 10px; border-radius: 6px; font-size: 11px; font-weight: bold; text-align: center; margin: 10px 0; border: 1px dashed #333; }
+        .ig { position: fixed; bottom: 25px; right: 25px; width: 55px; height: 55px; background: black; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1001; font-weight: bold; }
+        
         .about-text { line-height: 1.8; color: #333; }
         .highlight { color: black; font-weight: 800; border-bottom: 2px solid black; }
     </style>
@@ -61,8 +65,11 @@
     <div class="closeSidebar" onclick="toggleMenu()">✕</div>
     <a href="#" onclick="toggleMenu()">Home</a>
     <a onclick="openAbout(); toggleMenu()">About Us</a>
-    <a href="https://wa.me/919987782822">Custom Mirror Request</a>
-    <a href="https://wa.me/919987782822">Contact Us</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdE6cRXuMMelbPQpyuv9FouDaYFMsJxm6UblKyjkCCFOIllNg/viewform?usp=header">Custom Mirrors</a>
+    <a href="https://wa.me/919987782822">Support</a>
+    <div class="sidebar-bottom">
+        <a onclick="openRefund(); toggleMenu()" style="font-size: 13px; opacity: 0.6;">Refund & Return Policy</a>
+    </div>
 </div>
 
 <header>
@@ -86,7 +93,6 @@
         <div class="dim" id="dim"></div>
         <button class="cartButton" onclick="addCart(current)">Add To Cart</button>
         <button class="cartButton" style="background:#333;" onclick="buyNow(current)">Buy Now</button>
-        <p style="font-size: 11px; margin-top: 10px; opacity: 0.4;">Swipe to view more images</p>
     </div>
 </div>
 
@@ -114,7 +120,7 @@
             <option value="2">2 Month EMI (via WhatsApp)</option>
             <option value="3">3 Month EMI (via WhatsApp)</option>
         </select>
-        <p id="note" style="font-size: 11px; color: #888; text-align: center; margin: 10px 0;">Note: You will be redirected to WhatsApp to confirm your order details after payment.</p>
+        <div class="checkout-alert">IMPORTANT: Return to browser after payment and send the WhatsApp message to confirm order.</div>
         <button class="cartButton" onclick="processOrder()">Place Order</button>
     </div>
 </div>
@@ -128,6 +134,18 @@
             <p>So <span class="highlight">Aethell</span> was born. A brand focused on modern, <span class="highlight">Gen-Z inspired</span> mirror designs that elevate your space while reflecting your personality.</p>
             <p>Each mirror is designed to feel like more than just decor—it becomes a <span class="highlight">statement piece</span> in your room. We also offer <span class="highlight">custom designs</span> so you can create something that perfectly fits your aesthetic and vision.</p>
             <p>Aethell isn't just about mirrors - it's about creating a space that feels <span class="highlight">uniquely yours</span>.</p>
+        </div>
+    </div>
+</div>
+
+<div class="popup" id="refundPopup">
+    <div class="popup-content">
+        <div class="closePopup" onclick="closeRefund()">✕</div>
+        <h2 style="margin-top: 0;">REFUNDS & RETURNS</h2>
+        <div class="about-text">
+            <p>At Aethell, each mirror is treated as a piece of art. Because of the delicate and bespoke nature of our products:</p>
+            <p><span class="highlight">Returns are not possible</span> once the order is placed and delivered.</p>
+            <p>The only exception is if the product arrives <span class="highlight">damaged during delivery</span>. In such cases, please contact us immediately on WhatsApp with an unboxing video for a replacement.</p>
         </div>
     </div>
 </div>
@@ -171,7 +189,6 @@
         renderSlider();
     }
 
-    // SWIPE LOGIC
     let touchX = 0;
     const swipeArea = document.getElementById('swipeArea');
     swipeArea.addEventListener('touchstart', e => touchX = e.touches[0].clientX);
@@ -201,14 +218,12 @@
     function buyNow(i) { cart = [products[i]]; updateCart(); closeProduct(); openCheckout(); }
     function updateCart() { document.getElementById("count").innerText = cart.length; }
     function closeProduct() { document.getElementById("productPage").style.display = "none"; }
-
     function openCart() {
         let html = "";
         cart.forEach((p, i) => html += `<div class="checkout-item"><img src="${p.img[0]}"><span>${p.name}<br><b>₹${p.price}</b></span><div class="remove" onclick="removeItem(${i})">✕</div></div>`);
         document.getElementById("cartItems").innerHTML = html || "<p style='text-align:center;'>Your bag is empty</p>";
         document.getElementById("cartPopup").style.display = "flex";
     }
-
     function closeCart() { document.getElementById("cartPopup").style.display = "none"; }
     function removeItem(i) { cart.splice(i, 1); updateCart(); openCart(); }
     function openCheckout() { if(!cart.length) return alert("Bag is empty"); document.getElementById("cartPopup").style.display = "none"; document.getElementById("checkoutPopup").style.display = "flex"; }
@@ -231,6 +246,8 @@
     }
     function openAbout() { document.getElementById("aboutPopup").style.display = "flex"; }
     function closeAbout() { document.getElementById("aboutPopup").style.display = "none"; }
+    function openRefund() { document.getElementById("refundPopup").style.display = "flex"; }
+    function closeRefund() { document.getElementById("refundPopup").style.display = "none"; }
 </script>
 </body>
 </html>
