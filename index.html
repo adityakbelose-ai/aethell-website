@@ -7,20 +7,15 @@
     <style>
         body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; background: white; color: black; overflow-x: hidden; }
         #loader { position: fixed; width: 100%; height: 100%; background: black; color: white; display: flex; align-items: center; justify-content: center; font-size: 32px; letter-spacing: 6px; z-index: 2000; }
-        
-        /* Trust Bar */
         .trust-bar { background: #f9f9f9; border-bottom: 1px solid #eee; text-align: center; padding: 6px 0; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #666; }
-
         header { text-align: center; margin: 40px 0 20px 0; font-size: 34px; letter-spacing: 6px; font-weight: bold; }
         .caption { font-size: 13px; letter-spacing: 4px; margin-top: 8px; opacity: .6; text-transform: uppercase; }
-        
         .menu { position: fixed; left: 20px; top: 25px; font-size: 28px; cursor: pointer; z-index: 1001; }
         .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: white; box-shadow: 5px 0 15px rgba(0,0,0,0.1); transition: .4s cubic-bezier(0.4, 0, 0.2, 1); padding-top: 80px; z-index: 1000; }
         .sidebar.open { left: 0; }
         .closeSidebar { position: absolute; top: 20px; right: 25px; font-size: 26px; cursor: pointer; }
         .sidebar a { display: block; padding: 18px 30px; text-decoration: none; color: black; font-size: 17px; letter-spacing: 1px; cursor: pointer; }
         .sidebar-bottom { position: absolute; bottom: 30px; width: 100%; border-top: 1px solid #eee; padding-top: 10px; }
-        
         .cart { position: fixed; right: 20px; top: 25px; background: black; color: white; padding: 8px 16px; border-radius: 30px; cursor: pointer; z-index: 1001; font-weight: bold; }
         .products { padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .product img { width: 100%; border-radius: 12px; cursor: pointer; aspect-ratio: 1/1; object-fit: cover; background: #f9f9f9; }
@@ -29,8 +24,6 @@
         .off { color: #27ae60; font-size: 13px; font-weight: bold; }
         .emi-tag { font-size: 11px; color: #666; margin-top: 4px; }
         .product button { width: 100%; padding: 12px; margin-top: 10px; border: none; background: black; color: white; cursor: pointer; font-weight: bold; border-radius: 6px; font-size: 13px; }
-        
-        /* VIEWER */
         #productPage { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1200; overflow-y: auto; }
         .viewer { max-width: 480px; margin: 40px auto; padding: 0 20px; text-align: center; position: relative; box-sizing: border-box; }
         .closePage { position: absolute; right: 15px; top: -15px; font-size: 32px; cursor: pointer; z-index: 100; }
@@ -42,24 +35,18 @@
         .desc { margin-top: 25px; line-height: 1.6; color: #444; font-size: 15px; }
         .dim { margin-top: 15px; font-weight: bold; border-top: 1px solid #eee; padding-top: 15px; }
         .cartButton { width: 100%; padding: 16px; background: black; color: white; border: none; margin-top: 12px; cursor: pointer; font-weight: bold; font-size: 16px; border-radius: 8px; }
-
         .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1500; backdrop-filter: blur(4px); }
         .popup-content { background: white; padding: 30px; width: 90%; max-width: 420px; border-radius: 20px; position: relative; max-height: 85vh; overflow-y: auto; }
         .closePopup { position: absolute; right: 20px; top: 20px; font-size: 26px; cursor: pointer; }
-        
-        /* Order Summary Box */
         .order-summary { background: #f9f9f9; padding: 15px; border-radius: 12px; margin: 15px 0; border: 1px solid #eee; text-align: center; }
         .total-display { font-size: 20px; font-weight: bold; }
-
         .checkout-item { display: flex; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
         .checkout-item img { width: 60px; height: 60px; margin-right: 15px; border-radius: 8px; object-fit: cover; }
         .remove { margin-left: auto; cursor: pointer; color: #e74c3c; font-weight: bold; }
         input, select { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #e0e0e0; border-radius: 8px; box-sizing: border-box; font-size: 15px; background: #fafafa; }
         #toast { position: fixed; top: 30px; left: 50%; transform: translateX(-50%); background: black; color: white; padding: 12px 28px; border-radius: 50px; display: none; z-index: 3000; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        
         .checkout-alert { background: #f0f0f0; color: #000; padding: 10px; border-radius: 6px; font-size: 11px; font-weight: bold; text-align: center; margin: 10px 0; border: 1px dashed #333; }
         .ig { position: fixed; bottom: 25px; right: 25px; width: 55px; height: 55px; background: black; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1001; font-weight: bold; }
-        
         .about-text { line-height: 1.8; color: #333; }
         .highlight { color: black; font-weight: 800; border-bottom: 2px solid black; }
     </style>
@@ -127,9 +114,7 @@
             <option value="2">2 Month EMI (via WhatsApp)</option>
             <option value="3">3 Month EMI (via WhatsApp)</option>
         </select>
-        <div class="order-summary">
-            <div class="total-display" id="totalDisplay">Total: ₹0</div>
-        </div>
+        <div class="order-summary"><div class="total-display" id="totalDisplay">Total: ₹0</div></div>
         <div class="checkout-alert">IMPORTANT: Return to browser after payment and send the WhatsApp message to confirm order.</div>
         <button class="cartButton" onclick="processOrder()">Place Order</button>
     </div>
@@ -141,7 +126,8 @@
         <h2 style="margin-top: 0; letter-spacing: 2px;">THE STORY</h2>
         <div class="about-text">
             <p>It started from a simple problem. I wanted something for my room that looked <span class="highlight">cool, minimal and premium</span> but most mirrors available felt basic or outdated.</p>
-            <p>So <span class="highlight">Aethell</span> was born. A brand focused on modern, <span class="highlight">Gen-Z inspired</span> mirror designs that elevate your space.</p>
+            <p>So <span class="highlight">Aethell</span> was born. A brand focused on modern, <span class="highlight">Gen-Z inspired</span> mirror designs that elevate your space while reflecting your personality.</p>
+            <p>Each mirror is designed to feel like more than just decor—it becomes a <span class="highlight">statement piece</span> in your room. We also offer <span class="highlight">custom designs</span> so you can create something that perfectly fits your aesthetic and vision.</p>
         </div>
     </div>
 </div>
@@ -151,8 +137,8 @@
         <div class="closePopup" onclick="closeRefund()">✕</div>
         <h2 style="margin-top: 0;">REFUNDS & RETURNS</h2>
         <div class="about-text">
-            <p><span class="highlight">Returns are not possible</span> once the order is delivered.</p>
-            <p>Exception: <span class="highlight">Damaged during delivery</span>. Contact us with an unboxing video for a replacement.</p>
+            <p>At Aethell, each mirror is treated as a piece of art. <span class="highlight">Returns are not possible</span> once the order is placed and delivered.</p>
+            <p>The only exception is if the product arrives <span class="highlight">damaged during delivery</span>. Please contact us immediately with an unboxing video for a replacement.</p>
         </div>
     </div>
 </div>
@@ -164,10 +150,48 @@
     function toggleMenu() { document.getElementById("sidebar").classList.toggle("open"); }
 
     const products = [
-        {name:"CMIYGL Mirror", price:5999, img:["cmiygl1.jpg","cmiygl2.jpg"], desc:"A reflective reinterpretation of the iconic CMIYGL aesthetic.", dim:"15 x 24 inches"},
-        {name:"MS PAINT Mirror", price:8999, img:["mspaint1.jpg","mspaint2.jpg"], desc:"A retro-modern tribute to early digital creativity.", dim:"47 x 31 inches"},
-        {name:"reCAPTCHA Mirror", price:5999, img:["captcha1.jpg"], desc:"A mirror inspired by identity and verification.", dim:"42 x 31 inches"},
-        {name:"iPod Mirror", price:7499, img:["ipod1.jpg", "ipod2.jpg"], desc:"Nostalgia reflected. A classic 2000s tech-inspired silhouette.", dim:"18 x 30 inches"}
+        {
+            name: "iPod Mirror", 
+            price: 7499, 
+            img: ["ipod1.jpg", "ipod2.jpg"], 
+            desc: "Nostalgia reflected. A classic 2000s tech-inspired silhouette that turns your reflection into a core memory. Perfect for those who miss the era of click-wheels and shuffle play.", 
+            dim: "18 x 32 inches"
+        },
+        {
+            name: "MS PAINT Mirror", 
+            price: 8999, 
+            img: ["mspaint1.jpg", "mspaint2.jpg", "mspaint3.jpg"], 
+            desc: "A digital tribute to the birthplace of creativity. This piece brings the iconic 90s workspace into the physical world, creating a portal to your room's aesthetic.", 
+            dim: "47 x 31 inches"
+        },
+        {
+            name: "CMIYGL Mirror", 
+            price: 5999, 
+            img: ["cmiygl1.jpg", "cmiygl2.jpg", "cmiygl3.jpg"], 
+            desc: "The traveler's companion. Inspired by the passport aesthetic and pastel travel logs, this mirror is for those whose rooms are just a layover before the next adventure.", 
+            dim: "15 x 24 inches"
+        },
+        {
+            name: "reCAPTCHA Mirror", 
+            price: 5999, 
+            img: ["captcha1.jpg"], 
+            desc: "Prove you're human. A sharp, conversational piece that turns the internet's most familiar verification check into your home's most unique statement.", 
+            dim: "42 x 31 inches"
+        },
+        {
+            name: "Queen of Hearts", 
+            price: 5499, 
+            img: ["queen1.jpg"], 
+            desc: "Command the room with royalty that doesn't follow the rules. This design balances classical playing card art with a modern, defiant attitude.", 
+            dim: "48 x 31 inches"
+        },
+        {
+            name: "King of Hearts", 
+            price: 5499, 
+            img: ["king1.jpg"], 
+            desc: "Regal, symmetrical, and undeniably bold. The King of Hearts is designed to anchor your space with a sense of authority and timeless style.", 
+            dim: "48 x 31 inches"
+        }
     ];
 
     let cart = [], current = 0, slide = 0;
@@ -245,9 +269,8 @@
     function processOrder() {
         const name = document.getElementById("name").value, phone = document.getElementById("phone").value, pin = document.getElementById("pincode").value, plan = document.getElementById("paymentPlan").value;
         if (!name || !phone || !pin) return alert("Please fill all details");
-        let total = cart.reduce((sum, p) => sum + p.price, 0);
-        let items = "", id = "AET" + Math.floor(1000+Math.random()*9000);
-        cart.forEach(p => { items += `- ${p.name} (₹${p.price})%0A`; });
+        let total = 0, items = "", id = "AET" + Math.floor(1000+Math.random()*9000);
+        cart.forEach(p => { items += `- ${p.name} (₹${p.price})%0A`; total += p.price; });
         const addr = `${document.getElementById("flat").value}, ${document.getElementById("building").value}, ${document.getElementById("area").value}, Pin: ${pin}`;
         const msg = `*AETHELL ORDER*%0AID: ${id}%0AStatus: ${plan=='full'?'Paid':'EMI Request'}%0A%0A*Customer:* ${name}%0A*Phone:* ${phone}%0A*Address:* ${addr}%0A%0A*Items:*%0A${items}*Total:* ₹${total}`;
 
