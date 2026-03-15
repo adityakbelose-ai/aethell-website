@@ -7,10 +7,16 @@
     <style>
         body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; background: white; color: black; overflow-x: hidden; }
         #loader { position: fixed; width: 100%; height: 100%; background: black; color: white; display: flex; align-items: center; justify-content: center; font-size: 32px; letter-spacing: 6px; z-index: 2000; }
-        header { text-align: center; margin: 40px 0 20px 0; font-size: 34px; letter-spacing: 6px; font-weight: bold; }
-        .caption { font-size: 13px; letter-spacing: 4px; margin-top: 8px; opacity: .6; text-transform: uppercase; }
-        .menu { position: fixed; left: 20px; top: 25px; font-size: 28px; cursor: pointer; z-index: 1001; }
         
+        /* UPGRADE 1: Minimalist Trust Bar */
+        .trust-bar { background: #f9f9f9; border-bottom: 1px solid #eee; text-align: center; padding: 6px 0; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #666; }
+
+        header { text-align: center; margin: 40px 0 20px 0; font-size: 34px; letter-spacing: 6px; font-weight: bold; }
+        
+        /* UPGRADE 2: New Slogan */
+        .caption { font-size: 13px; letter-spacing: 4px; margin-top: 8px; opacity: .6; text-transform: uppercase; }
+        
+        .menu { position: fixed; left: 20px; top: 25px; font-size: 28px; cursor: pointer; z-index: 1001; }
         .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: white; box-shadow: 5px 0 15px rgba(0,0,0,0.1); transition: .4s cubic-bezier(0.4, 0, 0.2, 1); padding-top: 80px; z-index: 1000; }
         .sidebar.open { left: 0; }
         .closeSidebar { position: absolute; top: 20px; right: 25px; font-size: 26px; cursor: pointer; }
@@ -42,6 +48,12 @@
         .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1500; backdrop-filter: blur(4px); }
         .popup-content { background: white; padding: 30px; width: 90%; max-width: 420px; border-radius: 20px; position: relative; max-height: 85vh; overflow-y: auto; }
         .closePopup { position: absolute; right: 20px; top: 20px; font-size: 26px; cursor: pointer; }
+        
+        /* UPGRADE 3: Order Summary Box with Dynamic Total & Safe Shipping Badge */
+        .order-summary { background: #f9f9f9; padding: 15px; border-radius: 12px; margin: 15px 0; border: 1px solid #eee; text-align: center; }
+        .total-display { font-size: 20px; font-weight: bold; margin-bottom: 8px; }
+        .shipping-badge { font-size: 11px; color: #27ae60; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px; }
+
         .checkout-item { display: flex; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
         .checkout-item img { width: 60px; height: 60px; margin-right: 15px; border-radius: 8px; object-fit: cover; }
         .remove { margin-left: auto; cursor: pointer; color: #e74c3c; font-weight: bold; }
@@ -58,6 +70,9 @@
 <body>
 
 <div id="loader">AETHELL</div>
+
+<div class="trust-bar">FREE SHIPPING IN MUMBAI • SECURE WOODEN CRATE PACKAGING</div>
+
 <div class="menu" onclick="toggleMenu()">☰</div>
 <div class="cart" onclick="openCart()">🛒 <span id="count">0</span></div>
 
@@ -67,6 +82,7 @@
     <a onclick="openAbout(); toggleMenu()">About Us</a>
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSdE6cRXuMMelbPQpyuv9FouDaYFMsJxm6UblKyjkCCFOIllNg/viewform?usp=header">Custom Mirrors</a>
     <a href="https://wa.me/919987782822">Support</a>
+    
     <div class="sidebar-bottom">
         <a onclick="openRefund(); toggleMenu()" style="font-size: 13px; opacity: 0.6;">Refund & Return Policy</a>
     </div>
@@ -74,7 +90,7 @@
 
 <header>
     AETHELL
-    <div class="caption">Elevating your aesthetic</div>
+    <div class="caption">Elevate your space.</div>
 </header>
 
 <section class="products" id="productContainer"></section>
@@ -120,6 +136,12 @@
             <option value="2">2 Month EMI (via WhatsApp)</option>
             <option value="3">3 Month EMI (via WhatsApp)</option>
         </select>
+
+        <div class="order-summary">
+            <div class="total-display" id="totalDisplay">Total: ₹0</div>
+            <div class="shipping-badge">🛡️ Secure Wooden Crate Packaging Included</div>
+        </div>
+
         <div class="checkout-alert">IMPORTANT: Return to browser after payment and send the WhatsApp message to confirm order.</div>
         <button class="cartButton" onclick="processOrder()">Place Order</button>
     </div>
@@ -145,7 +167,7 @@
         <div class="about-text">
             <p>At Aethell, each mirror is treated as a piece of art. Because of the delicate and bespoke nature of our products:</p>
             <p><span class="highlight">Returns are not possible</span> once the order is placed and delivered.</p>
-            <p>The only exception is if the product arrives <span class="highlight">damaged during delivery</span>. In such cases, please contact us immediately on WhatsApp with an unboxing video for a replacement.</p>
+            <p>The only exception is if the product arrives <span class="highlight">damaged during delivery</span>. In such cases, please contact us immediately on WhatsApp with an unboxing video for a replacement. All products are <span class="highlight">thoroughly examined</span> before dispatch.</p>
         </div>
     </div>
 </div>
@@ -226,7 +248,14 @@
     }
     function closeCart() { document.getElementById("cartPopup").style.display = "none"; }
     function removeItem(i) { cart.splice(i, 1); updateCart(); openCart(); }
-    function openCheckout() { if(!cart.length) return alert("Bag is empty"); document.getElementById("cartPopup").style.display = "none"; document.getElementById("checkoutPopup").style.display = "flex"; }
+    
+    function openCheckout() { 
+        if(!cart.length) return alert("Bag is empty"); 
+        let total = cart.reduce((sum, p) => sum + p.price, 0);
+        document.getElementById("totalDisplay").innerText = "Total: ₹" + total;
+        document.getElementById("cartPopup").style.display = "none"; 
+        document.getElementById("checkoutPopup").style.display = "flex"; 
+    }
     function closeCheckout() { document.getElementById("checkoutPopup").style.display = "none"; }
 
     function processOrder() {
@@ -250,5 +279,5 @@
     function closeRefund() { document.getElementById("refundPopup").style.display = "none"; }
 </script>
 </body>
-    </html>
-    
+            </html>
+            
