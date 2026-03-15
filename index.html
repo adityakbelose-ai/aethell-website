@@ -1,8 +1,10 @@
-
-<!DOCTYPE html><html>
+<!DOCTYPE html>
+<html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AETHELL</title><style>
+<title>AETHELL</title>
+
+<style>
 
 body{
 margin:0;
@@ -136,7 +138,7 @@ color:white;
 cursor:pointer;
 }
 
-/* PRODUCT VIEWER */
+/* PRODUCT VIEWER FIXED ALIGNMENT */
 
 #productPage{
 display:none;
@@ -151,36 +153,42 @@ overflow:auto;
 }
 
 .viewer{
+width:100%;
 max-width:420px;
-margin:auto;
-padding:40px 20px;
+margin:0 auto;
+padding:30px 20px 40px 20px;
 text-align:center;
 position:relative;
+box-sizing:border-box;
 }
 
 .closePage{
 position:absolute;
-right:10px;
+right:20px;
 top:10px;
 font-size:26px;
 cursor:pointer;
 }
 
 .slider{
-max-width:320px;
-margin:auto;
+width:100%;
+max-width:340px;
+margin:0 auto;
 }
 
 .slider img{
 width:100%;
-max-height:60vh;
+height:auto;
+max-height:55vh;
 object-fit:contain;
-border-radius:10px;
+border-radius:12px;
+display:block;
+margin:auto;
 }
 
 .dots{
 text-align:center;
-margin-top:8px;
+margin-top:10px;
 }
 
 .dot{
@@ -189,29 +197,36 @@ width:8px;
 background:#ccc;
 display:inline-block;
 border-radius:50%;
-margin:3px;
+margin:4px;
 cursor:pointer;
 }
 
-.dot.active{background:black;}
+.dot.active{
+background:black;
+}
 
 .desc{
-margin-top:15px;
-line-height:1.5;
+margin-top:18px;
+line-height:1.6;
+font-size:16px;
 }
 
 .dim{
-margin-top:10px;
+margin-top:12px;
 font-weight:bold;
+font-size:16px;
 }
 
 .cartButton{
 width:100%;
-padding:12px;
+max-width:340px;
+margin:12px auto 0 auto;
+padding:14px;
 background:black;
 color:white;
 border:none;
-margin-top:10px;
+display:block;
+font-size:16px;
 cursor:pointer;
 }
 
@@ -297,49 +312,59 @@ justify-content:center;
 cursor:pointer;
 }
 
-</style></head><body><div id="loader">AETHELL</div><div class="menu" onclick="toggleMenu()">☰</div><div class="cart" onclick="openCart()">🛒 <span id="count">0</span></div><div class="sidebar" id="sidebar">
+</style>
+</head>
+
+<body>
+
+<div id="loader">AETHELL</div>
+
+<div class="menu" onclick="toggleMenu()">☰</div>
+
+<div class="cart" onclick="openCart()">🛒 <span id="count">0</span></div>
+
+<div class="sidebar" id="sidebar">
 <div class="closeSidebar" onclick="toggleMenu()">✕</div>
 <a href="#">Home</a>
 <a onclick="openAbout()">About Us</a>
 <a href="https://wa.me/919987782822">Contact</a>
-</div><header>
+</div>
+
+<header>
 AETHELL
 <div class="caption">Modern décor for modern spaces</div>
-</header><section class="products" id="productContainer"></section><div id="toast">Added to Cart</div><div id="productPage"><div class="viewer"><div class="closePage" onclick="closeProduct()">✕</div><div class="slider">
+</header>
+
+<section class="products" id="productContainer"></section>
+
+<div id="toast">Added to Cart</div>
+
+<div id="productPage">
+
+<div class="viewer">
+
+<div class="closePage" onclick="closeProduct()">✕</div>
+
+<div class="slider">
 <img id="slideImg">
-</div><div class="dots" id="dots"></div><h2 id="title"></h2>
-<h3 id="price"></h3><div class="desc" id="desc"></div>
-<div class="dim" id="dim"></div><button class="cartButton" onclick="addCart(current)">Add To Cart</button>
+</div>
+
+<div class="dots" id="dots"></div>
+
+<h2 id="title"></h2>
+<h3 id="price"></h3>
+
+<div class="desc" id="desc"></div>
+<div class="dim" id="dim"></div>
+
+<button class="cartButton" onclick="addCart(current)">Add To Cart</button>
 <button class="cartButton" onclick="buyNow(current)">Buy Now</button>
 
-</div></div><div class="popup" id="cartPopup">
-<div class="popup-content">
-<div class="closePopup" onclick="closeCart()">✕</div>
-<h2>Your Cart</h2>
-<div id="cartItems"></div>
-<button class="cartButton" onclick="openCheckout()">Proceed to Checkout</button>
 </div>
-</div><div class="popup" id="checkoutPopup">
-<div class="popup-content"><div class="closePopup" onclick="closeCheckout()">✕</div><h2>Checkout</h2><input id="name" placeholder="Name">
-<input id="building" placeholder="Building / Society">
-<input id="flat" placeholder="Flat Number">
-<input id="area" placeholder="Area / Street">
-<input id="pincode" placeholder="Pincode"><select id="paymentPlan">
-<option value="full">Full Payment</option>
-<option value="2">2 Month EMI</option>
-<option value="3">3 Month EMI</option>
-</select><button class="cartButton" onclick="checkout()">Pay</button>
 
 </div>
-</div><div class="popup" id="aboutPopup">
-<div class="popup-content">
-<div class="closePopup" onclick="closeAbout()">✕</div>
-<h2>About AETHELL</h2>
-<p>AETHELL began from a simple frustration. Mirrors rarely felt expressive enough for modern spaces.</p>
-<p>The idea was simple: create mirrors that feel like art objects instead of plain furniture.</p>
-<p>Each design blends internet culture, nostalgia, and minimal luxury aesthetics.</p>
-</div>
-</div><div class="ig" onclick="window.open('https://instagram.com/aethell.in')">IG</div><script>
+
+<script>
 
 setTimeout(()=>document.getElementById("loader").style.display="none",1000)
 
@@ -363,7 +388,6 @@ let products=[
 
 ]
 
-let cart=[]
 let current=0
 let slide=0
 
@@ -372,24 +396,33 @@ products.forEach((p,i)=>{
 let original=Math.round(p.price/0.8)
 let emi=Math.round(p.price/3)
 
-productContainer.innerHTML+=`
+let html=`
 <div class="product">
+
 <img src="${p.img[0]}" onclick="viewProduct(${i})">
+
 <h3>${p.name}</h3>
+
 <div class="price">
 ₹${p.price}
 <span class="old">₹${original}</span>
 <span class="off">20% OFF</span>
 </div>
+
 <div class="emi">From ₹${emi}/month</div>
+
 <button onclick="addCart(${i})">Add to Cart</button>
 <button onclick="buyNow(${i})">Buy Now</button>
+
 </div>
 `
+
+productContainer.innerHTML+=html
 
 })
 
 function viewProduct(i){
+
 current=i
 slide=0
 
@@ -401,6 +434,7 @@ document.getElementById("desc").innerText=products[i].desc
 document.getElementById("dim").innerText="Dimensions: "+products[i].dim
 
 renderSlider()
+
 }
 
 function closeProduct(){
@@ -428,6 +462,8 @@ slide=i
 renderSlider()
 }
 
+/* SWIPE */
+
 let startX=0
 
 document.getElementById("slideImg").addEventListener("touchstart",e=>{
@@ -438,13 +474,8 @@ document.getElementById("slideImg").addEventListener("touchend",e=>{
 
 let endX=e.changedTouches[0].clientX
 
-if(startX-endX>50){
-slide++
-}
-
-if(endX-startX>50){
-slide--
-}
+if(startX-endX>50){slide++}
+if(endX-startX>50){slide--}
 
 if(slide>=products[current].img.length) slide=0
 if(slide<0) slide=products[current].img.length-1
@@ -453,12 +484,7 @@ renderSlider()
 
 })
 
-function addCart(i){
+</script>
 
-cart.push(products[i])
-
-updateCart()
-
-document.getElementById("toast").style.display="block"
-
-setTimeout(()=>document.getElementById("toast").style.display="none
+</body>
+</html>
