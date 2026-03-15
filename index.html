@@ -138,6 +138,8 @@ color:white;
 cursor:pointer;
 }
 
+/* PRODUCT VIEWER FIX */
+
 #productPage{
 display:none;
 position:fixed;
@@ -148,39 +150,41 @@ height:100%;
 background:white;
 z-index:1200;
 overflow:auto;
-padding:40px 20px;
 }
 
 .viewer{
+width:100%;
 max-width:420px;
-margin:auto;
+margin:0 auto;
+padding:40px 20px;
 text-align:center;
 position:relative;
+box-sizing:border-box;
 }
 
 .closePage{
 position:absolute;
-right:10px;
-top:0;
+right:15px;
+top:10px;
 font-size:26px;
 cursor:pointer;
 }
 
 .slider{
-max-width:320px;
+max-width:340px;
 margin:auto;
 }
 
 .slider img{
 width:100%;
-max-height:60vh;
+max-height:55vh;
 object-fit:contain;
-border-radius:10px;
+border-radius:12px;
 }
 
 .dots{
 text-align:center;
-margin-top:8px;
+margin-top:10px;
 }
 
 .dot{
@@ -189,15 +193,17 @@ width:8px;
 background:#ccc;
 display:inline-block;
 border-radius:50%;
-margin:3px;
+margin:4px;
 cursor:pointer;
 }
 
-.dot.active{background:black;}
+.dot.active{
+background:black;
+}
 
 .desc{
-margin-top:15px;
-line-height:1.5;
+margin-top:18px;
+line-height:1.6;
 }
 
 .dim{
@@ -207,11 +213,13 @@ font-weight:bold;
 
 .cartButton{
 width:100%;
-padding:12px;
+max-width:340px;
+margin:12px auto 0 auto;
+padding:14px;
 background:black;
 color:white;
 border:none;
-margin-top:10px;
+display:block;
 cursor:pointer;
 }
 
@@ -365,11 +373,11 @@ AETHELL
 
 <h2>Checkout</h2>
 
-<input id="name" placeholder="Name">
-<input id="building" placeholder="Building / Society">
-<input id="flat" placeholder="Flat Number">
-<input id="area" placeholder="Area / Street">
-<input id="pincode" placeholder="Pincode">
+<input id="name" placeholder="Name" required>
+<input id="building" placeholder="Building / Society" required>
+<input id="flat" placeholder="Flat Number" required>
+<input id="area" placeholder="Area / Street" required>
+<input id="pincode" placeholder="Pincode" required>
 
 <select id="paymentPlan">
 <option value="full">Full Payment</option>
@@ -377,7 +385,7 @@ AETHELL
 <option value="3">3 Month EMI</option>
 </select>
 
-<button class="cartButton" onclick="checkout()">Pay With UPI</button>
+<button class="cartButton" onclick="checkout()">Pay</button>
 
 </div>
 </div>
@@ -493,8 +501,6 @@ slide=i
 renderSlider()
 }
 
-/* SWIPE FEATURE */
-
 let startX=0
 
 document.getElementById("slideImg").addEventListener("touchstart",e=>{
@@ -505,13 +511,8 @@ document.getElementById("slideImg").addEventListener("touchend",e=>{
 
 let endX=e.changedTouches[0].clientX
 
-if(startX-endX>50){
-slide++
-}
-
-if(endX-startX>50){
-slide--
-}
+if(startX-endX>50){slide++}
+if(endX-startX>50){slide--}
 
 if(slide>=products[current].img.length) slide=0
 if(slide<0) slide=products[current].img.length-1
@@ -546,47 +547,6 @@ function updateCart(){
 document.getElementById("count").innerText=cart.length
 }
 
-function openCart(){
-
-let html=""
-
-cart.forEach((p,i)=>{
-
-html+=`
-<div class="checkout-item">
-<img src="${p.img[0]}">
-${p.name}
-<div class="remove" onclick="removeItem(${i})">✕</div>
-</div>
-`
-
-})
-
-document.getElementById("cartItems").innerHTML=html
-
-document.getElementById("cartPopup").style.display="flex"
-
-}
-
-function closeCart(){
-document.getElementById("cartPopup").style.display="none"
-}
-
-function removeItem(i){
-cart.splice(i,1)
-updateCart()
-openCart()
-}
-
-function openCheckout(){
-document.getElementById("cartPopup").style.display="none"
-document.getElementById("checkoutPopup").style.display="flex"
-}
-
-function closeCheckout(){
-document.getElementById("checkoutPopup").style.display="none"
-}
-
 function checkout(){
 
 let name=document.getElementById("name").value
@@ -595,6 +555,11 @@ let flat=document.getElementById("flat").value
 let area=document.getElementById("area").value
 let pincode=document.getElementById("pincode").value
 let plan=document.getElementById("paymentPlan").value
+
+if(!name || !building || !flat || !area || !pincode){
+alert("Please fill all order details")
+return
+}
 
 let total=0
 let order=""
@@ -606,14 +571,24 @@ total+=p.price
 
 let pay=total
 
-if(plan=="2") pay=Math.round(total/2)
-if(plan=="3") pay=Math.round(total/3)
+if(plan=="full"){
 
-let message=`New AETHELL Order%0AName:${name}%0AOrder:${order}%0APayment Plan:${plan}%0AAddress:${building} ${flat} ${area}%0APincode:${pincode}%0ATotal:₹${total}`
+window.location.href=`upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am=${pay}&cu=INR`
+
+setTimeout(()=>{
+let message=`New AETHELL Order%0AName:${name}%0AOrder:${order}%0AAddress:${building} ${flat} ${area}%0APincode:${pincode}%0ATotal:₹${total}`
+window.open(`https://wa.me/919987782822?text=${message}`)
+},2000)
+
+}
+
+else{
+
+let message=`New AETHELL EMI Order%0AName:${name}%0AOrder:${order}%0APayment Plan:${plan} months%0AAddress:${building} ${flat} ${area}%0APincode:${pincode}%0ATotal:₹${total}`
 
 window.open(`https://wa.me/919987782822?text=${message}`)
 
-window.location.href=`upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am=${pay}&cu=INR`
+}
 
 }
 
