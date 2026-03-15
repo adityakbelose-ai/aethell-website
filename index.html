@@ -8,7 +8,7 @@
         body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; background: white; color: black; overflow-x: hidden; }
         #loader { position: fixed; width: 100%; height: 100%; background: black; color: white; display: flex; align-items: center; justify-content: center; font-size: 32px; letter-spacing: 6px; z-index: 2000; }
         
-        /* TRUST BAR (Updated) */
+        /* Trust Bar */
         .trust-bar { background: #f9f9f9; border-bottom: 1px solid #eee; text-align: center; padding: 6px 0; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #666; }
 
         header { text-align: center; margin: 40px 0 20px 0; font-size: 34px; letter-spacing: 6px; font-weight: bold; }
@@ -47,7 +47,7 @@
         .popup-content { background: white; padding: 30px; width: 90%; max-width: 420px; border-radius: 20px; position: relative; max-height: 85vh; overflow-y: auto; }
         .closePopup { position: absolute; right: 20px; top: 20px; font-size: 26px; cursor: pointer; }
         
-        /* SUMMARY BOX (Updated) */
+        /* Order Summary Box */
         .order-summary { background: #f9f9f9; padding: 15px; border-radius: 12px; margin: 15px 0; border: 1px solid #eee; text-align: center; }
         .total-display { font-size: 20px; font-weight: bold; }
 
@@ -67,9 +67,7 @@
 <body>
 
 <div id="loader">AETHELL</div>
-
 <div class="trust-bar">FREE SHIPPING IN MUMBAI • CUSTOM DESIGNS AVAILABLE</div>
-
 <div class="menu" onclick="toggleMenu()">☰</div>
 <div class="cart" onclick="openCart()">🛒 <span id="count">0</span></div>
 
@@ -78,201 +76,5 @@
     <a href="#" onclick="toggleMenu()">Home</a>
     <a onclick="openAbout(); toggleMenu()">About Us</a>
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSdE6cRXuMMelbPQpyuv9FouDaYFMsJxm6UblKyjkCCFOIllNg/viewform?usp=header">Custom Mirrors</a>
-    <a href="https://wa.me/919987782822">Support</a>
-    
-    <div class="sidebar-bottom">
-        <a onclick="openRefund(); toggleMenu()" style="font-size: 13px; opacity: 0.6;">Refund & Return Policy</a>
-    </div>
-</div>
-
-<header>
-    AETHELL
-    <div class="caption">Elevate your space.</div>
-</header>
-
-<section class="products" id="productContainer"></section>
-<div id="toast">Added to Cart</div>
-
-<div id="productPage">
-    <div class="viewer">
-        <div class="closePage" onclick="closeProduct()">✕</div>
-        <div class="slider-container" id="swipeArea">
-            <img id="slideImg" src="">
-        </div>
-        <div class="dots" id="dots"></div>
-        <h2 id="title" style="margin-top: 20px;"></h2>
-        <h3 id="p-price" style="color: #444;"></h3>
-        <div class="desc" id="desc"></div>
-        <div class="dim" id="dim"></div>
-        <button class="cartButton" onclick="addCart(current)">Add To Cart</button>
-        <button class="cartButton" style="background:#333;" onclick="buyNow(current)">Buy Now</button>
-    </div>
-</div>
-
-<div class="popup" id="cartPopup">
-    <div class="popup-content">
-        <div class="closePopup" onclick="closeCart()">✕</div>
-        <h2 style="margin-top: 0;">MY BAG</h2>
-        <div id="cartItems"></div>
-        <button class="cartButton" onclick="openCheckout()">Checkout</button>
-    </div>
-</div>
-
-<div class="popup" id="checkoutPopup">
-    <div class="popup-content">
-        <div class="closePopup" onclick="closeCheckout()">✕</div>
-        <h2 style="margin-top: 0;">DETAILS</h2>
-        <input id="name" placeholder="Full Name">
-        <input id="phone" placeholder="WhatsApp Number" type="tel">
-        <input id="building" placeholder="Building / Society">
-        <input id="flat" placeholder="Flat No. / Floor">
-        <input id="area" placeholder="Area / Landmark">
-        <input id="pincode" placeholder="Pincode" type="number">
-        <select id="paymentPlan">
-            <option value="full">Full Payment (Instant UPI)</option>
-            <option value="2">2 Month EMI (via WhatsApp)</option>
-            <option value="3">3 Month EMI (via WhatsApp)</option>
-        </select>
-
-        <div class="order-summary">
-            <div class="total-display" id="totalDisplay">Total: ₹0</div>
-        </div>
-
-        <div class="checkout-alert">IMPORTANT: Return to browser after payment and send the WhatsApp message to confirm order.</div>
-        <button class="cartButton" onclick="processOrder()">Place Order</button>
-    </div>
-</div>
-
-<div class="popup" id="aboutPopup">
-    <div class="popup-content">
-        <div class="closePopup" onclick="closeAbout()">✕</div>
-        <h2 style="margin-top: 0; letter-spacing: 2px;">THE STORY</h2>
-        <div class="about-text">
-            <p>It started from a simple problem. I wanted something for my room that looked <span class="highlight">cool, minimal and premium</span> but most mirrors available felt basic or outdated.</p>
-            <p>So <span class="highlight">Aethell</span> was born. A brand focused on modern, <span class="highlight">Gen-Z inspired</span> mirror designs that elevate your space while reflecting your personality.</p>
-            <p>Each mirror is designed to feel like more than just decor—it becomes a <span class="highlight">statement piece</span> in your room. We also offer <span class="highlight">custom designs</span> so you can create something that perfectly fits your aesthetic and vision.</p>
-            <p>Aethell isn't just about mirrors - it's about creating a space that feels <span class="highlight">uniquely yours</span>.</p>
-        </div>
-    </div>
-</div>
-
-<div class="popup" id="refundPopup">
-    <div class="popup-content">
-        <div class="closePopup" onclick="closeRefund()">✕</div>
-        <h2 style="margin-top: 0;">REFUNDS & RETURNS</h2>
-        <div class="about-text">
-            <p>At Aethell, each mirror is treated as a piece of art. Because of the delicate and bespoke nature of our products:</p>
-            <p><span class="highlight">Returns are not possible</span> once the order is placed and delivered.</p>
-            <p>The only exception is if the product arrives <span class="highlight">damaged during delivery</span>. In such cases, please contact us immediately on WhatsApp with an unboxing video for a replacement. All products are <span class="highlight">thoroughly examined</span> before dispatch.</p>
-        </div>
-    </div>
-</div>
-
-<div class="ig" onclick="window.open('https://instagram.com/aethell.in')">IG</div>
-
-<script>
-    setTimeout(() => document.getElementById("loader").style.display = "none", 1000);
-    function toggleMenu() { document.getElementById("sidebar").classList.toggle("open"); }
-
-    const products = [
-        {name:"CMIYGL Mirror", price:5999, img:["cmiygl1.jpg","cmiygl2.jpg","cmiygl3.jpg"], desc:"A reflective reinterpretation of the iconic CMIYGL aesthetic.", dim:"15 x 24 inches"},
-        {name:"MS PAINT Mirror", price:8999, img:["mspaint1.jpg","mspaint2.jpg","mspaint3.jpg"], desc:"A retro-modern tribute to early digital creativity.", dim:"47 x 31 inches"},
-        {name:"reCAPTCHA Mirror", price:5999, img:["captcha1.jpg"], desc:"A mirror inspired by identity and verification.", dim:"42 x 31 inches"},
-        {name:"Queen of Hearts", price:5499, img:["queen1.jpg"], desc:"Royal aesthetics designed for confident spaces.", dim:"48 x 31 inches"},
-        {name:"King of Hearts", price:5499, img:["king1.jpg"], desc:"Powerful, balanced and unmistakably regal.", dim:"48 x 31 inches"}
-    ];
-
-    let cart = [], current = 0, slide = 0;
-
-    products.forEach((p, i) => {
-        let original = Math.round(p.price / 0.8), emi = Math.round(p.price / 3);
-        document.getElementById("productContainer").innerHTML += `
-        <div class="product">
-            <img src="${p.img[0]}" onclick="viewProduct(${i})">
-            <h3 style="margin: 10px 0 4px 0; font-size: 15px;">${p.name}</h3>
-            <div class="price">₹${p.price} <span class="old">₹${original}</span></div>
-            <div class="off">20% OFF</div>
-            <div class="emi-tag">EMI starts ₹${emi}/mo</div>
-            <button onclick="addCart(${i})">Add to Cart</button>
-        </div>`;
-    });
-
-    function viewProduct(i) {
-        current = i; slide = 0;
-        document.getElementById("productPage").style.display = "block";
-        document.getElementById("title").innerText = products[i].name;
-        document.getElementById("p-price").innerText = "₹" + products[i].price;
-        document.getElementById("desc").innerText = products[i].desc;
-        document.getElementById("dim").innerText = "Dimensions: " + products[i].dim;
-        renderSlider();
-    }
-
-    let touchX = 0;
-    const swipeArea = document.getElementById('swipeArea');
-    swipeArea.addEventListener('touchstart', e => touchX = e.touches[0].clientX);
-    swipeArea.addEventListener('touchend', e => {
-        let diff = touchX - e.changedTouches[0].clientX;
-        if (Math.abs(diff) > 50) {
-            if (diff > 0 && slide < products[current].img.length - 1) slide++;
-            else if (diff < 0 && slide > 0) slide--;
-            renderSlider();
-        }
-    });
-
-    function renderSlider() {
-        document.getElementById("slideImg").src = products[current].img[slide];
-        let dots = "";
-        products[current].img.forEach((x, i) => dots += `<span class="dot ${i == slide ? 'active' : ''}"></span>`);
-        document.getElementById("dots").innerHTML = dots;
-    }
-
-    function addCart(i) {
-        cart.push(products[i]);
-        updateCart();
-        document.getElementById("toast").style.display = "block";
-        setTimeout(() => document.getElementById("toast").style.display = "none", 1500);
-    }
-
-    function buyNow(i) { cart = [products[i]]; updateCart(); closeProduct(); openCheckout(); }
-    function updateCart() { document.getElementById("count").innerText = cart.length; }
-    function closeProduct() { document.getElementById("productPage").style.display = "none"; }
-    function openCart() {
-        let html = "";
-        cart.forEach((p, i) => html += `<div class="checkout-item"><img src="${p.img[0]}"><span>${p.name}<br><b>₹${p.price}</b></span><div class="remove" onclick="removeItem(${i})">✕</div></div>`);
-        document.getElementById("cartItems").innerHTML = html || "<p style='text-align:center;'>Your bag is empty</p>";
-        document.getElementById("cartPopup").style.display = "flex";
-    }
-    function closeCart() { document.getElementById("cartPopup").style.display = "none"; }
-    function removeItem(i) { cart.splice(i, 1); updateCart(); openCart(); }
-    
-    function openCheckout() { 
-        if(!cart.length) return alert("Bag is empty"); 
-        let total = cart.reduce((sum, p) => sum + p.price, 0);
-        document.getElementById("totalDisplay").innerText = "Total: ₹" + total;
-        document.getElementById("cartPopup").style.display = "none"; 
-        document.getElementById("checkoutPopup").style.display = "flex"; 
-    }
-    function closeCheckout() { document.getElementById("checkoutPopup").style.display = "none"; }
-
-    function processOrder() {
-        const name = document.getElementById("name").value, phone = document.getElementById("phone").value, pin = document.getElementById("pincode").value, plan = document.getElementById("paymentPlan").value;
-        if (!name || !phone || !pin) return alert("Please fill all details");
-        let total = 0, items = "", id = "AET" + Math.floor(1000+Math.random()*9000);
-        cart.forEach(p => { items += `- ${p.name} (₹${p.price})%0A`; total += p.price; });
-        const addr = `${document.getElementById("flat").value}, ${document.getElementById("building").value}, ${document.getElementById("area").value}, Pin: ${pin}`;
-        const msg = `*AETHELL ORDER*%0AID: ${id}%0AStatus: ${plan=='full'?'Paid':'EMI Request'}%0A%0A*Customer:* ${name}%0A*Phone:* ${phone}%0A*Address:* ${addr}%0A%0A*Items:*%0A${items}*Total:* ₹${total}`;
-
-        if (plan === "full") {
-            window.location.href = `upi://pay?pa=aditya.kbelose@oksbi&pn=AETHELL&am=${total}&cu=INR&tn=${id}`;
-            setTimeout(() => { window.location.href = `https://wa.me/919987782822?text=${msg}`; }, 4000);
-        } else {
-            window.location.href = `https://wa.me/919987782822?text=${msg}`;
-        }
-    }
-    function openAbout() { document.getElementById("aboutPopup").style.display = "flex"; }
-    function closeAbout() { document.getElementById("aboutPopup").style.display = "none"; }
-    function openRefund() { document.getElementById("refundPopup").style.display = "flex"; }
-    function closeRefund() { document.getElementById("refundPopup").style.display = "none"; }
-</script>
-</body>
-</html>
+    <a href="
+        
