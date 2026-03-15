@@ -138,6 +138,8 @@ color:white;
 cursor:pointer;
 }
 
+/* PRODUCT VIEWER */
+
 #productPage{
 display:none;
 position:fixed;
@@ -148,39 +150,45 @@ height:100%;
 background:white;
 z-index:1200;
 overflow:auto;
-padding:40px 20px;
 }
 
 .viewer{
+width:100%;
 max-width:420px;
-margin:auto;
+margin:0 auto;
+padding:30px 20px 40px 20px;
 text-align:center;
 position:relative;
+box-sizing:border-box;
 }
 
 .closePage{
 position:absolute;
-right:10px;
-top:0;
+right:20px;
+top:10px;
 font-size:26px;
 cursor:pointer;
 }
 
 .slider{
-max-width:320px;
-margin:auto;
+width:100%;
+max-width:340px;
+margin:0 auto;
 }
 
 .slider img{
 width:100%;
-max-height:60vh;
+height:auto;
+max-height:55vh;
 object-fit:contain;
-border-radius:10px;
+border-radius:12px;
+display:block;
+margin:auto;
 }
 
 .dots{
 text-align:center;
-margin-top:8px;
+margin-top:10px;
 }
 
 .dot{
@@ -189,29 +197,36 @@ width:8px;
 background:#ccc;
 display:inline-block;
 border-radius:50%;
-margin:3px;
+margin:4px;
 cursor:pointer;
 }
 
-.dot.active{background:black;}
+.dot.active{
+background:black;
+}
 
 .desc{
-margin-top:15px;
-line-height:1.5;
+margin-top:18px;
+line-height:1.6;
+font-size:16px;
 }
 
 .dim{
-margin-top:10px;
+margin-top:12px;
 font-weight:bold;
+font-size:16px;
 }
 
 .cartButton{
 width:100%;
-padding:12px;
+max-width:340px;
+margin:12px auto 0 auto;
+padding:14px;
 background:black;
 color:white;
 border:none;
-margin-top:10px;
+display:block;
+font-size:16px;
 cursor:pointer;
 }
 
@@ -349,51 +364,6 @@ AETHELL
 
 </div>
 
-<div class="popup" id="cartPopup">
-<div class="popup-content">
-<div class="closePopup" onclick="closeCart()">✕</div>
-<h2>Your Cart</h2>
-<div id="cartItems"></div>
-<button class="cartButton" onclick="openCheckout()">Proceed to Checkout</button>
-</div>
-</div>
-
-<div class="popup" id="checkoutPopup">
-<div class="popup-content">
-
-<div class="closePopup" onclick="closeCheckout()">✕</div>
-
-<h2>Checkout</h2>
-
-<input id="name" placeholder="Name">
-<input id="building" placeholder="Building / Society">
-<input id="flat" placeholder="Flat Number">
-<input id="area" placeholder="Area / Street">
-<input id="pincode" placeholder="Pincode">
-
-<select id="paymentPlan">
-<option value="full">Full Payment</option>
-<option value="2">2 Month EMI</option>
-<option value="3">3 Month EMI</option>
-</select>
-
-<button class="cartButton" onclick="checkout()">Pay With UPI</button>
-
-</div>
-</div>
-
-<div class="popup" id="aboutPopup">
-<div class="popup-content">
-<div class="closePopup" onclick="closeAbout()">✕</div>
-<h2>About AETHELL</h2>
-<p>AETHELL began from a simple frustration. Mirrors rarely felt expressive enough for modern spaces.</p>
-<p>The idea was simple: create mirrors that feel like art objects instead of plain furniture.</p>
-<p>Each design blends internet culture, nostalgia, and minimal luxury aesthetics.</p>
-</div>
-</div>
-
-<div class="ig" onclick="window.open('https://instagram.com/aethell.in')">IG</div>
-
 <script>
 
 setTimeout(()=>document.getElementById("loader").style.display="none",1000)
@@ -406,19 +376,10 @@ const productContainer=document.getElementById("productContainer")
 
 let products=[
 
-{name:"CMIYGL Mirror",price:5999,img:["cmiygl1.jpg","cmiygl2.jpg","cmiygl3.jpg"],desc:"A reflective reinterpretation of the iconic CMIYGL aesthetic.",dim:"15 x 24 inches"},
-
-{name:"MS PAINT Mirror",price:8999,img:["mspaint1.jpg","mspaint2.jpg","mspaint3.jpg"],desc:"A retro-modern tribute to early digital creativity.",dim:"47 x 31 inches"},
-
-{name:"reCAPTCHA Mirror",price:5999,img:["captcha1.jpg"],desc:"A mirror inspired by identity and verification.",dim:"42 x 31 inches"},
-
-{name:"Queen of Hearts",price:5499,img:["queen1.jpg"],desc:"Royal aesthetics designed for confident spaces.",dim:"48 x 31 inches"},
-
-{name:"King of Hearts",price:5499,img:["king1.jpg"],desc:"Powerful, balanced and unmistakably regal.",dim:"48 x 31 inches"}
+{name:"CMIYGL Mirror",price:5999,img:["cmiygl1.jpg","cmiygl2.jpg","cmiygl3.jpg"],desc:"A reflective reinterpretation of the iconic CMIYGL aesthetic.",dim:"15 x 24 inches"}
 
 ]
 
-let cart=[]
 let current=0
 let slide=0
 
@@ -493,7 +454,7 @@ slide=i
 renderSlider()
 }
 
-/* SWIPE FEATURE */
+/* SWIPE */
 
 let startX=0
 
@@ -505,13 +466,8 @@ document.getElementById("slideImg").addEventListener("touchend",e=>{
 
 let endX=e.changedTouches[0].clientX
 
-if(startX-endX>50){
-slide++
-}
-
-if(endX-startX>50){
-slide--
-}
+if(startX-endX>50){slide++}
+if(endX-startX>50){slide--}
 
 if(slide>=products[current].img.length) slide=0
 if(slide<0) slide=products[current].img.length-1
@@ -519,111 +475,6 @@ if(slide<0) slide=products[current].img.length-1
 renderSlider()
 
 })
-
-function addCart(i){
-
-cart.push(products[i])
-
-updateCart()
-
-document.getElementById("toast").style.display="block"
-
-setTimeout(()=>document.getElementById("toast").style.display="none",1500)
-
-}
-
-function buyNow(i){
-
-cart=[products[i]]
-
-updateCart()
-
-openCheckout()
-
-}
-
-function updateCart(){
-document.getElementById("count").innerText=cart.length
-}
-
-function openCart(){
-
-let html=""
-
-cart.forEach((p,i)=>{
-
-html+=`
-<div class="checkout-item">
-<img src="${p.img[0]}">
-${p.name}
-<div class="remove" onclick="removeItem(${i})">✕</div>
-</div>
-`
-
-})
-
-document.getElementById("cartItems").innerHTML=html
-
-document.getElementById("cartPopup").style.display="flex"
-
-}
-
-function closeCart(){
-document.getElementById("cartPopup").style.display="none"
-}
-
-function removeItem(i){
-cart.splice(i,1)
-updateCart()
-openCart()
-}
-
-function openCheckout(){
-document.getElementById("cartPopup").style.display="none"
-document.getElementById("checkoutPopup").style.display="flex"
-}
-
-function closeCheckout(){
-document.getElementById("checkoutPopup").style.display="none"
-}
-
-function checkout(){
-
-let name=document.getElementById("name").value
-let building=document.getElementById("building").value
-let flat=document.getElementById("flat").value
-let area=document.getElementById("area").value
-let pincode=document.getElementById("pincode").value
-let plan=document.getElementById("paymentPlan").value
-
-let total=0
-let order=""
-
-cart.forEach(p=>{
-order+=p.name+" ₹"+p.price+" , "
-total+=p.price
-})
-
-let pay=total
-
-if(plan=="2") pay=Math.round(total/2)
-if(plan=="3") pay=Math.round(total/3)
-
-let message=`New AETHELL Order%0AName:${name}%0AOrder:${order}%0APayment Plan:${plan}%0AAddress:${building} ${flat} ${area}%0APincode:${pincode}%0ATotal:₹${total}`
-
-window.open(`https://wa.me/919987782822?text=${message}`)
-
-window.location.href=`upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am=${pay}&cu=INR`
-
-}
-
-function openAbout(){
-document.getElementById("aboutPopup").style.display="flex"
-}
-
-function closeAbout(){
-document.getElementById("aboutPopup").style.display="none"
-}
 
 </script>
 
