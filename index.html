@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,20 +28,17 @@ z-index:2000;
 }
 
 header{
-display:flex;
-align-items:center;
-justify-content:center;
-margin:30px 0;
+text-align:center;
+margin:30px 0 10px 0;
 font-size:30px;
 letter-spacing:5px;
 }
 
-header:before,header:after{
-content:"";
-flex:1;
-height:1px;
-background:black;
-margin:0 15px;
+.caption{
+font-size:14px;
+letter-spacing:3px;
+margin-top:5px;
+opacity:.7;
 }
 
 .menu{
@@ -101,19 +97,35 @@ padding:20px;
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:20px;
-opacity:0;
-transform:translateY(30px);
-animation:fadeUp 1s forwards;
-}
-
-@keyframes fadeUp{
-to{opacity:1;transform:translateY(0);}
 }
 
 .product img{
 width:100%;
 border-radius:10px;
 cursor:pointer;
+}
+
+.price{
+font-weight:bold;
+}
+
+.old{
+text-decoration:line-through;
+color:gray;
+font-size:13px;
+margin-left:6px;
+}
+
+.off{
+color:green;
+font-size:13px;
+margin-left:5px;
+}
+
+.emi{
+font-size:12px;
+opacity:.7;
+margin-top:4px;
 }
 
 .product button{
@@ -124,15 +136,7 @@ border:none;
 background:black;
 color:white;
 cursor:pointer;
-transition:.15s;
 }
-
-.product button:active{
-transform:scale(.95);
-}
-
-.product h3{margin:10px 0 5px;}
-.product p{margin:0;}
 
 #productPage{
 display:none;
@@ -254,7 +258,7 @@ margin-top:10px;
 cursor:pointer;
 }
 
-input{
+input,select{
 width:100%;
 padding:12px;
 margin:8px 0;
@@ -305,7 +309,10 @@ cursor:pointer;
 <a href="https://wa.me/919987782822">Contact</a>
 </div>
 
-<header>AETHELL</header>
+<header>
+AETHELL
+<div class="caption">Modern décor for modern spaces</div>
+</header>
 
 <section class="products" id="productContainer"></section>
 
@@ -343,7 +350,9 @@ cursor:pointer;
 
 <div class="popup" id="checkoutPopup">
 <div class="popup-content">
+
 <div class="closePopup" onclick="closeCheckout()">✕</div>
+
 <h2>Checkout</h2>
 
 <input id="name" placeholder="Name">
@@ -351,6 +360,12 @@ cursor:pointer;
 <input id="flat" placeholder="Flat Number">
 <input id="area" placeholder="Area / Street">
 <input id="pincode" placeholder="Pincode">
+
+<select id="paymentPlan">
+<option value="full">Full Payment</option>
+<option value="2">2 Month EMI</option>
+<option value="3">3 Month EMI</option>
+</select>
 
 <button class="cartButton" onclick="checkout()">Pay With UPI</button>
 
@@ -399,13 +414,27 @@ let slide=0
 
 products.forEach((p,i)=>{
 
+let original=Math.round(p.price/0.8)
+let emi=Math.round(p.price/3)
+
 let html=`
 <div class="product">
+
 <img src="${p.img[0]}" onclick="viewProduct(${i})">
+
 <h3>${p.name}</h3>
-<p>₹${p.price}</p>
+
+<div class="price">
+₹${p.price}
+<span class="old">₹${original}</span>
+<span class="off">20% OFF</span>
+</div>
+
+<div class="emi">From ₹${emi}/month</div>
+
 <button onclick="addCart(${i})">Add to Cart</button>
 <button onclick="buyNow(${i})">Buy Now</button>
+
 </div>
 `
 
@@ -451,33 +480,6 @@ function goSlide(i){
 slide=i
 renderSlider()
 }
-
-let startX=0
-
-const slider=document.getElementById("slideImg")
-
-slider.addEventListener("touchstart",e=>{
-startX=e.touches[0].clientX
-})
-
-slider.addEventListener("touchend",e=>{
-
-let endX=e.changedTouches[0].clientX
-
-if(startX-endX>50){
-slide++
-}
-
-if(endX-startX>50){
-slide--
-}
-
-if(slide>=products[current].img.length) slide=0
-if(slide<0) slide=products[current].img.length-1
-
-renderSlider()
-
-})
 
 function addCart(i){
 
@@ -553,6 +555,7 @@ let building=document.getElementById("building").value
 let flat=document.getElementById("flat").value
 let area=document.getElementById("area").value
 let pincode=document.getElementById("pincode").value
+let plan=document.getElementById("paymentPlan").value
 
 let total=0
 let order=""
@@ -562,11 +565,16 @@ order+=p.name+" ₹"+p.price+" , "
 total+=p.price
 })
 
-let message=`New AETHELL Order%0AName:${name}%0AOrder:${order}%0AAddress:${building} ${flat} ${area}%0APincode:${pincode}%0ATotal:₹${total}`
+let pay=total
+
+if(plan=="2") pay=Math.round(total/2)
+if(plan=="3") pay=Math.round(total/3)
+
+let message=`New AETHELL Order%0AName:${name}%0AOrder:${order}%0APayment Plan:${plan}%0AAddress:${building} ${flat} ${area}%0APincode:${pincode}%0ATotal:₹${total}`
 
 window.open(`https://wa.me/919987782822?text=${message}`)
 
-window.location.href=`upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am=${total}&cu=INR`
+window.location.href=`upi://pay?pa=aditya.kbelose@oksbi&pn=Aethell&am=${pay}&cu=INR`
 
 }
 
@@ -582,4 +590,3 @@ document.getElementById("aboutPopup").style.display="none"
 
 </body>
 </html>
-```
