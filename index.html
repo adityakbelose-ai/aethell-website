@@ -148,14 +148,20 @@ height:100%;
 background:white;
 z-index:1200;
 overflow:auto;
-padding:30px 20px;
+padding:40px 20px;
+}
+
+.viewer{
+max-width:420px;
+margin:auto;
 text-align:center;
+position:relative;
 }
 
 .closePage{
 position:absolute;
-right:25px;
-top:20px;
+right:10px;
+top:0;
 font-size:26px;
 cursor:pointer;
 }
@@ -197,6 +203,16 @@ line-height:1.5;
 .dim{
 margin-top:10px;
 font-weight:bold;
+}
+
+.cartButton{
+width:100%;
+padding:12px;
+background:black;
+color:white;
+border:none;
+margin-top:10px;
+cursor:pointer;
 }
 
 .popup{
@@ -246,16 +262,6 @@ margin-left:auto;
 cursor:pointer;
 color:red;
 font-weight:bold;
-}
-
-.cartButton{
-width:100%;
-padding:12px;
-background:black;
-color:white;
-border:none;
-margin-top:10px;
-cursor:pointer;
 }
 
 input,select{
@@ -320,6 +326,8 @@ AETHELL
 
 <div id="productPage">
 
+<div class="viewer">
+
 <div class="closePage" onclick="closeProduct()">✕</div>
 
 <div class="slider">
@@ -336,6 +344,8 @@ AETHELL
 
 <button class="cartButton" onclick="addCart(current)">Add To Cart</button>
 <button class="cartButton" onclick="buyNow(current)">Buy Now</button>
+
+</div>
 
 </div>
 
@@ -464,7 +474,9 @@ document.getElementById("productPage").style.display="none"
 
 function renderSlider(){
 
-document.getElementById("slideImg").src=products[current].img[slide]
+let img=document.getElementById("slideImg")
+
+img.src=products[current].img[slide]
 
 let dots=""
 
@@ -480,6 +492,33 @@ function goSlide(i){
 slide=i
 renderSlider()
 }
+
+/* SWIPE FEATURE */
+
+let startX=0
+
+document.getElementById("slideImg").addEventListener("touchstart",e=>{
+startX=e.touches[0].clientX
+})
+
+document.getElementById("slideImg").addEventListener("touchend",e=>{
+
+let endX=e.changedTouches[0].clientX
+
+if(startX-endX>50){
+slide++
+}
+
+if(endX-startX>50){
+slide--
+}
+
+if(slide>=products[current].img.length) slide=0
+if(slide<0) slide=products[current].img.length-1
+
+renderSlider()
+
+})
 
 function addCart(i){
 
