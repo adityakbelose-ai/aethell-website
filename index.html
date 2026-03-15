@@ -56,4 +56,201 @@
         .dim { margin-top: 15px; font-weight: bold; border-top: 1px solid #eee; padding-top: 15px; }
         .cartButton { width: 100%; padding: 16px; background: black; color: white; border: none; margin-top: 12px; cursor: pointer; font-weight: bold; font-size: 16px; border-radius: 8px; }
 
-        .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none
+        .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1500; backdrop-filter: blur(4px); }
+        .popup-content { background: white; padding: 30px; width: 90%; max-width: 420px; border-radius: 20px; position: relative; max-height: 85vh; overflow-y: auto; }
+        .closePopup { position: absolute; right: 20px; top: 20px; font-size: 26px; cursor: pointer; }
+        
+        /* UPGRADE: Safe Shipping Badge & Dynamic Total Styling */
+        .order-summary-box { background: #f9f9f9; padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid #eee; }
+        .total-row { display: flex; justify-content: space-between; font-weight: bold; font-size: 18px; margin-bottom: 10px; }
+        .shipping-badge { display: flex; align-items: center; justify-content: center; font-size: 11px; color: #27ae60; font-weight: bold; gap: 5px; }
+        
+        .checkout-alert { background: #000; color: #fff; padding: 12px; border-radius: 6px; font-size: 11px; text-align: center; margin-top: 15px; line-height: 1.4; }
+        .ig { position: fixed; bottom: 25px; right: 25px; width: 55px; height: 55px; background: black; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1001; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        input, select { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box; font-size: 15px; }
+        #toast { position: fixed; top: 30px; left: 50%; transform: translateX(-50%); background: black; color: white; padding: 12px 28px; border-radius: 50px; display: none; z-index: 3000; font-weight: bold; }
+        
+        .highlight { font-weight: 800; border-bottom: 2px solid black; }
+    </style>
+</head>
+<body>
+
+<div id="loader">AETHELL</div>
+
+<div class="trust-bar">Free Shipping in Mumbai • Secure Wooden Crate Packaging</div>
+
+<div class="menu" onclick="toggleMenu()">☰</div>
+<div class="cart" onclick="openCart()">🛒 <span id="count">0</span></div>
+
+<div class="sidebar" id="sidebar">
+    <div class="closeSidebar" onclick="toggleMenu()">✕</div>
+    <a href="#" onclick="toggleMenu()">Home</a>
+    <a onclick="openAbout(); toggleMenu()">About Us</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdE6cRXuMMelbPQpyuv9FouDaYFMsJxm6UblKyjkCCFOIllNg/viewform?usp=header">Custom Mirrors</a>
+    <a href="https://wa.me/919987782822">Support</a>
+    <div class="sidebar-footer">
+        <a onclick="openPolicy(); toggleMenu()">Return Policy</a>
+    </div>
+</div>
+
+<header>
+    AETHELL
+    <div class="caption">Elevate your space.</div>
+</header>
+
+<section class="products" id="productContainer"></section>
+
+<div id="toast">Added to Cart</div>
+
+<div id="productPage">
+    <div class="viewer">
+        <div class="closePage" onclick="closeProduct()">✕</div>
+        <div class="slider-container" id="swipeArea"><img id="slideImg" src=""></div>
+        <div class="dots" id="dots"></div>
+        <h2 id="title" style="margin-top: 20px;"></h2>
+        <h3 id="p-price" style="color: #444;"></h3>
+        <div class="desc" id="desc"></div>
+        <div class="dim" id="dim"></div>
+        <button class="cartButton" onclick="addCart(current)">Add To Cart</button>
+        <button class="cartButton" style="background:#333;" onclick="buyNow(current)">Buy Now</button>
+    </div>
+</div>
+
+<div class="popup" id="checkoutPopup">
+    <div class="popup-content">
+        <div class="closePopup" onclick="closeCheckout()">✕</div>
+        <h2 style="margin: 0 0 15px 0;">Checkout</h2>
+        <input id="name" placeholder="Full Name">
+        <input id="phone" placeholder="WhatsApp Number" type="tel">
+        <input id="addr" placeholder="Full Address (Bldg, Flat, Area)">
+        <input id="pincode" placeholder="Pincode" type="number">
+        <select id="paymentPlan">
+            <option value="full">Full Payment (UPI)</option>
+            <option value="2">2 Month EMI</option>
+            <option value="3">3 Month EMI</option>
+        </select>
+
+        <div class="order-summary-box">
+            <div class="total-row">
+                <span>Total Amount:</span>
+                <span id="displayTotal">₹0</span>
+            </div>
+            <div class="shipping-badge">
+                🛡️ Secure Wooden Crate Packing Included
+            </div>
+        </div>
+
+        <button class="cartButton" onclick="processOrder()">Complete Order</button>
+        <div class="checkout-alert">Return to browser after payment to send the WhatsApp confirmation.</div>
+    </div>
+</div>
+
+<div class="popup" id="policyPopup">
+    <div class="popup-content">
+        <div class="closePopup" onclick="closePolicy()">✕</div>
+        <h2 style="margin-top:0;">Return Policy</h2>
+        <div style="line-height:1.6; font-size:14px; color:#444;">
+            <p>At Aethell, we ensure every mirror is <span class="highlight">individually examined</span> for flaws before it leaves our studio.</p>
+            <p>Due to the delicate and bespoke nature of our designs, <span class="highlight">no returns or refunds</span> will be issued once a product is delivered.</p>
+            <p><strong>Exception:</strong> If your product arrives damaged during transit, contact us within 24 hours with an unboxing video for a free replacement.</p>
+        </div>
+    </div>
+</div>
+
+<div class="popup" id="aboutPopup">
+    <div class="popup-content">
+        <div class="closePopup" onclick="closeAbout()">✕</div>
+        <h2 style="margin-top: 0; letter-spacing: 2px;">THE STORY</h2>
+        <div style="line-height:1.8; color:#333;">
+            <p>It started from a simple problem. I wanted something for my room that looked <span class="highlight">cool, minimal and premium</span> but most mirrors available felt basic or outdated.</p>
+            <p>So <span class="highlight">Aethell</span> was born. A brand focused on modern mirror designs that reflect your personality.</p>
+        </div>
+    </div>
+</div>
+
+<div class="ig" onclick="window.open('https://instagram.com/aethell.in')">IG</div>
+
+<script>
+    const products = [
+        {name:"CMIYGL Mirror", price:5999, img:["cmiygl1.jpg","cmiygl2.jpg"], desc:"A reflective reinterpretation of the iconic aesthetic.", dim:"15 x 24 inches"},
+        {name:"MS PAINT Mirror", price:8999, img:["mspaint1.jpg","mspaint2.jpg"], desc:"A retro-modern tribute to early digital creativity.", dim:"47 x 31 inches"},
+        {name:"reCAPTCHA Mirror", price:5999, img:["captcha1.jpg"], desc:"A mirror inspired by identity and verification.", dim:"42 x 31 inches"}
+    ];
+
+    let cart = [], current = 0, slide = 0;
+
+    window.onload = () => setTimeout(() => document.getElementById("loader").style.display = "none", 1000);
+
+    function toggleMenu() { document.getElementById("sidebar").classList.toggle("open"); }
+
+    products.forEach((p, i) => {
+        document.getElementById("productContainer").innerHTML += `
+        <div class="product">
+            <img src="${p.img[0]}" onclick="viewProduct(${i})">
+            <h3 style="font-size: 15px; margin: 10px 0 4px 0;">${p.name}</h3>
+            <div class="price">₹${p.price}</div>
+            <button onclick="addCart(${i})">Add to Cart</button>
+        </div>`;
+    });
+
+    function viewProduct(i) {
+        current = i; slide = 0;
+        document.getElementById("productPage").style.display = "block";
+        document.getElementById("title").innerText = products[i].name;
+        document.getElementById("p-price").innerText = "₹" + products[i].price;
+        document.getElementById("desc").innerText = products[i].desc;
+        document.getElementById("dim").innerText = "Dimensions: " + products[i].dim;
+        renderSlider();
+    }
+
+    function renderSlider() {
+        document.getElementById("slideImg").src = products[current].img[slide];
+        let dots = "";
+        products[current].img.forEach((x, i) => dots += `<span class="dot ${i == slide ? 'active' : ''}"></span>`);
+        document.getElementById("dots").innerHTML = dots;
+    }
+
+    function addCart(i) {
+        cart.push(products[i]);
+        updateCartCount();
+        document.getElementById("toast").style.display = "block";
+        setTimeout(() => document.getElementById("toast").style.display = "none", 1500);
+    }
+
+    function updateCartCount() { document.getElementById("count").innerText = cart.length; }
+
+    function openCart() { openCheckout(); } // Skips separate cart popup for speed
+
+    function buyNow(i) { cart = [products[i]]; updateCartCount(); closeProduct(); openCheckout(); }
+
+    function openCheckout() {
+        if(!cart.length) return alert("Your bag is empty.");
+        let total = cart.reduce((sum, p) => sum + p.price, 0);
+        document.getElementById("displayTotal").innerText = "₹" + total;
+        document.getElementById("checkoutPopup").style.display = "flex";
+    }
+
+    function processOrder() {
+        const name = document.getElementById("name").value;
+        const phone = document.getElementById("phone").value;
+        const total = cart.reduce((sum, p) => sum + p.price, 0);
+        const id = "AET" + Math.floor(1000 + Math.random() * 9000);
+        
+        if(!name || !phone) return alert("Please fill your details.");
+
+        const msg = `*AETHELL ORDER*%0AID: ${id}%0A*Total:* ₹${total}%0A*Customer:* ${name}%0A*Phone:* ${phone}`;
+
+        window.location.href = `upi://pay?pa=aditya.kbelose@oksbi&pn=AETHELL&am=${total}&cu=INR&tn=${id}`;
+        setTimeout(() => { window.location.href = `https://wa.me/919987782822?text=${msg}`; }, 4000);
+    }
+
+    function closeCheckout() { document.getElementById("checkoutPopup").style.display = "none"; }
+    function closeProduct() { document.getElementById("productPage").style.display = "none"; }
+    function openAbout() { document.getElementById("aboutPopup").style.display = "flex"; }
+    function closeAbout() { document.getElementById("aboutPopup").style.display = "none"; }
+    function openPolicy() { document.getElementById("policyPopup").style.display = "flex"; }
+    function closePolicy() { document.getElementById("policyPopup").style.display = "none"; }
+</script>
+</body>
+    </html>
+    
