@@ -8,7 +8,7 @@
     <style>
         body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; background: white; color: black; overflow-x: hidden; }
         
-        /* NEW LOADER STYLES */
+        /* UPDATED LOADER STYLES */
         #loader { 
             position: fixed; 
             width: 100%; 
@@ -271,81 +271,75 @@
         loader.style.opacity = "0";
         setTimeout(() => {
             loader.style.display = "none";
-            // Clean up Three.js to save memory after loader is gone
             renderer.dispose();
             geometry.dispose();
             material.dispose();
         }, 1000);
     }, 2000);
 
-    /* PRODUCT DATA & LOGIC */
+    /* RESTORED PRODUCT DATA */
     function toggleMenu() { document.getElementById("sidebar").classList.toggle("open"); }
 
     const products = [
         {
             name: "iPod Mirror", 
             price: 7499, 
-            img: ["https://images.unsplash.com/photo-1544244015-0cd4b3ff3fdf?q=80&w=1000&auto=format&fit=crop", "https://images.unsplash.com/photo-1619983081563-430f63602796?q=80&w=1000&auto=format&fit=crop"], 
-            desc: "Nostalgia reflected. A classic 2000s tech-inspired silhouette that turns your reflection into a core memory.", 
+            img: ["ipod1.jpg", "ipod2.jpg"], 
+            desc: "Nostalgia reflected. A classic 2000s tech-inspired silhouette that turns your reflection into a core memory. Perfect for those who miss the era of click-wheels and shuffle play.", 
             dim: "18 x 32 inches",
             hasColor: true
         },
         {
             name: "MS PAINT Mirror", 
             price: 8999, 
-            img: ["https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1000&auto=format&fit=crop"], 
-            desc: "A digital tribute to the birthplace of creativity. This piece brings the iconic 90s workspace into the physical world.", 
+            img: ["mspaint1.jpg", "mspaint2.jpg", "mspaint3.jpg"], 
+            desc: "A digital tribute to the birthplace of creativity. This piece brings the iconic 90s workspace into the physical world, creating a portal to your room's aesthetic.", 
             dim: "47 x 31 inches"
         },
         {
             name: "CMIYGL Mirror", 
             price: 5999, 
-            img: ["https://images.unsplash.com/photo-1473116763249-2faaef81ccda?q=80&w=1000&auto=format&fit=crop"], 
-            desc: "The traveler's companion. Inspired by the passport aesthetic and travel logs.", 
+            img: ["cmiygl1.jpg", "cmiygl2.jpg", "cmiygl3.jpg"], 
+            desc: "The traveler's companion. Inspired by the passport aesthetic and travel logs, this mirror is for those whose rooms are just a layover before the next adventure.", 
             dim: "15 x 24 inches"
         },
         {
             name: "reCAPTCHA Mirror", 
             price: 5999, 
-            img: ["https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1000&auto=format&fit=crop"], 
-            desc: "Prove you're human. A sharp, conversational piece that turns internet verification into a statement.", 
+            img: ["captcha1.jpg"], 
+            desc: "Prove you're human. A sharp, conversational piece that turns the internet's most familiar verification check into your home's most unique statement.", 
             dim: "42 x 31 inches"
         },
         {
             name: "Queen of Hearts", 
             price: 5499, 
-            img: ["https://images.unsplash.com/photo-1511193311914-0346f16efe90?q=80&w=1000&auto=format&fit=crop"], 
-            desc: "Command the room with royalty that doesn't follow the rules.", 
+            img: ["queen1.jpg"], 
+            desc: "Command the room with royalty that doesn't follow the rules. This design balances classical playing card art with a modern, defiant attitude.", 
             dim: "48 x 31 inches"
         },
         {
             name: "King of Hearts", 
             price: 5499, 
-            img: ["https://images.unsplash.com/photo-1511193311914-0346f16efe90?q=80&w=1000&auto=format&fit=crop"], 
-            desc: "Regal, symmetrical, and undeniably bold. Anchor your space with authority.", 
+            img: ["king1.jpg"], 
+            desc: "Regal, symmetrical, and undeniably bold. The King of Hearts is designed to anchor your space with a sense of authority and timeless style.", 
             dim: "48 x 31 inches"
         }
     ];
 
     let cart = [], current = 0, slide = 0;
 
-    const renderProducts = () => {
-        let container = document.getElementById("productContainer");
-        container.innerHTML = "";
-        products.forEach((p, i) => {
-            let original = Math.round(p.price / 0.8), emi = Math.round(p.price / 3);
-            container.innerHTML += `
-            <div class="product">
-                <img src="${p.img[0]}" onclick="viewProduct(${i})">
-                <h3 style="margin: 10px 0 4px 0; font-size: 15px;">${p.name}</h3>
-                <div class="price">₹${p.price} <span class="old">₹${original}</span></div>
-                <div class="off">20% OFF</div>
-                <div class="emi-tag">EMI starts ₹${emi}/mo</div>
-                <button onclick="addCart(${i})">Add to Cart</button>
-            </div>`;
-        });
-    }
-    renderProducts();
+    products.forEach((p, i) => {
+        let original = Math.round(p.price / 0.8), emi = Math.round(p.price / 3);
+        document.getElementById("productContainer").innerHTML += `
+        <div class="product">
+            <img src="${p.img[0]}" onclick="viewProduct(${i})">
+            <h3 style="margin: 10px 0 4px 0; font-size: 15px;">${p.name}</h3>
+            <div class="price">₹${p.price} <span class="old">₹${original}</span></div>
+            <div class="off">20% OFF</div>
+            <div class="emi-tag">EMI starts ₹${emi}/mo</div>
+            <button onclick="addCart(${i})">Add to Cart</button>
+        </div>`;
+    });
 
     function viewProduct(i) {
         current = i; slide = 0;
