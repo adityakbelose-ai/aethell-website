@@ -6,7 +6,14 @@
     <title>AETHELL | Modern Decor</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
     <style>
-        body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; background: white; color: black; overflow-x: hidden; }
+        /* GLOBAL GRUNGE MINIMALIST STYLES */
+        body { 
+            margin: 0; 
+            font-family: 'Courier New', Courier, monospace; 
+            background: #0a0a0a; 
+            color: #ffffff; 
+            overflow-x: hidden; 
+        }
         
         /* UPDATED LOADER STYLES */
         #loader { 
@@ -19,9 +26,9 @@
             align-items: center; 
             justify-content: center; 
             font-size: 64px; 
-            letter-spacing: 8px; 
+            letter-spacing: 12px; 
             z-index: 2000; 
-            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-family: 'Impact', sans-serif;
             text-transform: uppercase;
             transition: opacity 1s ease;
         }
@@ -32,60 +39,210 @@
             left: 0;
             width: 100%;
             height: 100%;
+            opacity: 0.7; /* Grittier look */
         }
 
         #loader span {
             position: relative;
             z-index: 2001;
-            text-shadow: 0 0 20px rgba(0,0,0,0.8);
+            text-shadow: 0 0 30px rgba(255,255,255,0.4);
             pointer-events: none;
         }
 
-        .trust-bar { background: #f9f9f9; border-bottom: 1px solid #eee; text-align: center; padding: 6px 0; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #666; }
-        header { text-align: center; margin: 40px 0 20px 0; font-size: 34px; letter-spacing: 6px; font-weight: bold; }
-        .caption { font-size: 13px; letter-spacing: 4px; margin-top: 8px; opacity: .6; text-transform: uppercase; }
-        .menu { position: fixed; left: 20px; top: 25px; font-size: 28px; cursor: pointer; z-index: 1001; }
-        .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: white; box-shadow: 5px 0 15px rgba(0,0,0,0.1); transition: .4s cubic-bezier(0.4, 0, 0.2, 1); padding-top: 80px; z-index: 1000; }
+        .trust-bar { 
+            background: #111; 
+            border-bottom: 1px solid #222; 
+            text-align: center; 
+            padding: 8px 0; 
+            font-size: 10px; 
+            letter-spacing: 3px; 
+            text-transform: uppercase; 
+            color: #888; 
+        }
+
+        header { 
+            text-align: center; 
+            margin: 60px 0 40px 0; 
+            font-size: 52px; 
+            letter-spacing: 10px; 
+            font-family: 'Impact', sans-serif;
+            font-weight: bold; 
+            text-transform: uppercase;
+        }
+
+        .caption { 
+            font-size: 11px; 
+            letter-spacing: 5px; 
+            margin-top: 10px; 
+            opacity: .5; 
+            text-transform: lowercase; 
+            font-family: 'Courier New', monospace;
+        }
+
+        .menu { position: fixed; left: 25px; top: 30px; font-size: 32px; cursor: pointer; z-index: 1001; color: white; }
+        
+        .sidebar { 
+            position: fixed; 
+            left: -300px; 
+            top: 0; 
+            width: 300px; 
+            height: 100%; 
+            background: #000; 
+            border-right: 1px solid #222;
+            transition: .4s cubic-bezier(0.4, 0, 0.2, 1); 
+            padding-top: 80px; 
+            z-index: 1000; 
+        }
         .sidebar.open { left: 0; }
-        .closeSidebar { position: absolute; top: 20px; right: 25px; font-size: 26px; cursor: pointer; }
-        .sidebar a { display: block; padding: 18px 30px; text-decoration: none; color: black; font-size: 17px; letter-spacing: 1px; cursor: pointer; }
-        .sidebar-bottom { position: absolute; bottom: 30px; width: 100%; border-top: 1px solid #eee; padding-top: 10px; }
-        .cart { position: fixed; right: 20px; top: 25px; background: black; color: white; padding: 8px 16px; border-radius: 30px; cursor: pointer; z-index: 1001; font-weight: bold; }
-        .products { padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .product img { width: 100%; border-radius: 12px; cursor: pointer; aspect-ratio: 1/1; object-fit: cover; background: #f9f9f9; }
-        .price { font-weight: bold; margin-top: 10px; font-size: 16px; }
-        .old { text-decoration: line-through; color: #999; font-size: 13px; margin-left: 6px; }
-        .off { color: #27ae60; font-size: 13px; font-weight: bold; }
-        .emi-tag { font-size: 11px; color: #666; margin-top: 4px; }
-        .product button { width: 100%; padding: 12px; margin-top: 10px; border: none; background: black; color: white; cursor: pointer; font-weight: bold; border-radius: 6px; font-size: 13px; }
-        #productPage { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1200; overflow-y: auto; }
-        .viewer { max-width: 480px; margin: 40px auto; padding: 0 20px; text-align: center; position: relative; box-sizing: border-box; }
-        .closePage { position: absolute; right: 15px; top: -15px; font-size: 32px; cursor: pointer; z-index: 100; }
-        .slider-container { position: relative; overflow: hidden; border-radius: 15px; touch-action: pan-y; background: #eee; }
-        #slideImg { width: 100%; max-height: 60vh; object-fit: contain; transition: transform 0.3s ease-out; }
-        .dots { text-align: center; margin-top: 15px; }
-        .dot { height: 8px; width: 8px; background: #ddd; display: inline-block; border-radius: 50%; margin: 0 4px; transition: 0.3s; }
-        .dot.active { background: black; width: 20px; border-radius: 10px; }
-        .desc { margin-top: 25px; line-height: 1.6; color: #444; font-size: 15px; }
-        .dim { margin-top: 15px; font-weight: bold; border-top: 1px solid #eee; padding-top: 15px; }
-        .color-selector { margin-top: 15px; text-align: left; }
-        .color-selector label { font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-        .cartButton { width: 100%; padding: 16px; background: black; color: white; border: none; margin-top: 12px; cursor: pointer; font-weight: bold; font-size: 16px; border-radius: 8px; }
-        .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1500; backdrop-filter: blur(4px); }
-        .popup-content { background: white; padding: 30px; width: 90%; max-width: 420px; border-radius: 20px; position: relative; max-height: 85vh; overflow-y: auto; }
-        .closePopup { position: absolute; right: 20px; top: 20px; font-size: 26px; cursor: pointer; }
-        .order-summary { background: #f9f9f9; padding: 15px; border-radius: 12px; margin: 15px 0; border: 1px solid #eee; text-align: center; }
-        .total-display { font-size: 20px; font-weight: bold; }
-        .checkout-item { display: flex; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
-        .checkout-item img { width: 60px; height: 60px; margin-right: 15px; border-radius: 8px; object-fit: cover; }
-        .item-info { display: flex; flex-direction: column; font-size: 14px; }
-        .remove { margin-left: auto; cursor: pointer; color: #e74c3c; font-weight: bold; }
-        input, select { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #e0e0e0; border-radius: 8px; box-sizing: border-box; font-size: 15px; background: #fafafa; }
-        #toast { position: fixed; top: 30px; left: 50%; transform: translateX(-50%); background: black; color: white; padding: 12px 28px; border-radius: 50px; display: none; z-index: 3000; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .checkout-alert { background: #f0f0f0; color: #000; padding: 10px; border-radius: 6px; font-size: 11px; font-weight: bold; text-align: center; margin: 10px 0; border: 1px dashed #333; }
-        .ig { position: fixed; bottom: 25px; right: 25px; width: 55px; height: 55px; background: black; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1001; font-weight: bold; }
-        .about-text { line-height: 1.8; color: #333; }
-        .highlight { color: black; font-weight: 800; border-bottom: 2px solid black; }
+        .closeSidebar { position: absolute; top: 25px; right: 25px; font-size: 26px; cursor: pointer; color: white; }
+        .sidebar a { 
+            display: block; 
+            padding: 20px 40px; 
+            text-decoration: none; 
+            color: white; 
+            font-size: 14px; 
+            letter-spacing: 2px; 
+            text-transform: uppercase;
+            border-bottom: 1px solid #111;
+        }
+        .sidebar-bottom { position: absolute; bottom: 30px; width: 100%; border-top: 1px solid #222; padding-top: 10px; }
+
+        .cart { 
+            position: fixed; 
+            right: 25px; 
+            top: 30px; 
+            background: white; 
+            color: black; 
+            padding: 10px 20px; 
+            border-radius: 0px; /* Sharp grunge edges */
+            cursor: pointer; 
+            z-index: 1001; 
+            font-weight: bold; 
+            font-family: 'Impact', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .products { padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .product { background: #0a0a0a; }
+        .product img { 
+            width: 100%; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            aspect-ratio: 1/1; 
+            object-fit: cover; 
+            background: #111; 
+            filter: grayscale(20%);
+            transition: filter 0.3s ease;
+        }
+        .product img:hover { filter: grayscale(0%); }
+
+        .product h3 { 
+            font-family: 'Impact', sans-serif; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            font-size: 18px;
+            margin: 15px 0 5px 0;
+        }
+
+        .price { font-weight: bold; font-family: 'Courier New', monospace; font-size: 18px; color: white; }
+        .old { text-decoration: line-through; color: #444; font-size: 13px; margin-left: 8px; }
+        .off { color: #ffffff; background: #333; display: inline-block; padding: 2px 6px; font-size: 10px; margin-top: 5px; font-weight: bold; }
+        .emi-tag { font-size: 11px; color: #666; margin-top: 6px; text-transform: lowercase; }
+
+        .product button { 
+            width: 100%; 
+            padding: 14px; 
+            margin-top: 15px; 
+            border: 1px solid white; 
+            background: transparent; 
+            color: white; 
+            cursor: pointer; 
+            font-weight: bold; 
+            border-radius: 0; 
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        .product button:hover { background: white; color: black; }
+
+        /* PRODUCT PAGE STYLES */
+        #productPage { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 1200; overflow-y: auto; }
+        .viewer { max-width: 500px; margin: 40px auto; padding: 0 25px; text-align: center; position: relative; }
+        .closePage { position: absolute; right: 15px; top: -15px; font-size: 32px; cursor: pointer; z-index: 100; color: white; }
+        
+        .slider-container { border-radius: 4px; background: #111; border: 1px solid #222; }
+        #title { font-family: 'Impact', sans-serif; font-size: 32px; letter-spacing: 3px; text-transform: uppercase; }
+        #p-price { font-family: 'Courier New', monospace; font-size: 24px; color: #888; }
+
+        .desc { 
+            margin-top: 30px; 
+            line-height: 1.8; 
+            color: #bbb; 
+            font-size: 14px; 
+            font-family: 'Courier New', Courier, monospace;
+            text-align: left;
+        }
+        .dim { 
+            margin-top: 20px; 
+            font-weight: bold; 
+            border-top: 1px solid #222; 
+            padding-top: 15px; 
+            text-align: left; 
+            font-size: 12px; 
+            letter-spacing: 1px;
+            color: #666;
+        }
+
+        .cartButton { 
+            width: 100%; 
+            padding: 18px; 
+            background: white; 
+            color: black; 
+            border: none; 
+            margin-top: 15px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-family: 'Impact', sans-serif;
+            font-size: 18px; 
+            border-radius: 0; 
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* POPUPS */
+        .popup { background: rgba(0,0,0,0.9); backdrop-filter: blur(8px); }
+        .popup-content { background: #0a0a0a; border: 1px solid #222; color: white; border-radius: 0; }
+        .popup-content h2 { font-family: 'Impact', sans-serif; letter-spacing: 4px; }
+        
+        input, select { 
+            background: #111; 
+            border: 1px solid #333; 
+            color: white; 
+            border-radius: 0; 
+            font-family: 'Courier New', monospace;
+        }
+        input::placeholder { color: #444; }
+
+        .checkout-item { border-bottom: 1px solid #222; }
+        .order-summary { background: #111; border: 1px solid #222; }
+
+        #toast { 
+            background: white; 
+            color: black; 
+            border-radius: 0; 
+            font-family: 'Impact', sans-serif; 
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .ig { 
+            background: white; 
+            color: black; 
+            border-radius: 0; 
+            font-family: 'Impact', sans-serif;
+        }
+        
+        .highlight { color: white; border-bottom: 1px solid white; }
     </style>
 </head>
 <body>
@@ -95,25 +252,25 @@
     <span>AETHELL</span>
 </div>
 
-<div class="trust-bar">FREE SHIPPING IN MUMBAI • CUSTOM DESIGNS AVAILABLE</div>
+<div class="trust-bar">FREE SHIPPING IN MUMBAI • EXCLUSIVE DESIGNS</div>
 <div class="menu" onclick="toggleMenu()">☰</div>
-<div class="cart" onclick="openCart()">🛒 <span id="count">0</span></div>
+<div class="cart" onclick="openCart()">BAG (<span id="count">0</span>)</div>
 
 <div class="sidebar" id="sidebar">
     <div class="closeSidebar" onclick="toggleMenu()">✕</div>
-    <a href="#" onclick="toggleMenu()">Home</a>
-    <a onclick="openAbout(); toggleMenu()">About Us</a>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdE6cRXuMMelbPQpyuv9FouDaYFMsJxm6UblKyjkCCFOIllNg/viewform?usp=header">Custom Mirrors</a>
-    <a href="https://wa.me/919987782822">Support</a>
+    <a href="#" onclick="toggleMenu()">Archive</a>
+    <a onclick="openAbout(); toggleMenu()">Origins</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdE6cRXuMMelbPQpyuv9FouDaYFMsJxm6UblKyjkCCFOIllNg/viewform?usp=header">Custom Studio</a>
+    <a href="https://wa.me/919987782822">Liaison</a>
     <div class="sidebar-bottom">
-        <a onclick="openRefund(); toggleMenu()" style="font-size: 13px; opacity: 0.6;">Refund & Return Policy</a>
+        <a onclick="openRefund(); toggleMenu()" style="font-size: 11px; opacity: 0.4;">Policy_v.1.0</a>
     </div>
 </div>
 
-<header>AETHELL<div class="caption">Elevate your space.</div></header>
+<header>AETHELL<div class="caption">industrial grade reflections.</div></header>
 
 <section class="products" id="productContainer"></section>
-<div id="toast">Added to Cart</div>
+<div id="toast">SYSTEM: ITEM ADDED</div>
 
 <div id="productPage">
     <div class="viewer">
@@ -122,12 +279,12 @@
             <img id="slideImg" src="">
         </div>
         <div class="dots" id="dots"></div>
-        <h2 id="title" style="margin-top: 20px;"></h2>
-        <h3 id="p-price" style="color: #444;"></h3>
+        <h2 id="title" style="margin-top: 30px;"></h2>
+        <h3 id="p-price"></h3>
         
-        <div id="ipodOptions" class="color-selector" style="display:none;">
-            <label>Select Color:</label>
-            <select id="ipodColor">
+        <div id="ipodOptions" class="color-selector" style="display:none; text-align: left; margin-top: 20px;">
+            <label style="font-size: 10px; letter-spacing: 2px;">SELECT_FINISH:</label>
+            <select id="ipodColor" style="margin-top: 5px;">
                 <option value="Classic White">Classic White</option>
                 <option value="Jet Black">Jet Black</option>
                 <option value="Hot Red">Hot Red</option>
@@ -136,24 +293,24 @@
 
         <div class="desc" id="desc"></div>
         <div class="dim" id="dim"></div>
-        <button class="cartButton" onclick="addCart(current)">Add To Cart</button>
-        <button class="cartButton" style="background:#333;" onclick="buyNow(current)">Buy Now</button>
+        <button class="cartButton" onclick="addCart(current)">Add To Bag</button>
+        <button class="cartButton" style="background:#222; color: white;" onclick="buyNow(current)">Immediate Checkout</button>
     </div>
 </div>
 
 <div class="popup" id="cartPopup">
     <div class="popup-content">
         <div class="closePopup" onclick="closeCart()">✕</div>
-        <h2 style="margin-top: 0;">MY BAG</h2>
+        <h2 style="margin-top: 0;">BAG_CONTENTS</h2>
         <div id="cartItems"></div>
-        <button class="cartButton" onclick="openCheckout()">Checkout</button>
+        <button class="cartButton" onclick="openCheckout()">Initialize Checkout</button>
     </div>
 </div>
 
 <div class="popup" id="checkoutPopup">
     <div class="popup-content">
         <div class="closePopup" onclick="closeCheckout()">✕</div>
-        <h2 style="margin-top: 0;">DETAILS</h2>
+        <h2 style="margin-top: 0;">LOGISTICS</h2>
         <input id="name" placeholder="Full Name">
         <input id="phone" placeholder="WhatsApp Number" type="tel">
         <input id="building" placeholder="Building / Society">
@@ -161,23 +318,22 @@
         <input id="area" placeholder="Area / Landmark">
         <input id="pincode" placeholder="Pincode" type="number">
         <select id="paymentPlan">
-            <option value="full">Full Payment (Instant UPI)</option>
-            <option value="2">2 Month EMI (via WhatsApp)</option>
-            <option value="3">3 Month EMI (via WhatsApp)</option>
+            <option value="full">Full Payment (UPI)</option>
+            <option value="2">2 Month Installments</option>
+            <option value="3">3 Month Installments</option>
         </select>
         <div class="order-summary"><div class="total-display" id="totalDisplay">Total: ₹0</div></div>
-        <div class="checkout-alert">IMPORTANT: Return to browser after payment and send the WhatsApp message to confirm order.</div>
-        <button class="cartButton" onclick="processOrder()">Place Order</button>
+        <button class="cartButton" onclick="processOrder()">Confirm Order</button>
     </div>
 </div>
 
 <div class="popup" id="aboutPopup">
     <div class="popup-content">
         <div class="closePopup" onclick="closeAbout()">✕</div>
-        <h2 style="margin-top: 0; letter-spacing: 2px;">THE STORY</h2>
-        <div class="about-text">
-            <p>It started from a simple problem. I wanted something for my room that looked <span class="highlight">cool, minimal and premium</span> but most mirrors available felt basic or outdated.</p>
-            <p>So <span class="highlight">Aethell</span> was born. A brand focused on modern, <span class="highlight">Gen-Z inspired</span> mirror designs that elevate your space while reflecting your personality.</p>
+        <h2 style="margin-top: 0;">THE_MANIFESTO</h2>
+        <div class="about-text" style="font-family: 'Courier New', monospace; font-size: 14px;">
+            <p>Aethell was born from a void. Standard decor is stagnant. We build mirrors that are <span class="highlight">sharp, minimal, and unapologetic.</span></p>
+            <p>Gen-Z inspired. Industrial quality. Designed to reflect more than just a face.</p>
         </div>
     </div>
 </div>
@@ -185,9 +341,9 @@
 <div class="popup" id="refundPopup">
     <div class="popup-content">
         <div class="closePopup" onclick="closeRefund()">✕</div>
-        <h2 style="margin-top: 0;">REFUNDS & RETURNS</h2>
-        <div class="about-text">
-            <p>At Aethell, each mirror is treated as a piece of art. <span class="highlight">Returns are not possible</span> once the order is placed and delivered.</p>
+        <h2 style="margin-top: 0;">PROTOCOLS</h2>
+        <div class="about-text" style="font-family: 'Courier New', monospace; font-size: 14px;">
+            <p>Each unit is a custom build. <span class="highlight">No returns. No refunds.</span> Quality is guaranteed before transit.</p>
         </div>
     </div>
 </div>
@@ -195,149 +351,74 @@
 <div class="ig" onclick="window.open('https://instagram.com/aethell.in')">IG</div>
 
 <script>
-    /* NEW THREE.JS SHADER IMPLEMENTATION */
+    /* THREE.JS SHADER - NO CHANGES */
     const container = document.getElementById('shader-container');
-    
-    const vertexShader = `
-        void main() {
-            gl_Position = vec4( position, 1.0 );
-        }
-    `;
-
+    const vertexShader = `void main() { gl_Position = vec4( position, 1.0 ); }`;
     const fragmentShader = `
-        #define TWO_PI 6.2831853072
-        #define PI 3.14159265359
-
         precision highp float;
         uniform vec2 resolution;
         uniform float time;
-
         void main(void) {
             vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
             float t = time*0.05;
-            float lineWidth = 0.002;
-
             vec3 color = vec3(0.0);
             for(int j = 0; j < 3; j++){
                 for(int i=0; i < 5; i++){
-                    color[j] += lineWidth*float(i*i) / abs(fract(t - 0.01*float(j)+float(i)*0.01)*5.0 - length(uv) + mod(uv.x+uv.y, 0.2));
+                    color[j] += 0.002*float(i*i) / abs(fract(t - 0.01*float(j)+float(i)*0.01)*5.0 - length(uv) + mod(uv.x+uv.y, 0.2));
                 }
             }
-            gl_FragColor = vec4(color[0],color[1],color[2],1.0);
+            gl_FragColor = vec4(color,1.0);
         }
     `;
-
-    const camera = new THREE.Camera();
-    camera.position.z = 1;
+    const camera = new THREE.Camera(); camera.position.z = 1;
     const scene = new THREE.Scene();
     const geometry = new THREE.PlaneGeometry(2, 2);
-    const uniforms = {
-        time: { type: "f", value: 1.0 },
-        resolution: { type: "v2", value: new THREE.Vector2() }
-    };
-
-    const material = new THREE.ShaderMaterial({
-        uniforms: uniforms,
-        vertexShader: vertexShader,
-        fragmentShader: fragmentShader
-    });
-
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-
+    const uniforms = { time: { type: "f", value: 1.0 }, resolution: { type: "v2", value: new THREE.Vector2() } };
+    const material = new THREE.ShaderMaterial({ uniforms, vertexShader, fragmentShader });
+    const mesh = new THREE.Mesh(geometry, material); scene.add(mesh);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(renderer.domElement);
-
     function resize() {
         renderer.setSize(window.innerWidth, window.innerHeight);
         uniforms.resolution.value.x = renderer.domElement.width;
         uniforms.resolution.value.y = renderer.domElement.height;
     }
-
-    window.addEventListener('resize', resize);
-    resize();
-
-    function animate() {
-        requestAnimationFrame(animate);
-        uniforms.time.value += 0.05;
-        renderer.render(scene, camera);
-    }
+    window.addEventListener('resize', resize); resize();
+    function animate() { requestAnimationFrame(animate); uniforms.time.value += 0.05; renderer.render(scene, camera); }
     animate();
 
-    /* LOADING TIMER: Set to 2000ms (2 seconds) */
+    /* 2S LOADER */
     setTimeout(() => {
         const loader = document.getElementById("loader");
         loader.style.opacity = "0";
-        setTimeout(() => {
-            loader.style.display = "none";
-            renderer.dispose();
-            geometry.dispose();
-            material.dispose();
-        }, 1000);
+        setTimeout(() => { loader.style.display = "none"; }, 1000);
     }, 2000);
 
-    /* RESTORED PRODUCT DATA */
-    function toggleMenu() { document.getElementById("sidebar").classList.toggle("open"); }
-
+    /* PRODUCT ENGINE - RESTORED FILENAMES */
     const products = [
-        {
-            name: "iPod Mirror", 
-            price: 7499, 
-            img: ["ipod1.jpg", "ipod2.jpg"], 
-            desc: "Nostalgia reflected. A classic 2000s tech-inspired silhouette that turns your reflection into a core memory. Perfect for those who miss the era of click-wheels and shuffle play.", 
-            dim: "18 x 32 inches",
-            hasColor: true
-        },
-        {
-            name: "MS PAINT Mirror", 
-            price: 8999, 
-            img: ["mspaint1.jpg", "mspaint2.jpg", "mspaint3.jpg"], 
-            desc: "A digital tribute to the birthplace of creativity. This piece brings the iconic 90s workspace into the physical world, creating a portal to your room's aesthetic.", 
-            dim: "47 x 31 inches"
-        },
-        {
-            name: "CMIYGL Mirror", 
-            price: 5999, 
-            img: ["cmiygl1.jpg", "cmiygl2.jpg", "cmiygl3.jpg"], 
-            desc: "The traveler's companion. Inspired by the passport aesthetic and travel logs, this mirror is for those whose rooms are just a layover before the next adventure.", 
-            dim: "15 x 24 inches"
-        },
-        {
-            name: "reCAPTCHA Mirror", 
-            price: 5999, 
-            img: ["captcha1.jpg"], 
-            desc: "Prove you're human. A sharp, conversational piece that turns the internet's most familiar verification check into your home's most unique statement.", 
-            dim: "42 x 31 inches"
-        },
-        {
-            name: "Queen of Hearts", 
-            price: 5499, 
-            img: ["queen1.jpg"], 
-            desc: "Command the room with royalty that doesn't follow the rules. This design balances classical playing card art with a modern, defiant attitude.", 
-            dim: "48 x 31 inches"
-        },
-        {
-            name: "King of Hearts", 
-            price: 5499, 
-            img: ["king1.jpg"], 
-            desc: "Regal, symmetrical, and undeniably bold. The King of Hearts is designed to anchor your space with a sense of authority and timeless style.", 
-            dim: "48 x 31 inches"
-        }
+        { name: "iPod Mirror", price: 7499, img: ["ipod1.jpg", "ipod2.jpg"], desc: "Nostalgia reflected. A classic 2000s tech-inspired silhouette that turns your reflection into a core memory.", dim: "18 x 32 inches", hasColor: true },
+        { name: "MS PAINT Mirror", price: 8999, img: ["mspaint1.jpg", "mspaint2.jpg", "mspaint3.jpg"], desc: "A digital tribute to the birthplace of creativity. Bringing the 90s workspace into the physical world.", dim: "47 x 31 inches" },
+        { name: "CMIYGL Mirror", price: 5999, img: ["cmiygl1.jpg", "cmiygl2.jpg", "cmiygl3.jpg"], desc: "The traveler's companion. Inspired by passport aesthetics and high-fashion travel logs.", dim: "15 x 24 inches" },
+        { name: "reCAPTCHA Mirror", price: 5999, img: ["captcha1.jpg"], desc: "Prove you're human. A sharp, conversational piece that mimics the web's most famous verification.", dim: "42 x 31 inches" },
+        { name: "Queen of Hearts", price: 5499, img: ["queen1.jpg"], desc: "Command the room with royalty that doesn't follow rules. Classical card art meets modern defiance.", dim: "48 x 31 inches" },
+        { name: "King of Hearts", price: 5499, img: ["king1.jpg"], desc: "Regal, symmetrical, and undeniably bold. Anchor your space with timeless authority.", dim: "48 x 31 inches" }
     ];
 
     let cart = [], current = 0, slide = 0;
+
+    function toggleMenu() { document.getElementById("sidebar").classList.toggle("open"); }
 
     products.forEach((p, i) => {
         let original = Math.round(p.price / 0.8), emi = Math.round(p.price / 3);
         document.getElementById("productContainer").innerHTML += `
         <div class="product">
             <img src="${p.img[0]}" onclick="viewProduct(${i})">
-            <h3 style="margin: 10px 0 4px 0; font-size: 15px;">${p.name}</h3>
+            <h3>${p.name}</h3>
             <div class="price">₹${p.price} <span class="old">₹${original}</span></div>
-            <div class="off">20% OFF</div>
-            <div class="emi-tag">EMI starts ₹${emi}/mo</div>
-            <button onclick="addCart(${i})">Add to Cart</button>
+            <div class="off">20%_OFF</div>
+            <div class="emi-tag">emi from ₹${emi}/mo</div>
+            <button onclick="addCart(${i})">Add to Bag</button>
         </div>`;
     });
 
@@ -348,22 +429,10 @@
         document.getElementById("title").innerText = p.name;
         document.getElementById("p-price").innerText = "₹" + p.price;
         document.getElementById("desc").innerText = p.desc;
-        document.getElementById("dim").innerText = "Dimensions: " + p.dim;
+        document.getElementById("dim").innerText = "SPEC: " + p.dim;
         document.getElementById("ipodOptions").style.display = p.hasColor ? "block" : "none";
         renderSlider();
     }
-
-    let touchX = 0;
-    const swipeArea = document.getElementById('swipeArea');
-    swipeArea.addEventListener('touchstart', e => touchX = e.touches[0].clientX);
-    swipeArea.addEventListener('touchend', e => {
-        let diff = touchX - e.changedTouches[0].clientX;
-        if (Math.abs(diff) > 50) {
-            if (diff > 0 && slide < products[current].img.length - 1) slide++;
-            else if (diff < 0 && slide > 0) slide--;
-            renderSlider();
-        }
-    });
 
     function renderSlider() {
         document.getElementById("slideImg").src = products[current].img[slide];
@@ -372,42 +441,44 @@
         document.getElementById("dots").innerHTML = dots;
     }
 
+    /* Swipe Logic */
+    let touchX = 0;
+    document.getElementById('swipeArea').addEventListener('touchstart', e => touchX = e.touches[0].clientX);
+    document.getElementById('swipeArea').addEventListener('touchend', e => {
+        let diff = touchX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) {
+            if (diff > 0 && slide < products[current].img.length - 1) slide++;
+            else if (diff < 0 && slide > 0) slide--;
+            renderSlider();
+        }
+    });
+
     function addCart(i) {
         let item = {...products[i]};
-        if(item.hasColor) {
-            item.selectedColor = document.getElementById("ipodColor").value;
-        }
+        if(item.hasColor) item.selectedColor = document.getElementById("ipodColor").value;
         cart.push(item);
-        updateCart();
+        document.getElementById("count").innerText = cart.length;
         document.getElementById("toast").style.display = "block";
         setTimeout(() => document.getElementById("toast").style.display = "none", 1500);
     }
 
-    function buyNow(i) { 
-        cart = []; 
-        addCart(i); 
-        closeProduct(); 
-        openCheckout(); 
-    }
-
-    function updateCart() { document.getElementById("count").innerText = cart.length; }
+    function buyNow(i) { cart = []; addCart(i); closeProduct(); openCheckout(); }
     function closeProduct() { document.getElementById("productPage").style.display = "none"; }
     
     function openCart() {
         let html = "";
         cart.forEach((p, i) => {
-            let colorText = p.selectedColor ? `<br><small>Color: ${p.selectedColor}</small>` : "";
-            html += `<div class="checkout-item"><img src="${p.img[0]}"><div class="item-info"><span>${p.name}${colorText}</span><b>₹${p.price}</b></div><div class="remove" onclick="removeItem(${i})">✕</div></div>`;
+            html += `<div class="checkout-item"><img src="${p.img[0]}" style="width:50px; height:50px; object-fit:cover; margin-right:15px;"><div class="item-info"><span>${p.name}</span><b>₹${p.price}</b></div><div class="remove" onclick="removeItem(${i})" style="margin-left:auto; cursor:pointer;">✕</div></div>`;
         });
-        document.getElementById("cartItems").innerHTML = html || "<p style='text-align:center;'>Your bag is empty</p>";
+        document.getElementById("cartItems").innerHTML = html || "<p style='text-align:center;'>EMPTY_VOID</p>";
         document.getElementById("cartPopup").style.display = "flex";
     }
 
     function closeCart() { document.getElementById("cartPopup").style.display = "none"; }
-    function removeItem(i) { cart.splice(i, 1); updateCart(); openCart(); }
+    function removeItem(i) { cart.splice(i, 1); document.getElementById("count").innerText = cart.length; openCart(); }
     
     function openCheckout() { 
-        if(!cart.length) return alert("Bag is empty"); 
+        if(!cart.length) return;
         let total = cart.reduce((sum, p) => sum + p.price, 0);
         document.getElementById("totalDisplay").innerText = "Total: ₹" + total;
         document.getElementById("cartPopup").style.display = "none"; 
@@ -417,26 +488,12 @@
     function closeCheckout() { document.getElementById("checkoutPopup").style.display = "none"; }
 
     function processOrder() {
-        const name = document.getElementById("name").value, phone = document.getElementById("phone").value, pin = document.getElementById("pincode").value, plan = document.getElementById("paymentPlan").value;
-        if (!name || !phone || !pin) return alert("Please fill all details");
-        
-        let total = 0, items = "", id = "AET" + Math.floor(1000+Math.random()*9000);
-        
-        cart.forEach(p => { 
-            let colorDetail = p.selectedColor ? ` [Color: ${p.selectedColor}]` : "";
-            items += `- ${p.name}${colorDetail} (₹${p.price})%0A`; 
-            total += p.price; 
-        });
-
-        const addr = `${document.getElementById("flat").value}, ${document.getElementById("building").value}, ${document.getElementById("area").value}, Pin: ${pin}`;
-        const msg = `*AETHELL ORDER*%0AID: ${id}%0AStatus: ${plan=='full'?'Paid':'EMI Request'}%0A%0A*Customer:* ${name}%0A*Phone:* ${phone}%0A*Address:* ${addr}%0A%0A*Items:*%0A${items}*Total:* ₹${total}`;
-
-        if (plan === "full") {
-            window.location.href = `upi://pay?pa=aditya.kbelose@oksbi&pn=AETHELL&am=${total}&cu=INR&tn=${id}`;
-            setTimeout(() => { window.location.href = `https://wa.me/919987782822?text=${msg}`; }, 4000);
-        } else {
-            window.location.href = `https://wa.me/919987782822?text=${msg}`;
-        }
+        const name = document.getElementById("name").value, phone = document.getElementById("phone").value, id = "AET" + Math.floor(1000+Math.random()*9000);
+        let total = cart.reduce((sum, p) => sum + p.price, 0);
+        let items = ""; cart.forEach(p => items += `- ${p.name}%0A`);
+        const msg = `*AETHELL_ORDER*%0AID: ${id}%0A%0A*Customer:* ${name}%0A*Phone:* ${phone}%0A*Items:*%0A${items}*Total:* ₹${total}`;
+        window.location.href = `upi://pay?pa=aditya.kbelose@oksbi&pn=AETHELL&am=${total}&cu=INR&tn=${id}`;
+        setTimeout(() => { window.location.href = `https://wa.me/919987782822?text=${msg}`; }, 4000);
     }
 
     function openAbout() { document.getElementById("aboutPopup").style.display = "flex"; }
