@@ -4,11 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AETHELL | Modern Decor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
     <style>
-        body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; background: white; color: black; overflow-x: hidden; }
+        :root {
+            --bg: #000000;
+            --text: #ffffff;
+            --accent: #1a1a1a;
+            --border: 1px solid #333333;
+        }
+
+        body { 
+            margin: 0; 
+            font-family: 'Inter', sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            overflow-x: hidden; 
+            -webkit-font-smoothing: antialiased;
+        }
         
-        /* UPDATED LOADER STYLES */
+        /* LOADER */
         #loader { 
             position: fixed; 
             width: 100%; 
@@ -18,10 +33,10 @@
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            font-size: 64px; 
-            letter-spacing: 8px; 
+            font-size: clamp(40px, 10vw, 80px); 
+            letter-spacing: -2px; 
             z-index: 2000; 
-            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-family: 'Archivo Black', sans-serif;
             text-transform: uppercase;
             transition: opacity 1s ease;
         }
@@ -32,60 +47,125 @@
             left: 0;
             width: 100%;
             height: 100%;
+            opacity: 0.6;
         }
 
         #loader span {
             position: relative;
             z-index: 2001;
-            text-shadow: 0 0 20px rgba(0,0,0,0.8);
-            pointer-events: none;
         }
 
-        .trust-bar { background: #f9f9f9; border-bottom: 1px solid #eee; text-align: center; padding: 6px 0; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #666; }
-        header { text-align: center; margin: 40px 0 20px 0; font-size: 34px; letter-spacing: 6px; font-weight: bold; }
-        .caption { font-size: 13px; letter-spacing: 4px; margin-top: 8px; opacity: .6; text-transform: uppercase; }
-        .menu { position: fixed; left: 20px; top: 25px; font-size: 28px; cursor: pointer; z-index: 1001; }
-        .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: white; box-shadow: 5px 0 15px rgba(0,0,0,0.1); transition: .4s cubic-bezier(0.4, 0, 0.2, 1); padding-top: 80px; z-index: 1000; }
+        .trust-bar { 
+            background: #111; 
+            border-bottom: var(--border); 
+            text-align: center; 
+            padding: 10px 0; 
+            font-size: 10px; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: 700;
+        }
+
+        header { 
+            text-align: center; 
+            margin: 60px 0 40px 0; 
+        }
+
+        header h1 {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(50px, 15vw, 120px);
+            line-height: 0.8;
+            margin: 0;
+            letter-spacing: -4px;
+        }
+
+        .caption { 
+            font-size: 12px; 
+            letter-spacing: 5px; 
+            margin-top: 15px; 
+            opacity: .5; 
+            text-transform: uppercase; 
+            font-weight: 900;
+        }
+
+        .menu { position: fixed; left: 25px; top: 25px; font-size: 24px; cursor: pointer; z-index: 1001; }
+        
+        .sidebar { 
+            position: fixed; left: -300px; top: 0; width: 300px; height: 100%; 
+            background: #0a0a0a; border-right: var(--border);
+            transition: .4s cubic-bezier(0.4, 0, 0.2, 1); padding-top: 80px; z-index: 1000; 
+        }
         .sidebar.open { left: 0; }
-        .closeSidebar { position: absolute; top: 20px; right: 25px; font-size: 26px; cursor: pointer; }
-        .sidebar a { display: block; padding: 18px 30px; text-decoration: none; color: black; font-size: 17px; letter-spacing: 1px; cursor: pointer; }
-        .sidebar-bottom { position: absolute; bottom: 30px; width: 100%; border-top: 1px solid #eee; padding-top: 10px; }
-        .cart { position: fixed; right: 20px; top: 25px; background: black; color: white; padding: 8px 16px; border-radius: 30px; cursor: pointer; z-index: 1001; font-weight: bold; }
-        .products { padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .product img { width: 100%; border-radius: 12px; cursor: pointer; aspect-ratio: 1/1; object-fit: cover; background: #f9f9f9; }
-        .price { font-weight: bold; margin-top: 10px; font-size: 16px; }
-        .old { text-decoration: line-through; color: #999; font-size: 13px; margin-left: 6px; }
-        .off { color: #27ae60; font-size: 13px; font-weight: bold; }
-        .emi-tag { font-size: 11px; color: #666; margin-top: 4px; }
-        .product button { width: 100%; padding: 12px; margin-top: 10px; border: none; background: black; color: white; cursor: pointer; font-weight: bold; border-radius: 6px; font-size: 13px; }
-        #productPage { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1200; overflow-y: auto; }
-        .viewer { max-width: 480px; margin: 40px auto; padding: 0 20px; text-align: center; position: relative; box-sizing: border-box; }
-        .closePage { position: absolute; right: 15px; top: -15px; font-size: 32px; cursor: pointer; z-index: 100; }
-        .slider-container { position: relative; overflow: hidden; border-radius: 15px; touch-action: pan-y; background: #eee; }
-        #slideImg { width: 100%; max-height: 60vh; object-fit: contain; transition: transform 0.3s ease-out; }
-        .dots { text-align: center; margin-top: 15px; }
-        .dot { height: 8px; width: 8px; background: #ddd; display: inline-block; border-radius: 50%; margin: 0 4px; transition: 0.3s; }
-        .dot.active { background: black; width: 20px; border-radius: 10px; }
-        .desc { margin-top: 25px; line-height: 1.6; color: #444; font-size: 15px; }
-        .dim { margin-top: 15px; font-weight: bold; border-top: 1px solid #eee; padding-top: 15px; }
-        .color-selector { margin-top: 15px; text-align: left; }
-        .color-selector label { font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-        .cartButton { width: 100%; padding: 16px; background: black; color: white; border: none; margin-top: 12px; cursor: pointer; font-weight: bold; font-size: 16px; border-radius: 8px; }
-        .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1500; backdrop-filter: blur(4px); }
-        .popup-content { background: white; padding: 30px; width: 90%; max-width: 420px; border-radius: 20px; position: relative; max-height: 85vh; overflow-y: auto; }
-        .closePopup { position: absolute; right: 20px; top: 20px; font-size: 26px; cursor: pointer; }
-        .order-summary { background: #f9f9f9; padding: 15px; border-radius: 12px; margin: 15px 0; border: 1px solid #eee; text-align: center; }
-        .total-display { font-size: 20px; font-weight: bold; }
-        .checkout-item { display: flex; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
-        .checkout-item img { width: 60px; height: 60px; margin-right: 15px; border-radius: 8px; object-fit: cover; }
-        .item-info { display: flex; flex-direction: column; font-size: 14px; }
-        .remove { margin-left: auto; cursor: pointer; color: #e74c3c; font-weight: bold; }
-        input, select { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #e0e0e0; border-radius: 8px; box-sizing: border-box; font-size: 15px; background: #fafafa; }
-        #toast { position: fixed; top: 30px; left: 50%; transform: translateX(-50%); background: black; color: white; padding: 12px 28px; border-radius: 50px; display: none; z-index: 3000; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .checkout-alert { background: #f0f0f0; color: #000; padding: 10px; border-radius: 6px; font-size: 11px; font-weight: bold; text-align: center; margin: 10px 0; border: 1px dashed #333; }
-        .ig { position: fixed; bottom: 25px; right: 25px; width: 55px; height: 55px; background: black; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1001; font-weight: bold; }
-        .about-text { line-height: 1.8; color: #333; }
-        .highlight { color: black; font-weight: 800; border-bottom: 2px solid black; }
+        .sidebar a { 
+            display: block; padding: 20px 30px; text-decoration: none; color: white; 
+            font-size: 20px; font-family: 'Archivo Black', sans-serif; text-transform: uppercase;
+        }
+
+        .cart { 
+            position: fixed; right: 25px; top: 25px; background: white; color: black; 
+            padding: 10px 20px; cursor: pointer; z-index: 1001; font-weight: 900; 
+            font-size: 12px; text-transform: uppercase; border-radius: 0;
+        }
+
+        .products { padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1200px; margin: 0 auto; }
+        
+        .product { border: var(--border); padding: 0; transition: transform 0.3s ease; }
+        .product:hover { border-color: #fff; }
+        
+        .product img { 
+            width: 100%; cursor: pointer; aspect-ratio: 1/1; object-fit: cover; 
+            background: #111; filter: grayscale(20%); transition: filter 0.3s;
+        }
+        .product:hover img { filter: grayscale(0%); }
+
+        .product-info { padding: 20px; }
+        .product h3 { font-family: 'Archivo Black', sans-serif; text-transform: uppercase; margin: 0; font-size: 18px; letter-spacing: -1px; }
+        
+        .price { font-weight: 900; margin-top: 10px; font-size: 20px; }
+        .old { text-decoration: line-through; color: #555; font-size: 14px; margin-left: 8px; font-weight: 400; }
+        .off { display: inline-block; background: white; color: black; padding: 2px 6px; font-size: 10px; font-weight: 900; margin-top: 5px; }
+
+        .product button, .cartButton { 
+            width: 100%; padding: 18px; margin-top: 15px; border: 1px solid white; 
+            background: transparent; color: white; cursor: pointer; font-weight: 900; 
+            text-transform: uppercase; font-size: 12px; transition: 0.3s;
+        }
+        .product button:hover, .cartButton:hover { background: white; color: black; }
+
+        /* PRODUCT PAGE */
+        #productPage { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 1200; overflow-y: auto; }
+        .viewer { max-width: 1000px; margin: 60px auto; padding: 0 40px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; }
+        @media (max-width: 768px) { .viewer { grid-template-columns: 1fr; margin: 20px auto; padding: 0 20px; } .products { grid-template-columns: 1fr; } }
+        
+        .closePage { position: fixed; right: 30px; top: 30px; font-size: 40px; cursor: pointer; z-index: 1300; }
+        .slider-container { border: var(--border); }
+        #slideImg { width: 100%; object-fit: cover; }
+        
+        .dots { margin-top: 20px; display: flex; gap: 10px; }
+        .dot { height: 4px; flex-grow: 1; background: #333; transition: 0.3s; }
+        .dot.active { background: white; }
+
+        .desc { margin-top: 30px; line-height: 1.5; color: #aaa; font-size: 16px; }
+        .dim { margin-top: 20px; font-weight: 700; color: #fff; text-transform: uppercase; font-size: 12px; }
+
+        /* POPUPS */
+        .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 1500; backdrop-filter: blur(10px); }
+        .popup-content { background: #0a0a0a; border: var(--border); padding: 40px; width: 90%; max-width: 500px; position: relative; }
+        .popup-content h2 { font-family: 'Archivo Black', sans-serif; font-size: 32px; letter-spacing: -2px; }
+        
+        input, select { 
+            width: 100%; padding: 18px; margin: 10px 0; border: var(--border); 
+            background: #111; color: white; font-family: 'Inter', sans-serif; border-radius: 0;
+        }
+
+        .checkout-item { border-bottom: var(--border); padding: 15px 0; }
+        
+        #toast { position: fixed; bottom: 30px; left: 30px; background: white; color: black; padding: 15px 30px; font-weight: 900; text-transform: uppercase; font-size: 12px; display: none; z-index: 3000; }
+        
+        .ig { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border: 1px solid white; background: transparent; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1001; font-weight: 900; transition: 0.3s; }
+        .ig:hover { background: white; color: black; }
+
+        .highlight { color: white; font-weight: 900; background: #333; padding: 0 4px; }
     </style>
 </head>
 <body>
@@ -95,99 +175,108 @@
     <span>AETHELL</span>
 </div>
 
-<div class="trust-bar">FREE SHIPPING IN MUMBAI • CUSTOM DESIGNS AVAILABLE</div>
+<div class="trust-bar">FREE SHIPPING IN MUMBAI • HIGH-END MIRROR FOUNDRY</div>
 <div class="menu" onclick="toggleMenu()">☰</div>
-<div class="cart" onclick="openCart()">🛒 <span id="count">0</span></div>
+<div class="cart" onclick="openCart()">BAG (<span id="count">0</span>)</div>
 
 <div class="sidebar" id="sidebar">
-    <div class="closeSidebar" onclick="toggleMenu()">✕</div>
+    <div class="closeSidebar" onclick="toggleMenu()" style="padding: 20px 30px; font-size: 30px; cursor: pointer;">✕</div>
     <a href="#" onclick="toggleMenu()">Home</a>
-    <a onclick="openAbout(); toggleMenu()">About Us</a>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdE6cRXuMMelbPQpyuv9FouDaYFMsJxm6UblKyjkCCFOIllNg/viewform?usp=header">Custom Mirrors</a>
+    <a onclick="openAbout(); toggleMenu()">About</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdE6cRXuMMelbPQpyuv9FouDaYFMsJxm6UblKyjkCCFOIllNg/viewform?usp=header">Custom</a>
     <a href="https://wa.me/919987782822">Support</a>
-    <div class="sidebar-bottom">
-        <a onclick="openRefund(); toggleMenu()" style="font-size: 13px; opacity: 0.6;">Refund & Return Policy</a>
+    <div class="sidebar-bottom" style="position: absolute; bottom: 30px; width: 100%;">
+        <a onclick="openRefund(); toggleMenu()" style="font-size: 11px; opacity: 0.5;">Refund Policy</a>
     </div>
 </div>
 
-<header>AETHELL<div class="caption">Elevate your space.</div></header>
+<header>
+    <h1>AETHELL</h1>
+    <div class="caption">Premium Tech-Nostalgia</div>
+</header>
 
 <section class="products" id="productContainer"></section>
-<div id="toast">Added to Cart</div>
+<div id="toast">Added to bag</div>
 
 <div id="productPage">
+    <div class="closePage" onclick="closeProduct()">✕</div>
     <div class="viewer">
-        <div class="closePage" onclick="closeProduct()">✕</div>
-        <div class="slider-container" id="swipeArea">
-            <img id="slideImg" src="">
+        <div class="product-visuals">
+            <div class="slider-container" id="swipeArea">
+                <img id="slideImg" src="">
+            </div>
+            <div class="dots" id="dots"></div>
         </div>
-        <div class="dots" id="dots"></div>
-        <h2 id="title" style="margin-top: 20px;"></h2>
-        <h3 id="p-price" style="color: #444;"></h3>
-        
-        <div id="ipodOptions" class="color-selector" style="display:none;">
-            <label>Select Color:</label>
-            <select id="ipodColor">
-                <option value="Classic White">Classic White</option>
-                <option value="Jet Black">Jet Black</option>
-                <option value="Hot Red">Hot Red</option>
-            </select>
-        </div>
+        <div class="product-details">
+            <h2 id="title" style="font-family: 'Archivo Black'; font-size: 48px; letter-spacing: -2px; margin-bottom: 10px;"></h2>
+            <h3 id="p-price" style="font-size: 28px; margin-bottom: 30px;"></h3>
+            
+            <div id="ipodOptions" class="color-selector" style="display:none;">
+                <label style="font-size: 10px; font-weight: 900; text-transform: uppercase;">Color Way</label>
+                <select id="ipodColor">
+                    <option value="Classic White">Classic White</option>
+                    <option value="Jet Black">Jet Black</option>
+                    <option value="Hot Red">Hot Red</option>
+                </select>
+            </div>
 
-        <div class="desc" id="desc"></div>
-        <div class="dim" id="dim"></div>
-        <button class="cartButton" onclick="addCart(current)">Add To Cart</button>
-        <button class="cartButton" style="background:#333;" onclick="buyNow(current)">Buy Now</button>
+            <div class="desc" id="desc"></div>
+            <div class="dim" id="dim"></div>
+            
+            <button class="cartButton" style="background: white; color: black;" onclick="addCart(current)">Add To Bag</button>
+            <button class="cartButton" onclick="buyNow(current)">Immediate Checkout</button>
+        </div>
     </div>
 </div>
 
 <div class="popup" id="cartPopup">
     <div class="popup-content">
-        <div class="closePopup" onclick="closeCart()">✕</div>
-        <h2 style="margin-top: 0;">MY BAG</h2>
+        <div class="closePopup" onclick="closeCart()" style="position:absolute; right:20px; top:20px; cursor:pointer;">✕</div>
+        <h2 style="margin-top: 0;">YOUR BAG</h2>
         <div id="cartItems"></div>
-        <button class="cartButton" onclick="openCheckout()">Checkout</button>
+        <button class="cartButton" style="background:white; color:black;" onclick="openCheckout()">Go to Checkout</button>
     </div>
 </div>
 
 <div class="popup" id="checkoutPopup">
     <div class="popup-content">
-        <div class="closePopup" onclick="closeCheckout()">✕</div>
-        <h2 style="margin-top: 0;">DETAILS</h2>
+        <div class="closePopup" onclick="closeCheckout()" style="position:absolute; right:20px; top:20px; cursor:pointer;">✕</div>
+        <h2 style="margin-top: 0;">SHIPPING</h2>
         <input id="name" placeholder="Full Name">
         <input id="phone" placeholder="WhatsApp Number" type="tel">
-        <input id="building" placeholder="Building / Society">
-        <input id="flat" placeholder="Flat No. / Floor">
+        <input id="building" placeholder="Building / Street">
+        <input id="flat" placeholder="Flat / Floor">
         <input id="area" placeholder="Area / Landmark">
         <input id="pincode" placeholder="Pincode" type="number">
         <select id="paymentPlan">
             <option value="full">Full Payment (Instant UPI)</option>
-            <option value="2">2 Month EMI (via WhatsApp)</option>
-            <option value="3">3 Month EMI (via WhatsApp)</option>
+            <option value="2">2 Month EMI</option>
+            <option value="3">3 Month EMI</option>
         </select>
-        <div class="order-summary"><div class="total-display" id="totalDisplay">Total: ₹0</div></div>
-        <div class="checkout-alert">IMPORTANT: Return to browser after payment and send the WhatsApp message to confirm order.</div>
-        <button class="cartButton" onclick="processOrder()">Place Order</button>
+        <div style="background: #111; padding: 20px; border: var(--border); margin: 20px 0; text-align: center;">
+            <div style="font-size: 24px; font-weight: 900;" id="totalDisplay">Total: ₹0</div>
+        </div>
+        <button class="cartButton" style="background:white; color:black;" onclick="processOrder()">Confirm Order</button>
     </div>
 </div>
 
 <div class="popup" id="aboutPopup">
     <div class="popup-content">
-        <div class="closePopup" onclick="closeAbout()">✕</div>
-        <h2 style="margin-top: 0; letter-spacing: 2px;">THE STORY</h2>
-        <div class="about-text">
-            <p>It started from a simple problem. I wanted something for my room that looked <span class="highlight">cool, minimal and premium</span> but most mirrors available felt basic or outdated.</p>
-            <p>So <span class="highlight">Aethell</span> was born. A brand focused on modern, <span class="highlight">Gen-Z inspired</span> mirror designs that elevate your space while reflecting your personality.</p>
+        <div class="closePopup" onclick="closeAbout()" style="position:absolute; right:20px; top:20px; cursor:pointer;">✕</div>
+        <h2 style="margin-top: 0;">THE STUDIO</h2>
+        <div class="about-text" style="color: #aaa; font-size: 16px; line-height: 1.6;">
+            <p>Aethell is a design studio based in Mumbai, focused on merging <span class="highlight">digital nostalgia</span> with physical craft.</p>
+            <p>We don't just make mirrors; we build portals to an era of clean lines and iconic tech. Each piece is hand-finished to ensure a <span class="highlight">premium, bespoke</span> experience.</p>
         </div>
     </div>
 </div>
 
 <div class="popup" id="refundPopup">
     <div class="popup-content">
-        <div class="closePopup" onclick="closeRefund()">✕</div>
-        <h2 style="margin-top: 0;">REFUNDS & RETURNS</h2>
-        <div class="about-text">
-            <p>At Aethell, each mirror is treated as a piece of art. <span class="highlight">Returns are not possible</span> once the order is placed and delivered.</p>
+        <div class="closePopup" onclick="closeRefund()" style="position:absolute; right:20px; top:20px; cursor:pointer;">✕</div>
+        <h2>POLICY</h2>
+        <div class="about-text" style="color: #aaa;">
+            <p>Due to the bespoke and fragile nature of our products, all sales at Aethell are <span class="highlight">final</span>. We ensure rigorous quality checks before dispatch.</p>
         </div>
     </div>
 </div>
@@ -195,58 +284,34 @@
 <div class="ig" onclick="window.open('https://instagram.com/aethell.in')">IG</div>
 
 <script>
-    /* NEW THREE.JS SHADER IMPLEMENTATION */
+    /* SHADER ANIMATION */
     const container = document.getElementById('shader-container');
-    
-    const vertexShader = `
-        void main() {
-            gl_Position = vec4( position, 1.0 );
-        }
-    `;
-
+    const vertexShader = `void main() { gl_Position = vec4( position, 1.0 ); }`;
     const fragmentShader = `
-        #define TWO_PI 6.2831853072
-        #define PI 3.14159265359
-
         precision highp float;
         uniform vec2 resolution;
         uniform float time;
-
         void main(void) {
             vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
-            float t = time*0.05;
-            float lineWidth = 0.002;
-
+            float t = time*0.02;
             vec3 color = vec3(0.0);
-            for(int j = 0; j < 3; j++){
-                for(int i=0; i < 5; i++){
-                    color[j] += lineWidth*float(i*i) / abs(fract(t - 0.01*float(j)+float(i)*0.01)*5.0 - length(uv) + mod(uv.x+uv.y, 0.2));
-                }
+            for(int i=0; i < 3; i++){
+                uv = abs(uv) - 0.5;
+                float d = length(uv);
+                color[i] = 0.002 / abs(sin(d * 8.0 - t));
             }
-            gl_FragColor = vec4(color[0],color[1],color[2],1.0);
+            gl_FragColor = vec4(color, 1.0);
         }
     `;
 
-    const camera = new THREE.Camera();
-    camera.position.z = 1;
+    const camera = new THREE.Camera(); camera.position.z = 1;
     const scene = new THREE.Scene();
     const geometry = new THREE.PlaneGeometry(2, 2);
-    const uniforms = {
-        time: { type: "f", value: 1.0 },
-        resolution: { type: "v2", value: new THREE.Vector2() }
-    };
-
-    const material = new THREE.ShaderMaterial({
-        uniforms: uniforms,
-        vertexShader: vertexShader,
-        fragmentShader: fragmentShader
-    });
-
+    const uniforms = { time: { type: "f", value: 1.0 }, resolution: { type: "v2", value: new THREE.Vector2() } };
+    const material = new THREE.ShaderMaterial({ uniforms, vertexShader, fragmentShader });
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
+    const renderer = new THREE.WebGLRenderer();
     container.appendChild(renderer.domElement);
 
     function resize() {
@@ -254,90 +319,41 @@
         uniforms.resolution.value.x = renderer.domElement.width;
         uniforms.resolution.value.y = renderer.domElement.height;
     }
-
-    window.addEventListener('resize', resize);
-    resize();
-
-    function animate() {
-        requestAnimationFrame(animate);
-        uniforms.time.value += 0.05;
-        renderer.render(scene, camera);
-    }
+    window.addEventListener('resize', resize); resize();
+    function animate() { requestAnimationFrame(animate); uniforms.time.value += 0.05; renderer.render(scene, camera); }
     animate();
 
-    /* LOADING TIMER: Set to 2000ms (2 seconds) */
     setTimeout(() => {
         const loader = document.getElementById("loader");
         loader.style.opacity = "0";
-        setTimeout(() => {
-            loader.style.display = "none";
-            renderer.dispose();
-            geometry.dispose();
-            material.dispose();
-        }, 1000);
+        setTimeout(() => { loader.style.display = "none"; }, 1000);
     }, 2000);
 
-    /* RESTORED PRODUCT DATA */
+    /* PRODUCT ENGINE */
     function toggleMenu() { document.getElementById("sidebar").classList.toggle("open"); }
 
     const products = [
-        {
-            name: "iPod Mirror", 
-            price: 7499, 
-            img: ["ipod1.jpg", "ipod2.jpg"], 
-            desc: "Nostalgia reflected. A classic 2000s tech-inspired silhouette that turns your reflection into a core memory. Perfect for those who miss the era of click-wheels and shuffle play.", 
-            dim: "18 x 32 inches",
-            hasColor: true
-        },
-        {
-            name: "MS PAINT Mirror", 
-            price: 8999, 
-            img: ["mspaint1.jpg", "mspaint2.jpg", "mspaint3.jpg"], 
-            desc: "A digital tribute to the birthplace of creativity. This piece brings the iconic 90s workspace into the physical world, creating a portal to your room's aesthetic.", 
-            dim: "47 x 31 inches"
-        },
-        {
-            name: "CMIYGL Mirror", 
-            price: 5999, 
-            img: ["cmiygl1.jpg", "cmiygl2.jpg", "cmiygl3.jpg"], 
-            desc: "The traveler's companion. Inspired by the passport aesthetic and travel logs, this mirror is for those whose rooms are just a layover before the next adventure.", 
-            dim: "15 x 24 inches"
-        },
-        {
-            name: "reCAPTCHA Mirror", 
-            price: 5999, 
-            img: ["captcha1.jpg"], 
-            desc: "Prove you're human. A sharp, conversational piece that turns the internet's most familiar verification check into your home's most unique statement.", 
-            dim: "42 x 31 inches"
-        },
-        {
-            name: "Queen of Hearts", 
-            price: 5499, 
-            img: ["queen1.jpg"], 
-            desc: "Command the room with royalty that doesn't follow the rules. This design balances classical playing card art with a modern, defiant attitude.", 
-            dim: "48 x 31 inches"
-        },
-        {
-            name: "King of Hearts", 
-            price: 5499, 
-            img: ["king1.jpg"], 
-            desc: "Regal, symmetrical, and undeniably bold. The King of Hearts is designed to anchor your space with a sense of authority and timeless style.", 
-            dim: "48 x 31 inches"
-        }
+        { name: "iPod Mirror", price: 7499, img: ["ipod1.jpg", "ipod2.jpg"], desc: "Nostalgia reflected. A classic 2000s tech-inspired silhouette.", dim: "18 x 32 inches", hasColor: true },
+        { name: "MS PAINT Mirror", price: 8999, img: ["mspaint1.jpg", "mspaint2.jpg"], desc: "A digital tribute to the birthplace of creativity.", dim: "47 x 31 inches" },
+        { name: "CMIYGL Mirror", price: 5999, img: ["cmiygl1.jpg"], desc: "The traveler's companion. Inspired by passport aesthetics.", dim: "15 x 24 inches" },
+        { name: "reCAPTCHA Mirror", price: 5999, img: ["captcha1.jpg"], desc: "Prove you're human. Internet's most familiar verification.", dim: "42 x 31 inches" },
+        { name: "Queen of Hearts", price: 5499, img: ["queen1.jpg"], desc: "Command the room with royalty.", dim: "48 x 31 inches" },
+        { name: "King of Hearts", price: 5499, img: ["king1.jpg"], desc: "Regal, symmetrical, and undeniably bold.", dim: "48 x 31 inches" }
     ];
 
     let cart = [], current = 0, slide = 0;
 
     products.forEach((p, i) => {
-        let original = Math.round(p.price / 0.8), emi = Math.round(p.price / 3);
+        let original = Math.round(p.price / 0.8);
         document.getElementById("productContainer").innerHTML += `
         <div class="product">
             <img src="${p.img[0]}" onclick="viewProduct(${i})">
-            <h3 style="margin: 10px 0 4px 0; font-size: 15px;">${p.name}</h3>
-            <div class="price">₹${p.price} <span class="old">₹${original}</span></div>
-            <div class="off">20% OFF</div>
-            <div class="emi-tag">EMI starts ₹${emi}/mo</div>
-            <button onclick="addCart(${i})">Add to Cart</button>
+            <div class="product-info">
+                <h3>${p.name}</h3>
+                <div class="price">₹${p.price} <span class="old">₹${original}</span></div>
+                <div class="off">LIMITED DROP</div>
+                <button onclick="addCart(${i})">Add to Bag</button>
+            </div>
         </div>`;
     });
 
@@ -348,22 +364,10 @@
         document.getElementById("title").innerText = p.name;
         document.getElementById("p-price").innerText = "₹" + p.price;
         document.getElementById("desc").innerText = p.desc;
-        document.getElementById("dim").innerText = "Dimensions: " + p.dim;
+        document.getElementById("dim").innerText = "SPECIFICATIONS: " + p.dim;
         document.getElementById("ipodOptions").style.display = p.hasColor ? "block" : "none";
         renderSlider();
     }
-
-    let touchX = 0;
-    const swipeArea = document.getElementById('swipeArea');
-    swipeArea.addEventListener('touchstart', e => touchX = e.touches[0].clientX);
-    swipeArea.addEventListener('touchend', e => {
-        let diff = touchX - e.changedTouches[0].clientX;
-        if (Math.abs(diff) > 50) {
-            if (diff > 0 && slide < products[current].img.length - 1) slide++;
-            else if (diff < 0 && slide > 0) slide--;
-            renderSlider();
-        }
-    });
 
     function renderSlider() {
         document.getElementById("slideImg").src = products[current].img[slide];
@@ -374,32 +378,27 @@
 
     function addCart(i) {
         let item = {...products[i]};
-        if(item.hasColor) {
-            item.selectedColor = document.getElementById("ipodColor").value;
-        }
+        if(item.hasColor) item.selectedColor = document.getElementById("ipodColor").value;
         cart.push(item);
         updateCart();
         document.getElementById("toast").style.display = "block";
         setTimeout(() => document.getElementById("toast").style.display = "none", 1500);
     }
 
-    function buyNow(i) { 
-        cart = []; 
-        addCart(i); 
-        closeProduct(); 
-        openCheckout(); 
-    }
-
+    function buyNow(i) { cart = []; addCart(i); closeProduct(); openCheckout(); }
     function updateCart() { document.getElementById("count").innerText = cart.length; }
     function closeProduct() { document.getElementById("productPage").style.display = "none"; }
     
     function openCart() {
         let html = "";
         cart.forEach((p, i) => {
-            let colorText = p.selectedColor ? `<br><small>Color: ${p.selectedColor}</small>` : "";
-            html += `<div class="checkout-item"><img src="${p.img[0]}"><div class="item-info"><span>${p.name}${colorText}</span><b>₹${p.price}</b></div><div class="remove" onclick="removeItem(${i})">✕</div></div>`;
+            html += `<div class="checkout-item" style="display:flex; justify-content:space-between; align-items:center;">
+                <div><b>${p.name}</b><br><small>${p.selectedColor || ''}</small></div>
+                <b>₹${p.price}</b>
+                <span onclick="removeItem(${i})" style="cursor:pointer; font-weight:900;">✕</span>
+            </div>`;
         });
-        document.getElementById("cartItems").innerHTML = html || "<p style='text-align:center;'>Your bag is empty</p>";
+        document.getElementById("cartItems").innerHTML = html || "<p>EMPTY BAG</p>";
         document.getElementById("cartPopup").style.display = "flex";
     }
 
@@ -407,7 +406,7 @@
     function removeItem(i) { cart.splice(i, 1); updateCart(); openCart(); }
     
     function openCheckout() { 
-        if(!cart.length) return alert("Bag is empty"); 
+        if(!cart.length) return;
         let total = cart.reduce((sum, p) => sum + p.price, 0);
         document.getElementById("totalDisplay").innerText = "Total: ₹" + total;
         document.getElementById("cartPopup").style.display = "none"; 
@@ -417,22 +416,14 @@
     function closeCheckout() { document.getElementById("checkoutPopup").style.display = "none"; }
 
     function processOrder() {
-        const name = document.getElementById("name").value, phone = document.getElementById("phone").value, pin = document.getElementById("pincode").value, plan = document.getElementById("paymentPlan").value;
-        if (!name || !phone || !pin) return alert("Please fill all details");
+        const name = document.getElementById("name").value, phone = document.getElementById("phone").value, plan = document.getElementById("paymentPlan").value;
+        if (!name || !phone) return alert("Missing Info");
+        let total = cart.reduce((sum, p) => sum + p.price, 0);
+        let items = cart.map(p => `- ${p.name} (₹${p.price})`).join('%0A');
+        const msg = `*AETHELL ORDER*%0A*Customer:* ${name}%0A*Items:*%0A${items}%0A*Total:* ₹${total}%0A*Plan:* ${plan}`;
         
-        let total = 0, items = "", id = "AET" + Math.floor(1000+Math.random()*9000);
-        
-        cart.forEach(p => { 
-            let colorDetail = p.selectedColor ? ` [Color: ${p.selectedColor}]` : "";
-            items += `- ${p.name}${colorDetail} (₹${p.price})%0A`; 
-            total += p.price; 
-        });
-
-        const addr = `${document.getElementById("flat").value}, ${document.getElementById("building").value}, ${document.getElementById("area").value}, Pin: ${pin}`;
-        const msg = `*AETHELL ORDER*%0AID: ${id}%0AStatus: ${plan=='full'?'Paid':'EMI Request'}%0A%0A*Customer:* ${name}%0A*Phone:* ${phone}%0A*Address:* ${addr}%0A%0A*Items:*%0A${items}*Total:* ₹${total}`;
-
         if (plan === "full") {
-            window.location.href = `upi://pay?pa=aditya.kbelose@oksbi&pn=AETHELL&am=${total}&cu=INR&tn=${id}`;
+            window.location.href = `upi://pay?pa=aditya.kbelose@oksbi&pn=AETHELL&am=${total}&cu=INR`;
             setTimeout(() => { window.location.href = `https://wa.me/919987782822?text=${msg}`; }, 4000);
         } else {
             window.location.href = `https://wa.me/919987782822?text=${msg}`;
