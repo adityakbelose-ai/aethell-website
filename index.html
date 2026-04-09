@@ -17,7 +17,7 @@
             overflow-x: hidden; 
         }
         
-        /* LOADER STYLES */
+        /* LOADER STYLES (UNCHANGED) */
         #loader { 
             position: fixed; 
             width: 100%; 
@@ -72,17 +72,21 @@
         .emi-tag { font-size: 11px; color: #888; margin-top: 4px; }
         .product button { width: 100%; padding: 12px; margin-top: 10px; border: none; background: white; color: black; cursor: pointer; font-weight: bold; border-radius: 6px; font-size: 13px; font-family: 'Courier Prime', monospace; }
         
-        /* Mobile-First Button Press Effect */
-        button:active, .cart:active, .ig:active, .menu:active { transform: scale(0.95); opacity: 0.8; transition: all 0.1s ease; }
-        
         #productPage { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050505; z-index: 1200; overflow-y: auto; }
         .viewer { max-width: 480px; margin: 40px auto; padding: 0 20px; text-align: center; position: relative; box-sizing: border-box; }
         .closePage { position: absolute; right: 15px; top: -15px; font-size: 32px; cursor: pointer; z-index: 100; color: #fff; }
         
-        /* SCROLL SNAP SLIDER */
+        /* IMPROVED SLIDER (NATIVE CSS SCROLL SNAP) */
         .slider-container { position: relative; overflow: hidden; border-radius: 15px; background: #111; }
-        .slider-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-        .slider-track::-webkit-scrollbar { display: none; }
+        .slider-track { 
+            display: flex; 
+            overflow-x: auto; 
+            scroll-snap-type: x mandatory; 
+            scroll-behavior: smooth; 
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Hide scrollbar Firefox */
+        }
+        .slider-track::-webkit-scrollbar { display: none; /* Hide scrollbar Chrome/Safari */ }
         .slider-track img { width: 100%; flex: 0 0 100%; scroll-snap-align: start; object-fit: contain; max-height: 60vh; }
         
         .dots { text-align: center; margin-top: 15px; }
@@ -149,6 +153,7 @@
     <div class="viewer">
         <div class="closePage" onclick="closeProduct()">✕</div>
         
+        <!-- NEW SCROLL SNAP SLIDER -->
         <div class="slider-container" id="swipeArea">
             <div class="slider-track" id="sliderTrack"></div>
         </div>
@@ -185,32 +190,21 @@
 <div class="popup" id="checkoutPopup">
     <div class="popup-content">
         <div class="closePopup" onclick="closeCheckout()">✕</div>
-        
-        <!-- STEP 1: Details -->
-        <div id="checkoutForm">
-            <h2 style="margin-top: 0;">DETAILS</h2>
-            <input id="name" placeholder="Full Name">
-            <input id="phone" placeholder="WhatsApp Number" type="tel" inputmode="numeric" pattern="[0-9]*">
-            <input id="building" placeholder="Building / Society">
-            <input id="flat" placeholder="Flat No. / Floor">
-            <input id="area" placeholder="Area / Landmark">
-            <input id="pincode" placeholder="Pincode" type="number" inputmode="numeric" pattern="[0-9]*">
-            <select id="paymentPlan">
-                <option value="full">Full Payment (Instant UPI)</option>
-                <option value="2">2 Month EMI (via WhatsApp)</option>
-                <option value="3">3 Month EMI (via WhatsApp)</option>
-            </select>
-            <div class="order-summary"><div class="total-display" id="totalDisplay">Total: ₹0</div></div>
-            <button class="cartButton" onclick="processOrder()">Place Order</button>
-        </div>
-
-        <!-- STEP 2: Fail-safe WhatsApp confirmation -->
-        <div id="checkoutStep2" style="display: none; text-align: center; padding: 10px 0;">
-            <h2 style="margin-top: 0; letter-spacing: 2px;">ALMOST DONE</h2>
-            <div id="step2Text" style="color: #bbb; line-height: 1.6; font-size: 14px; margin-bottom: 20px;"></div>
-            <button class="cartButton" id="waConfirmBtn" style="border-radius: 50px;">Send Details to WhatsApp</button>
-        </div>
-
+        <h2 style="margin-top: 0;">DETAILS</h2>
+        <input id="name" placeholder="Full Name">
+        <input id="phone" placeholder="WhatsApp Number" type="tel">
+        <input id="building" placeholder="Building / Society">
+        <input id="flat" placeholder="Flat No. / Floor">
+        <input id="area" placeholder="Area / Landmark">
+        <input id="pincode" placeholder="Pincode" type="number">
+        <select id="paymentPlan">
+            <option value="full">Full Payment (Instant UPI)</option>
+            <option value="2">2 Month EMI (via WhatsApp)</option>
+            <option value="3">3 Month EMI (via WhatsApp)</option>
+        </select>
+        <div class="order-summary"><div class="total-display" id="totalDisplay">Total: ₹0</div></div>
+        <div class="checkout-alert">IMPORTANT: Return to browser after payment and send the WhatsApp message to confirm order.</div>
+        <button class="cartButton" onclick="processOrder()">Place Order</button>
     </div>
 </div>
 
@@ -230,13 +224,7 @@
         <div class="closePopup" onclick="closeRefund()">✕</div>
         <h2 style="margin-top: 0;">REFUNDS & RETURNS</h2>
         <div class="about-text">
-            <p>At Aethell, each mirror is treated as a piece of art. <span class="highlight">Returns for a change of mind are not possible</span> once the order is placed and delivered.</p>
-            
-            <!-- SAFE ARRIVAL GUARANTEE ADDED -->
-            <div style="margin-top: 20px; border-left: 3px solid white; padding-left: 15px; color: white;">
-                <b style="font-size: 15px; letter-spacing: 1px;">SAFE ARRIVAL GUARANTEE:</b><br>
-                <span style="font-size: 14px; color: #bbb;">We guarantee your mirror will arrive in perfect condition. If it is damaged in transit, send us an unboxing video within 24 hours and we will replace it for free.</span>
-            </div>
+            <p>At Aethell, each mirror is treated as a piece of art. <span class="highlight">Returns are not possible</span> once the order is placed and delivered.</p>
         </div>
     </div>
 </div>
@@ -244,19 +232,30 @@
 <div class="ig" onclick="window.open('https://instagram.com/aethell.in')">IG</div>
 
 <script>
-    /* THREE.JS SHADER IMPLEMENTATION */
+    /* --------------------------------------
+       THREE.JS SHADER IMPLEMENTATION (UNCHANGED)
+       -------------------------------------- */
     const container = document.getElementById('shader-container');
-    const vertexShader = `void main() { gl_Position = vec4( position, 1.0 ); }`;
+    
+    const vertexShader = `
+        void main() {
+            gl_Position = vec4( position, 1.0 );
+        }
+    `;
+
     const fragmentShader = `
         #define TWO_PI 6.2831853072
         #define PI 3.14159265359
+
         precision highp float;
         uniform vec2 resolution;
         uniform float time;
+
         void main(void) {
             vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
             float t = time*0.05;
             float lineWidth = 0.002;
+
             vec3 color = vec3(0.0);
             for(int j = 0; j < 3; j++){
                 for(int i=0; i < 5; i++){
@@ -271,9 +270,17 @@
     camera.position.z = 1;
     const scene = new THREE.Scene();
     const geometry = new THREE.PlaneGeometry(2, 2);
-    const uniforms = { time: { type: "f", value: 1.0 }, resolution: { type: "v2", value: new THREE.Vector2() } };
+    const uniforms = {
+        time: { type: "f", value: 1.0 },
+        resolution: { type: "v2", value: new THREE.Vector2() }
+    };
 
-    const material = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vertexShader, fragmentShader: fragmentShader });
+    const material = new THREE.ShaderMaterial({
+        uniforms: uniforms,
+        vertexShader: vertexShader,
+        fragmentShader: fragmentShader
+    });
+
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
@@ -286,6 +293,7 @@
         uniforms.resolution.value.x = renderer.domElement.width;
         uniforms.resolution.value.y = renderer.domElement.height;
     }
+
     window.addEventListener('resize', resize);
     resize();
 
@@ -307,24 +315,21 @@
         }, 1000);
     }, 2000);
 
-    /* STORE LOGIC & LOCAL STORAGE CART */
+    /* --------------------------------------
+       STORE LOGIC & IMPROVED SLIDER
+       -------------------------------------- */
     function toggleMenu() { document.getElementById("sidebar").classList.toggle("open"); }
 
-    const products =[
+    const products = [
         { name: "iPod Mirror", price: 7499, img:["ipod1.jpg", "ipod2.jpg"], desc: "Nostalgia reflected. A classic 2000s tech-inspired silhouette that turns your reflection into a core memory. Perfect for those who miss the era of click-wheels and shuffle play.", dim: "18 x 32 inches", hasColor: true },
         { name: "MS PAINT Mirror", price: 8999, img:["mspaint1.jpg", "mspaint2.jpg", "mspaint3.jpg"], desc: "A digital tribute to the birthplace of creativity. This piece brings the iconic 90s workspace into the physical world, creating a portal to your room's aesthetic.", dim: "47 x 31 inches" },
         { name: "CMIYGL Mirror", price: 5999, img:["cmiygl1.jpg", "cmiygl2.jpg", "cmiygl3.jpg"], desc: "The traveler's companion. Inspired by the passport aesthetic and travel logs, this mirror is for those whose rooms are just a layover before the next adventure.", dim: "15 x 24 inches" },
-        { name: "reCAPTCHA Mirror", price: 5999, img:["captcha1.jpg"], desc: "Prove you're human. A sharp, conversational piece that turns the internet's most familiar verification check into your home's most unique statement.", dim: "42 x 31 inches" },
-        { name: "Queen of Hearts", price: 5499, img:["queen1.jpg"], desc: "Command the room with royalty that doesn't follow the rules. This design balances classical playing card art with a modern, defiant attitude.", dim: "48 x 31 inches" },
+        { name: "reCAPTCHA Mirror", price: 5999, img: ["captcha1.jpg"], desc: "Prove you're human. A sharp, conversational piece that turns the internet's most familiar verification check into your home's most unique statement.", dim: "42 x 31 inches" },
+        { name: "Queen of Hearts", price: 5499, img: ["queen1.jpg"], desc: "Command the room with royalty that doesn't follow the rules. This design balances classical playing card art with a modern, defiant attitude.", dim: "48 x 31 inches" },
         { name: "King of Hearts", price: 5499, img: ["king1.jpg"], desc: "Regal, symmetrical, and undeniably bold. The King of Hearts is designed to anchor your space with a sense of authority and timeless style.", dim: "48 x 31 inches" }
     ];
 
-    // FETCH CART FROM LOCAL STORAGE
-    let cart = JSON.parse(localStorage.getItem('aethell_cart')) ||[];
-    let current = 0;
-    
-    // Set cart count immediately on load
-    updateCart();
+    let cart =[], current = 0;
 
     products.forEach((p, i) => {
         let original = Math.round(p.price / 0.8), emi = Math.round(p.price / 3);
@@ -351,43 +356,51 @@
         renderSlider();
     }
 
+    /* REBUILT NATIVE SCROLL SLIDER LOGIC */
     const sliderTrack = document.getElementById("sliderTrack");
     
     function renderSlider() {
-        let trackHtml = "", dotsHtml = "";
+        let trackHtml = "";
+        let dotsHtml = "";
+        
         products[current].img.forEach((src, idx) => {
             trackHtml += `<img src="${src}" alt="Slide ${idx + 1}">`;
             dotsHtml += `<span class="dot ${idx === 0 ? 'active' : ''}"></span>`;
         });
+        
         sliderTrack.innerHTML = trackHtml;
         document.getElementById("dots").innerHTML = dotsHtml;
+        
+        // Reset scroll position to first image
         sliderTrack.scrollTo(0, 0);
     }
 
+    // Automatically update dots on scroll
     sliderTrack.addEventListener("scroll", () => {
         let index = Math.round(sliderTrack.scrollLeft / sliderTrack.offsetWidth);
         let dots = document.querySelectorAll("#dots .dot");
-        dots.forEach((dot, i) => { dot.classList.toggle("active", i === index); });
+        dots.forEach((dot, i) => {
+            dot.classList.toggle("active", i === index);
+        });
     });
 
     function addCart(i) {
         let item = {...products[i]};
-        if(item.hasColor) item.selectedColor = document.getElementById("ipodColor").value;
+        if(item.hasColor) {
+            item.selectedColor = document.getElementById("ipodColor").value;
+        }
         cart.push(item);
-        
-        // SAVE TO LOCAL STORAGE
-        localStorage.setItem('aethell_cart', JSON.stringify(cart));
-        
         updateCart();
-        
-        // Haptic feedback for mobile
-        if(navigator.vibrate) navigator.vibrate(50);
-        
         document.getElementById("toast").style.display = "block";
         setTimeout(() => document.getElementById("toast").style.display = "none", 1500);
     }
 
-    function buyNow(i) { cart =[]; addCart(i); closeProduct(); openCheckout(); }
+    function buyNow(i) { 
+        cart =[]; 
+        addCart(i); 
+        closeProduct(); 
+        openCheckout(); 
+    }
 
     function updateCart() { document.getElementById("count").innerText = cart.length; }
     function closeProduct() { document.getElementById("productPage").style.display = "none"; }
@@ -403,30 +416,18 @@
     }
 
     function closeCart() { document.getElementById("cartPopup").style.display = "none"; }
-    
-    function removeItem(i) { 
-        cart.splice(i, 1); 
-        // UPDATE LOCAL STORAGE ON REMOVE
-        localStorage.setItem('aethell_cart', JSON.stringify(cart));
-        updateCart(); 
-        openCart(); 
-    }
+    function removeItem(i) { cart.splice(i, 1); updateCart(); openCart(); }
     
     function openCheckout() { 
         if(!cart.length) return alert("Bag is empty"); 
         let total = cart.reduce((sum, p) => sum + p.price, 0);
         document.getElementById("totalDisplay").innerText = "Total: ₹" + total;
         document.getElementById("cartPopup").style.display = "none"; 
-        
-        // Ensure Step 1 is showing
-        document.getElementById("checkoutForm").style.display = "block";
-        document.getElementById("checkoutStep2").style.display = "none";
         document.getElementById("checkoutPopup").style.display = "flex"; 
     }
 
     function closeCheckout() { document.getElementById("checkoutPopup").style.display = "none"; }
 
-    /* FAIL-SAFE CHECKOUT LOGIC */
     function processOrder() {
         const name = document.getElementById("name").value, phone = document.getElementById("phone").value, pin = document.getElementById("pincode").value, plan = document.getElementById("paymentPlan").value;
         if (!name || !phone || !pin) return alert("Please fill all details");
@@ -442,14 +443,18 @@
         const addr = `${document.getElementById("flat").value}, ${document.getElementById("building").value}, ${document.getElementById("area").value}, Pin: ${pin}`;
         const msg = `*AETHELL ORDER*%0AID: ${id}%0AStatus: ${plan=='full'?'Paid':'EMI Request'}%0A%0A*Customer:* ${name}%0A*Phone:* ${phone}%0A*Address:* ${addr}%0A%0A*Items:*%0A${items}*Total:* ₹${total}`;
 
-        const waLink = `https://wa.me/919987782822?text=${msg}`;
+        if (plan === "full") {
+            window.location.href = `upi://pay?pa=aditya.kbelose@oksbi&pn=AETHELL&am=${total}&cu=INR&tn=${id}`;
+            setTimeout(() => { window.location.href = `https://wa.me/919987782822?text=${msg}`; }, 4000);
+        } else {
+            window.location.href = `https://wa.me/919987782822?text=${msg}`;
+        }
+    }
 
-        // Switch UI from details form to Step 2
-        document.getElementById("checkoutForm").style.display = "none";
-        document.getElementById("checkoutStep2").style.display = "block";
-
-        // Setup WhatsApp Confirmation Button
-        let waBtn = document.getElementById("waConfirmBtn");
-        waBtn.onclick = function() {
-            // ONLY clear cart once they actually proceed to WhatsApp
-            cart =
+    function openAbout() { document.getElementById("aboutPopup").style.display = "flex"; }
+    function closeAbout() { document.getElementById("aboutPopup").style.display = "none"; }
+    function openRefund() { document.getElementById("refundPopup").style.display = "flex"; }
+    function closeRefund() { document.getElementById("refundPopup").style.display = "none"; }
+</script>
+</body>
+</html>
