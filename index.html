@@ -320,18 +320,20 @@
        -------------------------------------- */
     function toggleMenu() { document.getElementById("sidebar").classList.toggle("open"); }
 
+    // UPDATED PRODUCT PRICES
     const products = [
-        { name: "iPod Mirror", price: 7499, img:["ipod1.jpg", "ipod2.jpg"], desc: "Nostalgia reflected. A classic 2000s tech-inspired silhouette that turns your reflection into a core memory. Perfect for those who miss the era of click-wheels and shuffle play.", dim: "18 x 32 inches", hasColor: true },
-        { name: "MS PAINT Mirror", price: 8999, img:["mspaint1.jpg", "mspaint2.jpg", "mspaint3.jpg"], desc: "A digital tribute to the birthplace of creativity. This piece brings the iconic 90s workspace into the physical world, creating a portal to your room's aesthetic.", dim: "47 x 31 inches" },
-        { name: "CMIYGL Mirror", price: 5999, img:["cmiygl1.jpg", "cmiygl2.jpg", "cmiygl3.jpg"], desc: "The traveler's companion. Inspired by the passport aesthetic and travel logs, this mirror is for those whose rooms are just a layover before the next adventure.", dim: "15 x 24 inches" },
-        { name: "reCAPTCHA Mirror", price: 5999, img: ["captcha1.jpg"], desc: "Prove you're human. A sharp, conversational piece that turns the internet's most familiar verification check into your home's most unique statement.", dim: "42 x 31 inches" },
-        { name: "Queen of Hearts", price: 5499, img: ["queen1.jpg"], desc: "Command the room with royalty that doesn't follow the rules. This design balances classical playing card art with a modern, defiant attitude.", dim: "48 x 31 inches" },
-        { name: "King of Hearts", price: 5499, img: ["king1.jpg"], desc: "Regal, symmetrical, and undeniably bold. The King of Hearts is designed to anchor your space with a sense of authority and timeless style.", dim: "48 x 31 inches" }
+        { name: "iPod Mirror", price: 6499, img:["ipod1.jpg", "ipod2.jpg"], desc: "Nostalgia reflected. A classic 2000s tech-inspired silhouette that turns your reflection into a core memory. Perfect for those who miss the era of click-wheels and shuffle play.", dim: "18 x 32 inches", hasColor: true },
+        { name: "MS PAINT Mirror", price: 5499, img:["mspaint1.jpg", "mspaint2.jpg", "mspaint3.jpg"], desc: "A digital tribute to the birthplace of creativity. This piece brings the iconic 90s workspace into the physical world, creating a portal to your room's aesthetic.", dim: "47 x 31 inches" },
+        { name: "CMIYGL Mirror", price: 3499, img:["cmiygl1.jpg", "cmiygl2.jpg", "cmiygl3.jpg"], desc: "The traveler's companion. Inspired by the passport aesthetic and travel logs, this mirror is for those whose rooms are just a layover before the next adventure.", dim: "15 x 24 inches" },
+        { name: "reCAPTCHA Mirror", price: 4599, img: ["captcha1.jpg"], desc: "Prove you're human. A sharp, conversational piece that turns the internet's most familiar verification check into your home's most unique statement.", dim: "42 x 31 inches" },
+        { name: "Queen of Hearts", price: 4599, img: ["queen1.jpg"], desc: "Command the room with royalty that doesn't follow the rules. This design balances classical playing card art with a modern, defiant attitude.", dim: "48 x 31 inches" },
+        { name: "King of Hearts", price: 4599, img: ["king1.jpg"], desc: "Regal, symmetrical, and undeniably bold. The King of Hearts is designed to anchor your space with a sense of authority and timeless style.", dim: "48 x 31 inches" }
     ];
 
     let cart =[], current = 0;
 
     products.forEach((p, i) => {
+        // CALCULATING ORIGINAL PRICE FOR 20% OFF
         let original = Math.round(p.price / 0.8), emi = Math.round(p.price / 3);
         document.getElementById("productContainer").innerHTML += `
         <div class="product">
