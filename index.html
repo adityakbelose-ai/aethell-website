@@ -1,40 +1,223 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AETHELL | Modern Decor</title>
-    <!-- Typewriter Font Added -->
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
-    <style>
-        /* INVERTED COLORS & TYPEWRITER FONT */
-        body { 
-            margin: 0; 
-            font-family: 'Courier Prime', 'Courier New', Courier, monospace; 
-            background: #000000; 
-            color: #ffffff; 
-            overflow-x: hidden; 
-        }
-        
-        /* LOADER STYLES (UNCHANGED) */
-        #loader { 
-            position: fixed; 
-            width: 100%; 
-            height: 100%; 
-            background: black; 
-            color: white; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 64px; 
-            letter-spacing: 8px; 
-            z-index: 2000; 
-            font-family: 'Impact', 'Arial Black', sans-serif;
-            text-transform: uppercase;
-            transition: opacity 1s ease;
-        }
+const vertexShader = `
+    void main() {
+        gl_Position = vec4( position, 1.0 );
+    }
+`;
 
+const fragmentShader = `
+    #define TWO_PI 6.2831853072
+    #define PI 3.14159265359
+
+    precision highp float;
+    uniform vec2 resolution;
+    uniform float time;
+
+    void main(void) {
+        vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
+        float t = time*0.05;
+        float lineWidth = 0.002;
+
+        vec3 color = vec3(0.0);
+        for(int j = 0; j < 3; j++){
+            for(int i=0; i < 5; i++){
+                color[j] += lineWidth*float(i*i) / abs(fract(t - 0.01*float(j)+float(i)*0.01)*5.0 - length(uv) + mod(uv.x+uv.y, 0.2));
+            }
+        }
+        gl_FragColor = vec4(color[0],color[1],color[2],1.0);
+    }
+`;
+
+const camera = new THREE.Camera();
+camera.position.z = 1;
+const scene = new THREE.Scene();
+const geometry = new THREE.PlaneGeometry(2, 2);
+const uniforms = {
+    time: { type: "f", value: 1.0 },
+    resolution: { type: "v2", value: new THREE.Vector2() }
+};
+
+const material = new THREE.ShaderMaterial({
+    uniforms: uniforms,
+    vertexShader: vertexShader,
+    fragmentShader: fragmentShader
+});
+
+const mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+container.appendChild(renderer.domElement);
+
+function resize() {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    uniforms.resolution.value.x = renderer.domElement.width;
+    uniforms.resolution.value.y = renderer.domElement.height;
+}
+
+window.addEventListener('resize', resize);
+resize();
+
+function animate() {
+    requestAnimationFrame(animate);
+    uniforms.time.value += 0.05;
+    renderer.render(scene, camera);
+}
+animate();
+
+setTimeout(() => {
+    const loader = document.getElementById("loader");
+    loader.style.opacity = "0";
+    setTimeout(() => {
+        loader.style.display = "none";
+        renderer.dispose();
+        geometry.dispose();
+        material.dispose();
+    }, 1000);
+}, 2000);
+
+/* --------------------------------------
+   STORE LOGIC & IMPROVED SLIDER
+   -------------------------------------- */
+function toggleMenu() { document.getElementById("sidebar").classList.toggle("open"); }
+
+// UPDATED PRODUCT PRICES
+const products = [
+    { name: "iPod Mirror", price: 6499, img:["ipod1.jpg", "ipod2.jpg"], desc: "Nostalgia reflected. A classic 2000s tech-inspired silhouette that turns your reflection into a core memory. Perfect for those who miss the era of click-wheels and shuffle play.", dim: "18 x 32 inches", hasColor: true },
+    { name: "MS PAINT Mirror", price: 5499, img:["mspaint1.jpg", "mspaint2.jpg", "mspaint3.jpg"], desc: "A digital tribute to the birthplace of creativity. This piece brings the iconic 90s workspace into the physical world, creating a portal to your room's aesthetic.", dim: "47 x 31 inches" },
+    { name: "CMIYGL Mirror", price: 3499, img:["cmiygl1.jpg", "cmiygl2.jpg", "cmiygl3.jpg"], desc: "The traveler's companion. Inspired by the passport aesthetic and travel logs, this mirror is for those whose rooms are just a layover before the next adventure.", dim: "15 x 24 inches" },
+    { name: "reCAPTCHA Mirror", price: 4599, img: ["captcha1.jpg"], desc: "Prove you're human. A sharp, conversational piece that turns the internet's most familiar verification check into your home's most unique statement.", dim: "42 x 31 inches" },
+    { name: "Queen of Hearts", price: 4599, img: ["queen1.jpg"], desc: "Command the room with royalty that doesn't follow the rules. This design balances classical playing card art with a modern, defiant attitude.", dim: "48 x 31 inches" },
+    { name: "King of Hearts", price: 4599, img: ["king1.jpg"], desc: "Regal, symmetrical, and undeniably bold. The King of Hearts is designed to anchor your space with a sense of authority and timeless style.", dim: "48 x 31 inches" }
+];
+
+let cart =[], current = 0;
+
+products.forEach((p, i) => {
+    // CALCULATING ORIGINAL PRICE FOR 20% OFF
+    let original = Math.round(p.price / 0.8), emi = Math.round(p.price / 3);
+    document.getElementById("productContainer").innerHTML += `
+    <div class="product">
+        <img src="${p.img[0]}" onclick="viewProduct(${i})">
+        <h3 style="margin: 10px 0 4px 0; font-size: 15px;">${p.name}</h3>
+        <div class="price">₹${p.price} <span class="old">₹${original}</span></div>
+        <div class="off">20% OFF</div>
+        <div class="emi-tag">EMI starts ₹${emi}/mo</div>
+        <button onclick="addCart(${i})">Add to Cart</button>
+    </div>`;
+});
+
+function viewProduct(i) {
+    current = i;
+    const p = products[i];
+    document.getElementById("productPage").style.display = "block";
+    document.getElementById("title").innerText = p.name;
+    document.getElementById("p-price").innerText = "₹" + p.price;
+    document.getElementById("desc").innerText = p.desc;
+    document.getElementById("dim").innerText = "Dimensions: " + p.dim;
+    document.getElementById("ipodOptions").style.display = p.hasColor ? "block" : "none";
+    renderSlider();
+}
+
+/* REBUILT NATIVE SCROLL SLIDER LOGIC */
+const sliderTrack = document.getElementById("sliderTrack");
+
+function renderSlider() {
+    let trackHtml = "";
+    let dotsHtml = "";
+    
+    products[current].img.forEach((src, idx) => {
+        trackHtml += `<img src="${src}" alt="Slide ${idx + 1}">`;
+        dotsHtml += `<span class="dot ${idx === 0 ? 'active' : ''}"></span>`;
+    });
+    
+    sliderTrack.innerHTML = trackHtml;
+    document.getElementById("dots").innerHTML = dotsHtml;
+    
+    // Reset scroll position to first image
+    sliderTrack.scrollTo(0, 0);
+}
+
+// Automatically update dots on scroll
+sliderTrack.addEventListener("scroll", () => {
+    let index = Math.round(sliderTrack.scrollLeft / sliderTrack.offsetWidth);
+    let dots = document.querySelectorAll("#dots .dot");
+    dots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === index);
+    });
+});
+
+function addCart(i) {
+    let item = {...products[i]};
+    if(item.hasColor) {
+        item.selectedColor = document.getElementById("ipodColor").value;
+    }
+    cart.push(item);
+    updateCart();
+    document.getElementById("toast").style.display = "block";
+    setTimeout(() => document.getElementById("toast").style.display = "none", 1500);
+}
+
+function buyNow(i) { 
+    cart =[]; 
+    addCart(i); 
+    closeProduct(); 
+    openCheckout(); 
+}
+
+function updateCart() { document.getElementById("count").innerText = cart.length; }
+function closeProduct() { document.getElementById("productPage").style.display = "none"; }
+
+function openCart() {
+    let html = "";
+    cart.forEach((p, i) => {
+        let colorText = p.selectedColor ? `<br><small style="color:#aaa;">Color: ${p.selectedColor}</small>` : "";
+        html += `<div class="checkout-item"><img src="${p.img[0]}"><div class="item-info"><span>${p.name}${colorText}</span><b>₹${p.price}</b></div><div class="remove" onclick="removeItem(${i})">✕</div></div>`;
+    });
+    document.getElementById("cartItems").innerHTML = html || "<p style='text-align:center;'>Your bag is empty</p>";
+    document.getElementById("cartPopup").style.display = "flex";
+}
+
+function closeCart() { document.getElementById("cartPopup").style.display = "none"; }
+function removeItem(i) { cart.splice(i, 1); updateCart(); openCart(); }
+
+function openCheckout() { 
+    if(!cart.length) return alert("Bag is empty"); 
+    let total = cart.reduce((sum, p) => sum + p.price, 0);
+    document.getElementById("totalDisplay").innerText = "Total: ₹" + total;
+    document.getElementById("cartPopup").style.display = "none"; 
+    document.getElementById("checkoutPopup").style.display = "flex"; 
+}
+
+function closeCheckout() { document.getElementById("checkoutPopup").style.display = "none"; }
+
+function processOrder() {
+    const name = document.getElementById("name").value, phone = document.getElementById("phone").value, pin = document.getElementById("pincode").value, plan = document.getElementById("paymentPlan").value;
+    if (!name || !phone || !pin) return alert("Please fill all details");
+    
+    let total = 0, items = "", id = "AET" + Math.floor(1000+Math.random()*9000);
+    
+    cart.forEach(p => { 
+        let colorDetail = p.selectedColor ? ` [Color: ${p.selectedColor}]` : "";
+        items += `- ${p.name}${colorDetail} (₹${p.price})%0A`; 
+        total += p.price; 
+    });
+
+    const addr = `${document.getElementById("flat").value}, ${document.getElementById("building").value}, ${document.getElementById("area").value}, Pin: ${pin}`;
+    const msg = `*AETHELL ORDER*%0AID: ${id}%0AStatus: ${plan=='full'?'Paid':'EMI Request'}%0A%0A*Customer:* ${name}%0A*Phone:* ${phone}%0A*Address:* ${addr}%0A%0A*Items:*%0A${items}*Total:* ₹${total}`;
+
+    if (plan === "full") {
+        window.location.href = `upi://pay?pa=aditya.kbelose@oksbi&pn=AETHELL&am=${total}&cu=INR&tn=${id}`;
+        setTimeout(() => { window.location.href = `https://wa.me/919987782822?text=${msg}`; }, 4000);
+    } else {
+        window.location.href = `https://wa.me/919987782822?text=${msg}`;
+    }
+}
+
+function openAbout() { document.getElementById("aboutPopup").style.display = "flex"; }
+function closeAbout() { document.getElementById("aboutPopup").style.display = "none"; }
+function openRefund() { document.getElementById("refundPopup").style.display = "flex"; }
+function closeRefund() { document.getElementById("refundPopup").style.display = "none"; }
         #shader-container {
             position: absolute;
             top: 0;
