@@ -56,20 +56,21 @@
         .caption { font-size: 13px; letter-spacing: 4px; margin-top: 8px; opacity: .6; text-transform: uppercase; }
         
         .menu { position: fixed; left: 20px; top: 25px; font-size: 28px; cursor: pointer; z-index: 1001; color: #fff; }
-        .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #0a0a0a; border-right: 1px solid #333; transition: .4s cubic-bezier(0.4, 0, 0.2, 1); padding-top: 80px; z-index: 1000; display: flex; flex-direction: column; }
+        .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #0a0a0a; border-right: 1px solid #333; transition: .4s cubic-bezier(0.4, 0, 0.2, 1); padding-top: 80px; z-index: 1000; display: flex; flex-direction: column; overflow-y: auto; }
         .sidebar.open { left: 0; }
         .closeSidebar { position: absolute; top: 20px; right: 25px; font-size: 26px; cursor: pointer; color: #fff; }
         .sidebar a { display: block; padding: 18px 30px; text-decoration: none; color: #fff; font-size: 17px; letter-spacing: 1px; cursor: pointer; }
         
-        /* NEW BLOG/QUOTE SECTION STYLES */
+        /* UPDATED BLOG/QUOTE SECTION STYLES - POSITIONED HIGHER */
         .sidebar-blog { 
-            margin-top: auto; 
+            margin-top: 40px; /* This creates the 4-5 line gap below the refund policy */
             padding: 20px; 
             border-top: 1px solid #333; 
             background: #050505; 
             font-size: 13px; 
             line-height: 1.6; 
             color: #bbb;
+            margin-bottom: 40px; /* Adds space at the bottom so it doesn't touch the edge */
         }
         .blog-label { 
             font-size: 10px; 
@@ -92,7 +93,7 @@
             text-align: right; 
         }
 
-        .sidebar-bottom { padding-bottom: 30px; }
+        .sidebar-bottom { padding-bottom: 10px; }
         
         .cart { position: fixed; right: 20px; top: 25px; background: white; color: black; padding: 8px 16px; border-radius: 30px; cursor: pointer; z-index: 1001; font-weight: bold; }
         
@@ -175,7 +176,7 @@
         <a onclick="openRefund(); toggleMenu()" style="font-size: 13px; opacity: 0.6;">Refund & Return Policy</a>
     </div>
 
-    <!-- NEW AI-DRIVEN BLOG SECTION -->
+    <!-- AI-DRIVEN BLOG SECTION - NOW POSITIONED HIGHER -->
     <div class="sidebar-blog" id="dailyBlog">
         <span class="blog-label">Daily Reflection</span>
         <div class="blog-content" id="blogText">Loading inspiration...</div>
@@ -367,7 +368,6 @@
         const now = new Date();
         const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
         
-        // This ensures the quote changes every day based on the date
         const quoteIndex = dayOfYear % dailyQuotes.length;
         const quote = dailyQuotes[quoteIndex];
         
