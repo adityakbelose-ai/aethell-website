@@ -17,7 +17,7 @@
             overflow-x: hidden; 
         }
         
-        /* LOADER STYLES (UNCHANGED) */
+        /* LOADER STYLES */
         #loader { 
             position: fixed; 
             width: 100%; 
@@ -56,11 +56,43 @@
         .caption { font-size: 13px; letter-spacing: 4px; margin-top: 8px; opacity: .6; text-transform: uppercase; }
         
         .menu { position: fixed; left: 20px; top: 25px; font-size: 28px; cursor: pointer; z-index: 1001; color: #fff; }
-        .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #0a0a0a; border-right: 1px solid #333; transition: .4s cubic-bezier(0.4, 0, 0.2, 1); padding-top: 80px; z-index: 1000; }
+        .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #0a0a0a; border-right: 1px solid #333; transition: .4s cubic-bezier(0.4, 0, 0.2, 1); padding-top: 80px; z-index: 1000; display: flex; flex-direction: column; }
         .sidebar.open { left: 0; }
         .closeSidebar { position: absolute; top: 20px; right: 25px; font-size: 26px; cursor: pointer; color: #fff; }
         .sidebar a { display: block; padding: 18px 30px; text-decoration: none; color: #fff; font-size: 17px; letter-spacing: 1px; cursor: pointer; }
-        .sidebar-bottom { position: absolute; bottom: 30px; width: 100%; border-top: 1px solid #333; padding-top: 10px; }
+        
+        /* NEW BLOG/QUOTE SECTION STYLES */
+        .sidebar-blog { 
+            margin-top: auto; 
+            padding: 20px; 
+            border-top: 1px solid #333; 
+            background: #050505; 
+            font-size: 13px; 
+            line-height: 1.6; 
+            color: #bbb;
+        }
+        .blog-label { 
+            font-size: 10px; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            color: #666; 
+            margin-bottom: 10px; 
+            display: block; 
+            font-weight: bold;
+        }
+        .blog-content { 
+            font-style: italic; 
+            color: #eee; 
+            margin-bottom: 10px;
+        }
+        .blog-date { 
+            font-size: 10px; 
+            color: #444; 
+            display: block; 
+            text-align: right; 
+        }
+
+        .sidebar-bottom { padding-bottom: 30px; }
         
         .cart { position: fixed; right: 20px; top: 25px; background: white; color: black; padding: 8px 16px; border-radius: 30px; cursor: pointer; z-index: 1001; font-weight: bold; }
         
@@ -76,7 +108,6 @@
         .viewer { max-width: 480px; margin: 40px auto; padding: 0 20px; text-align: center; position: relative; box-sizing: border-box; }
         .closePage { position: absolute; right: 15px; top: -15px; font-size: 32px; cursor: pointer; z-index: 100; color: #fff; }
         
-        /* IMPROVED SLIDER (NATIVE CSS SCROLL SNAP) */
         .slider-container { position: relative; overflow: hidden; border-radius: 15px; background: #111; }
         .slider-track { 
             display: flex; 
@@ -84,9 +115,9 @@
             scroll-snap-type: x mandatory; 
             scroll-behavior: smooth; 
             -webkit-overflow-scrolling: touch;
-            scrollbar-width: none; /* Hide scrollbar Firefox */
+            scrollbar-width: none; 
         }
-        .slider-track::-webkit-scrollbar { display: none; /* Hide scrollbar Chrome/Safari */ }
+        .slider-track::-webkit-scrollbar { display: none; }
         .slider-track img { width: 100%; flex: 0 0 100%; scroll-snap-align: start; object-fit: contain; max-height: 60vh; }
         
         .dots { text-align: center; margin-top: 15px; }
@@ -139,8 +170,16 @@
     <a onclick="openAbout(); toggleMenu()">About Us</a>
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSdE6cRXuMMelbPQpyuv9FouDaYFMsJxm6UblKyjkCCFOIllNg/viewform?usp=header">Custom Mirrors</a>
     <a href="https://wa.me/919987782822">Support</a>
+    
     <div class="sidebar-bottom">
         <a onclick="openRefund(); toggleMenu()" style="font-size: 13px; opacity: 0.6;">Refund & Return Policy</a>
+    </div>
+
+    <!-- NEW AI-DRIVEN BLOG SECTION -->
+    <div class="sidebar-blog" id="dailyBlog">
+        <span class="blog-label">Daily Reflection</span>
+        <div class="blog-content" id="blogText">Loading inspiration...</div>
+        <span class="blog-date" id="blogDate"></span>
     </div>
 </div>
 
@@ -299,6 +338,45 @@
     }, 2000);
 
     /* --------------------------------------
+       AI-SIMULATED DAILY BLOG LOGIC
+       -------------------------------------- */
+    const dailyQuotes = [
+        "Design is not just what it looks like, but how it works.",
+        "Your space should be a reflection of your wildest dreams.",
+        "Minimalism is not lack of something, it's simply the perfect amount of something.",
+        "The mirror doesn't just show you who you are, but who you are becoming.",
+        "Aesthetic is a language. Speak it fluently.",
+        "Modernity is the balance between nostalgia and the future.",
+        "Luxury is in each detail.",
+        "Your room is your sanctuary; curate it with intention.",
+        "Simplicity is the ultimate sophistication.",
+        "Art is not what you see, but what you make others see.",
+        "Reflections are just memories looking back at us.",
+        "Bold designs for bold personalities.",
+        "Create a space that makes you feel alive.",
+        "Details create the big picture.",
+        "Less is more, but better is best.",
+        "The most beautiful thing you can wear is confidence—and a great mirror to see it in.",
+        "Architecture is a visual art, and interiors are the soul of that art.",
+        "A room should feel like a hug from your favorite aesthetic.",
+        "Stay curious. Stay minimal. Stay bold.",
+        "The magic happens when function meets fashion."
+    ];
+
+    function updateDailyBlog() {
+        const now = new Date();
+        const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+        
+        // This ensures the quote changes every day based on the date
+        const quoteIndex = dayOfYear % dailyQuotes.length;
+        const quote = dailyQuotes[quoteIndex];
+        
+        document.getElementById("blogText").innerText = `"${quote}"`;
+        document.getElementById("blogDate").innerText = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+    updateDailyBlog();
+
+    /* --------------------------------------
        STORE LOGIC & IMPROVED SLIDER
        -------------------------------------- */
     function toggleMenu() { document.getElementById("sidebar").classList.toggle("open"); }
@@ -402,9 +480,6 @@
 
     function closeCheckout() { document.getElementById("checkoutPopup").style.display = "none"; }
 
-    /* --------------------------------------
-       AUTOMATED GOOGLE SHEETS ORDER SYSTEM
-       -------------------------------------- */
     async function processOrder() {
         const name = document.getElementById("name").value, 
               phone = document.getElementById("phone").value, 
@@ -413,7 +488,6 @@
         
         if (!name || !phone || !pin) return alert("Please fill all details");
 
-        // CASH ON DELIVERY VALIDATION (MUMBAI PINCODE CHECK)
         if (plan === "cod") {
             if (!pin.startsWith("400")) {
                 alert("Sorry, Cash on Delivery is only available for orders within Mumbai (Pincodes starting with 400). Please choose another payment method.");
@@ -431,7 +505,6 @@
 
         const addr = `${document.getElementById("flat").value}, ${document.getElementById("building").value}, ${document.getElementById("area").value}, Pin: ${pin}`;
 
-        // GOOGLE SPREADSHEET INTEGRATION
         const scriptURL = 'https://script.google.com/macros/s/AKfycbzVXxHJJXb-dPxRwWpsxumGWb2_mp5O6lDDuLBnCQQHzBR7EpaH_FjskboEb73y7-6h5A/exec';
         
         const orderData = {
@@ -445,7 +518,6 @@
         };
 
         try {
-            // Background log to sheet
             await fetch(scriptURL, {
                 method: 'POST',
                 mode: 'no-cors',
@@ -453,20 +525,16 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(orderData)
             });
-            console.log("Order logged successfully.");
         } catch (error) {
             console.error("Error logging order:", error);
         }
 
-        // FINAL ACTION
         if (plan === "full") {
-            // Redirect to UPI immediately
             window.location.href = `upi://pay?pa=aditya.kbelose@oksbi&pn=AETHELL&am=${total}&cu=INR&tn=${id}`;
         } else if (plan === "cod") {
             alert("Your Cash on Delivery order has been placed! We will contact you shortly to confirm the delivery date.");
             closeCheckout();
         } else {
-            // For EMI
             alert("Your EMI request has been placed! We will contact you on WhatsApp shortly to finalize the details.");
             closeCheckout();
         }
